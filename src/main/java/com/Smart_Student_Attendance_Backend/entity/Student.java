@@ -4,10 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "student_details")
@@ -16,12 +13,17 @@ import javax.persistence.Table;
 @Data
 public class Student {
     @Id
+    @Column(name = "student_id",length = 10)
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int studentId;
+
     @Column(name = "student_reg_no",length = 10)
-    private int studentRegNo;
+    private String studentRegNo;
+
     @Column(name = "student_password",length = 100)
     private String studentPassword;
 
     @Column(name = "active_status")
-    private boolean activestatus=false;
+    private boolean activestatus;
 
 }
