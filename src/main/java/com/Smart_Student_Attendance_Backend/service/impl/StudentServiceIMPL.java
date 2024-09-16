@@ -21,7 +21,8 @@ public class StudentServiceIMPL implements StudentService {
     @Override
     public String saveStudent(StudentDTO studentDTO) {
         Student student= modelMapper.map(studentDTO,Student.class);
-        if(!studentRepo.existsById(student.getStudentId())){
+        if(!studentRepo.existsByStudentRegNoEquals(student.getStudentRegNo())){
+
             studentRepo.save(student);
             return studentDTO.getStudentRegNo()+" Saved";
         }else {

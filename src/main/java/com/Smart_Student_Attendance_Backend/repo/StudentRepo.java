@@ -9,4 +9,8 @@ import org.springframework.stereotype.Repository;
 @EnableJpaRepositories
 public interface StudentRepo extends JpaRepository<Student,Integer> {
 
+
+    boolean existsByStudentRegNoEquals(String studentRegNo); //  Before Register Checking Alredy Exist Registation Number
+
+
 }
