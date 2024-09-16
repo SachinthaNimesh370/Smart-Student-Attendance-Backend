@@ -13,17 +13,13 @@ import javax.persistence.*;
 @Data
 public class Student {
     @Id
-    @Column(name = "student_id",length = 10)
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int studentId;
-
-    @Column(name = "student_reg_no",length = 10)
+    @Column(name = "student_reg_no",length = 10,nullable = false)
     private String studentRegNo;
 
-    @Column(name = "student_password",length = 100)
+    @Column(name = "student_password",length = 100,nullable = false)
     private String studentPassword;
 
-    @Column(name = "active_status")
+    @Column(name = "active_status",columnDefinition = "TINYINT default 1")
     private boolean activestatus;
 
 }
