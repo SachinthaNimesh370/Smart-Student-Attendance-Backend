@@ -24,11 +24,10 @@ public class StudentServiceIMPL implements StudentService {
     public String saveStudent(StudentRegDTO studentRegDTO) {
         StudentReg studentReg = modelMapper.map(studentRegDTO, StudentReg.class);
         if(!studentRegRepo.existsByStudentRegNoEquals(studentReg.getStudentRegNo())){
-
             studentRegRepo.save(studentReg);
             return studentRegDTO.getStudentRegNo()+" Saved";
         }else {
-            throw new DuplicateKeyException("Alredy Added");
+            return"Alredy Added";
         }
     }
 
