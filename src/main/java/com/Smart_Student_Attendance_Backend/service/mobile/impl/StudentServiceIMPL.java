@@ -1,6 +1,7 @@
 package com.Smart_Student_Attendance_Backend.service.mobile.impl;
 
 import com.Smart_Student_Attendance_Backend.dto.mobile.StudentRegDTO;
+import com.Smart_Student_Attendance_Backend.dto.mobile.StudentSignInDTO;
 import com.Smart_Student_Attendance_Backend.entity.mobile.StudentReg;
 import com.Smart_Student_Attendance_Backend.repo.mobile.StudentRegRepo;
 import com.Smart_Student_Attendance_Backend.service.mobile.StudentService;
@@ -18,6 +19,7 @@ public class StudentServiceIMPL implements StudentService {
     private StudentRegRepo studentRegRepo;
 
 
+
     @Override
     public String saveStudent(StudentRegDTO studentRegDTO) {
         StudentReg studentReg = modelMapper.map(studentRegDTO, StudentReg.class);
@@ -28,8 +30,16 @@ public class StudentServiceIMPL implements StudentService {
         }else {
             throw new DuplicateKeyException("Alredy Added");
         }
+    }
 
-
+    @Override
+    public String signInService(StudentSignInDTO studentSignInDTO) {
+        StudentReg studentReg = modelMapper.map(studentSignInDTO, StudentReg.class);
+        if(studentRegRepo.existsByStudentRegNoEqualsAndStudentPasswordEqualsAndActivestatusEquals(studentReg.getStudentRegNo(),studentReg.getStudentPassword(),true)){
+            return studentReg.getStudentRegNo()+" Sign In Successfuly";
+        }else {
+           return "Incorrect Registation Number OR Password";
+        }
 
     }
 }

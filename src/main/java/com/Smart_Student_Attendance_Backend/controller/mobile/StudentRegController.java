@@ -1,5 +1,6 @@
 package com.Smart_Student_Attendance_Backend.controller.mobile;
 import com.Smart_Student_Attendance_Backend.dto.mobile.StudentRegDTO;
+import com.Smart_Student_Attendance_Backend.dto.mobile.StudentSignInDTO;
 import com.Smart_Student_Attendance_Backend.service.mobile.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -12,7 +13,7 @@ public class StudentRegController {
     private StudentService studentService;
 
 
-    @PostMapping("/save")
+    @PostMapping("/signUp")
     public String SaveStudent(@RequestBody StudentRegDTO studentRegDTO){
         System.out.println("Reg No "+ studentRegDTO.getStudentRegNo());
         System.out.println("Student password "+ studentRegDTO.getStudentPassword());
@@ -22,4 +23,15 @@ public class StudentRegController {
         return massage;
 
     }
+
+    @PostMapping("/signIn")
+    public String SignIn(@RequestBody StudentSignInDTO studentSignInDTO){
+        System.out.println("Reg No "+ studentSignInDTO.getStudentRegNo());
+        System.out.println("Student password "+ studentSignInDTO.getStudentPassword());
+        String massage=studentService.signInService(studentSignInDTO);
+
+        return massage;
+
+    }
+
 }

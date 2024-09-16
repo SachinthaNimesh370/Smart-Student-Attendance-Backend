@@ -10,7 +10,9 @@ import org.springframework.stereotype.Repository;
 public interface StudentRegRepo extends JpaRepository<StudentReg,Integer> {
 
 
+
     boolean existsByStudentRegNoEquals(String studentRegNo); //  Before Register Checking Alredy Exist Registation Number
 
 
+    boolean existsByStudentRegNoEqualsAndStudentPasswordEqualsAndActivestatusEquals(String studentRegNo, String studentPassword,boolean b);
 }
