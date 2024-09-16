@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 @Data
 public class StudentDTO {
 
-
-    private int studentRegNo;
+    private int studentId;
+    private String studentRegNo;
     private String studentPassword;
     private boolean activestatus;
 
