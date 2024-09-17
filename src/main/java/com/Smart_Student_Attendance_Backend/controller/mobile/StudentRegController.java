@@ -15,9 +15,12 @@ public class StudentRegController {
 
     @PostMapping("/signUp")
     public String SaveStudent(@RequestBody StudentRegDTO studentRegDTO){
+//        studentRegDTO.setStudentEmail("asdf");
         System.out.println("Reg No "+ studentRegDTO.getStudentRegNo());
+        System.out.println("Email "+ studentRegDTO.getStudentEmail());
         System.out.println("Student password "+ studentRegDTO.getStudentPassword());
         System.out.println("Active Status "+ studentRegDTO.isActivestatus());
+
         String massage=studentService.saveStudent(studentRegDTO);
 
         return massage;
