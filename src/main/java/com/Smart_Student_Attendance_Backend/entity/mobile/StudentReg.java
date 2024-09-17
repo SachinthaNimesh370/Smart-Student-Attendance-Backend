@@ -16,6 +16,9 @@ public class StudentReg {
     @Column(name = "student_reg_no",length = 10,nullable = false)
     private String studentRegNo;
 
+    @Column(name = "student_Email",length = 100,nullable = false)
+    private String studentEmail;
+
     @Column(name = "student_password",length = 100,nullable = false)
     private String studentPassword;
 

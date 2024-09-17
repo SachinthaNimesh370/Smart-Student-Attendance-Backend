@@ -10,7 +10,9 @@ import lombok.NoArgsConstructor;
 public class StudentRegDTO {
 
     private String studentRegNo;
+    private String studentEmail;
     private String studentPassword;
     private boolean activestatus;
+
 
 }
