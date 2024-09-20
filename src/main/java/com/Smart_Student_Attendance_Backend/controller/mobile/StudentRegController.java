@@ -42,7 +42,6 @@ public class StudentRegController {
         System.out.println("Location "+ studentAttendDTO.getLocation());
         System.out.println("Attendance "+ studentAttendDTO.isAttendance());
 
-
         String massage=studentService.attendMarkStudent(studentAttendDTO);
         System.out.println(studentAttendDTO);
         return massage;

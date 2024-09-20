@@ -17,14 +17,10 @@ import org.springframework.stereotype.Service;
 public class StudentServiceIMPL implements StudentService {
     @Autowired
     public ModelMapper modelMapper;
-
     @Autowired
     private StudentRegRepo studentRegRepo;
-
     @Autowired
     private AttendMarkStudentRepo attendMarkStudentRepo;
-
-
 
     @Override
     public String saveStudent(StudentRegDTO studentRegDTO) {
@@ -45,7 +41,6 @@ public class StudentServiceIMPL implements StudentService {
         }else {
            return false;
         }
-
     }
 
     @Override
@@ -53,13 +48,11 @@ public class StudentServiceIMPL implements StudentService {
         StudentAttend studentAttend = modelMapper.map(studentAttendDTO,StudentAttend.class);
         if(!attendMarkStudentRepo.existsByStudentRegNoEquals(studentAttend.getStudentRegNo())){
             attendMarkStudentRepo.save(studentAttend);
-            System.out.println(studentAttendDTO);
-            System.out.println(studentAttend);
-            return "as";
+            return "Save Success";
         }else {
             System.out.println(studentAttendDTO);
             System.out.println(studentAttend);
-            return "jj";
+            return "Alredy Marked Attendance";
         }
 
     }
