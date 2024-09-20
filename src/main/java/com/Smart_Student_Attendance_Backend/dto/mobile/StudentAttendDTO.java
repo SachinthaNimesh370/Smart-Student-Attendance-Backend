@@ -9,6 +9,11 @@ import java.util.ArrayList;
 @AllArgsConstructor
 @Data
 public class StudentAttendDTO {
+    private String studentRegNo;
+    private String time;
+    private String date;
+    private ArrayList location;
+    private boolean attendance;
 
-    
+
 }
