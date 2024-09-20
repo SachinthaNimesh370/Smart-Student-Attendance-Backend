@@ -12,7 +12,7 @@ public class StudentAttendDTO {
     private String studentRegNo;
     private String time;
     private String date;
-    private ArrayList location;
+    private ArrayList<Double> location;;
     private boolean attendance;
 
 

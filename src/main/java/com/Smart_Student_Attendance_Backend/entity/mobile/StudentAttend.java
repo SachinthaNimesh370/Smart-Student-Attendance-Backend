@@ -34,7 +34,7 @@ public class StudentAttend {
     private String date;
     @Type(type = "json")
     @Column(name = "location",length = 10,columnDefinition = "json")
-    private ArrayList location;
+    private ArrayList<Double> location;
     @Column(name = "active_status",columnDefinition = "TINYINT default 1")
     private boolean attendance;
 
