@@ -1,8 +1,11 @@
 package com.Smart_Student_Attendance_Backend.service.mobile.impl;
 
+import com.Smart_Student_Attendance_Backend.dto.mobile.StudentAttendDTO;
 import com.Smart_Student_Attendance_Backend.dto.mobile.StudentRegDTO;
 import com.Smart_Student_Attendance_Backend.dto.mobile.StudentSignInDTO;
+import com.Smart_Student_Attendance_Backend.entity.mobile.StudentAttend;
 import com.Smart_Student_Attendance_Backend.entity.mobile.StudentReg;
+import com.Smart_Student_Attendance_Backend.repo.mobile.AttendMarkStudentRepo;
 import com.Smart_Student_Attendance_Backend.repo.mobile.StudentRegRepo;
 import com.Smart_Student_Attendance_Backend.service.mobile.StudentService;
 import org.modelmapper.ModelMapper;
@@ -18,6 +21,9 @@ public class StudentServiceIMPL implements StudentService {
     @Autowired
     private StudentRegRepo studentRegRepo;
 
+    @Autowired
+    private AttendMarkStudentRepo attendMarkStudentRepo;
+
 
 
     @Override
@@ -32,12 +38,28 @@ public class StudentServiceIMPL implements StudentService {
     }
 
     @Override
-    public String signInService(StudentSignInDTO studentSignInDTO) {
+    public boolean signInService(StudentSignInDTO studentSignInDTO) {
         StudentReg studentReg = modelMapper.map(studentSignInDTO, StudentReg.class);
         if(studentRegRepo.existsByStudentRegNoEqualsAndStudentPasswordEqualsAndActivestatusEquals(studentReg.getStudentRegNo(),studentReg.getStudentPassword(),true)){
-            return studentReg.getStudentRegNo()+" Sign In Successfuly";
+            return true;
         }else {
-           return "Incorrect Registation Number OR Password";
+           return false;
+        }
+
+    }
+
+    @Override
+    public String attendMarkStudent(StudentAttendDTO studentAttendDTO) {
+        StudentAttend studentAttend = modelMapper.map(studentAttendDTO,StudentAttend.class);
+        if(!attendMarkStudentRepo.existsByStudentRegNoEquals(studentAttend.getStudentRegNo())){
+            attendMarkStudentRepo.save(studentAttend);
+            System.out.println(studentAttendDTO);
+            System.out.println(studentAttend);
+            return "as";
+        }else {
+            System.out.println(studentAttendDTO);
+            System.out.println(studentAttend);
+            return "jj";
         }
 
     }

@@ -1,4 +1,5 @@
 package com.Smart_Student_Attendance_Backend.controller.mobile;
+import com.Smart_Student_Attendance_Backend.dto.mobile.StudentAttendDTO;
 import com.Smart_Student_Attendance_Backend.dto.mobile.StudentRegDTO;
 import com.Smart_Student_Attendance_Backend.dto.mobile.StudentSignInDTO;
 import com.Smart_Student_Attendance_Backend.service.mobile.StudentService;
@@ -15,26 +16,36 @@ public class StudentRegController {
 
     @PostMapping("/signUp")
     public String SaveStudent(@RequestBody StudentRegDTO studentRegDTO){
-//        studentRegDTO.setStudentEmail("asdf");
         System.out.println("Reg No "+ studentRegDTO.getStudentRegNo());
         System.out.println("Email "+ studentRegDTO.getStudentEmail());
         System.out.println("Student password "+ studentRegDTO.getStudentPassword());
         System.out.println("Active Status "+ studentRegDTO.isActivestatus());
-
         String massage=studentService.saveStudent(studentRegDTO);
+        return massage;
+    }
+
+    @PostMapping("/signIn")
+    public boolean SignIn(@RequestBody StudentSignInDTO studentSignInDTO){
+        System.out.println("Reg No "+ studentSignInDTO.getStudentRegNo());
+        System.out.println("Student password "+ studentSignInDTO.getStudentPassword());
+        boolean massage=studentService.signInService(studentSignInDTO);
 
         return massage;
 
     }
 
-    @PostMapping("/signIn")
-    public String SignIn(@RequestBody StudentSignInDTO studentSignInDTO){
-        System.out.println("Reg No "+ studentSignInDTO.getStudentRegNo());
-        System.out.println("Student password "+ studentSignInDTO.getStudentPassword());
-        String massage=studentService.signInService(studentSignInDTO);
+    @PostMapping("/attendMark")
+    public String AttendMark(@RequestBody StudentAttendDTO studentAttendDTO){
+        System.out.println("Reg No "+ studentAttendDTO.getStudentRegNo());
+        System.out.println("Time "+ studentAttendDTO.getTime());
+        System.out.println("Date "+ studentAttendDTO.getDate());
+        System.out.println("Location "+ studentAttendDTO.getLocation());
+        System.out.println("Attendance "+ studentAttendDTO.isAttendance());
 
+
+        String massage=studentService.attendMarkStudent(studentAttendDTO);
+        System.out.println(studentAttendDTO);
         return massage;
-
     }
 
 }
