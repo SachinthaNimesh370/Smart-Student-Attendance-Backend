@@ -9,9 +9,11 @@ import com.Smart_Student_Attendance_Backend.repo.mobile.AttendMarkStudentRepo;
 import com.Smart_Student_Attendance_Backend.repo.mobile.StudentRegRepo;
 import com.Smart_Student_Attendance_Backend.service.mobile.StudentService;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
+import java.util.List;
 
 @Service
 public class StudentServiceIMPL implements StudentService {
@@ -54,6 +56,16 @@ public class StudentServiceIMPL implements StudentService {
             System.out.println(studentAttend);
             return "Alredy Marked Attendance";
         }
+    }
 
+    @Override
+    public List<StudentRegDTO> getAllStuden() {
+        List<StudentReg> getAllStudent=studentRegRepo.findAll();
+        if(!getAllStudent.isEmpty()){
+            List<StudentRegDTO> allStudent = modelMapper.map(getAllStudent,new TypeToken<List<StudentRegDTO>>(){}.getType());
+            return allStudent;
+        }else {
+            throw new RuntimeException("Error");
+        }
     }
 }
