@@ -6,6 +6,8 @@ import com.Smart_Student_Attendance_Backend.service.mobile.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("api/v1/student")
 @CrossOrigin
@@ -13,7 +15,7 @@ public class StudentRegController {
     @Autowired
     private StudentService studentService;
 
-
+    //Student Registation
     @PostMapping("/signUp")
     public String SaveStudent(@RequestBody StudentRegDTO studentRegDTO){
         System.out.println("Reg No "+ studentRegDTO.getStudentRegNo());
@@ -24,6 +26,7 @@ public class StudentRegController {
         return massage;
     }
 
+    //Student Sign IN
     @PostMapping("/signIn")
     public boolean SignIn(@RequestBody StudentSignInDTO studentSignInDTO){
         System.out.println("Reg No "+ studentSignInDTO.getStudentRegNo());
@@ -33,7 +36,7 @@ public class StudentRegController {
         return massage;
 
     }
-
+    //Student Attendance Mark
     @PostMapping("/attendMark")
     public String AttendMark(@RequestBody StudentAttendDTO studentAttendDTO){
         System.out.println("Reg No "+ studentAttendDTO.getStudentRegNo());
@@ -45,6 +48,13 @@ public class StudentRegController {
         String massage=studentService.attendMarkStudent(studentAttendDTO);
         System.out.println(studentAttendDTO);
         return massage;
+    }
+
+    //Get All Register Student Data
+    @GetMapping("/getAllStudent")
+    public List<StudentRegDTO> getAllStudent(){
+        List<StudentRegDTO> studentRegDTO = studentService.getAllStuden();
+        return studentRegDTO;
     }
 
 }
