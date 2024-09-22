@@ -19,4 +19,7 @@ public interface StudentService {
 
     String updateStudent(StudentRegDTO studentRegDTO);
 
+
+    String deleteStudent(String studentRegNo);
+
 }

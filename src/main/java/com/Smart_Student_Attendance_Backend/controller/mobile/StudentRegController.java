@@ -56,9 +56,14 @@ public class StudentRegController {
         List<StudentRegDTO> studentRegDTO = studentService.getAllStuden();
         return studentRegDTO;
     }
-    @PutMapping("updateRegStudent")
+    @PutMapping("/updateRegStudent")
     public String updateStudent(@RequestBody StudentRegDTO studentRegDTO){
         String massage = studentService.updateStudent(studentRegDTO);
+        return massage;
+    }
+    @DeleteMapping(path = "/deleteRegStudent/{studentRegNo}")
+    public String deleteRegStudent(@PathVariable (value = "studentRegNo") String studentRegNo){
+        String massage = studentService.deleteStudent(studentRegNo);
         return massage;
     }
 
