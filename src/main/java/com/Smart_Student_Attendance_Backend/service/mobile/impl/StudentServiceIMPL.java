@@ -12,6 +12,8 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -78,6 +80,18 @@ public class StudentServiceIMPL implements StudentService {
             System.out.println(studentRegDTO);
             System.out.println(studentReg);
             return "Pleace Try Again";
+        }
+    }
+
+    @Override
+    @Transactional
+    public String deleteStudent(String studentRegNo) {
+        if(studentRegRepo.existsByStudentRegNoEquals(studentRegNo)){
+            studentRegRepo.deleteByStudentRegNoEquals(studentRegNo);
+            return "Sucssesful Delete Customer";
+        }
+        else{
+            throw new RuntimeException("No Data Found");
         }
     }
 }
