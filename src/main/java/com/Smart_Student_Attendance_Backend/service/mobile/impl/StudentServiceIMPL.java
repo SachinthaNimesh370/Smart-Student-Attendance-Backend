@@ -11,7 +11,6 @@ import com.Smart_Student_Attendance_Backend.service.mobile.StudentService;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
@@ -66,6 +65,19 @@ public class StudentServiceIMPL implements StudentService {
             return allStudent;
         }else {
             throw new RuntimeException("Error");
+        }
+    }
+
+    @Override
+    public String updateStudent(StudentRegDTO studentRegDTO) {
+        StudentReg studentReg = modelMapper.map(studentRegDTO,StudentReg.class);
+        if(studentRegRepo.existsByStudentRegNoEquals(studentReg.getStudentRegNo())){
+            studentRegRepo.save(studentReg);
+            return "Update Success";
+        }else {
+            System.out.println(studentRegDTO);
+            System.out.println(studentReg);
+            return "Pleace Try Again";
         }
     }
 }

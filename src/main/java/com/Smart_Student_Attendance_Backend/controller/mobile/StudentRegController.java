@@ -56,5 +56,10 @@ public class StudentRegController {
         List<StudentRegDTO> studentRegDTO = studentService.getAllStuden();
         return studentRegDTO;
     }
+    @PutMapping("updateRegStudent")
+    public String updateStudent(@RequestBody StudentRegDTO studentRegDTO){
+        String massage = studentService.updateStudent(studentRegDTO);
+        return massage;
+    }
 
 }
