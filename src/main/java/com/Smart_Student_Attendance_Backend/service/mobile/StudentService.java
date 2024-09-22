@@ -16,4 +16,7 @@ public interface StudentService {
 
     List<StudentRegDTO> getAllStuden();
 
+
+    String updateStudent(StudentRegDTO studentRegDTO);
+
 }
