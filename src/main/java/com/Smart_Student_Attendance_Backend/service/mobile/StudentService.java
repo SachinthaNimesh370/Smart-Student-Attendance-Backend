@@ -14,12 +14,14 @@ public interface StudentService {
 
     String attendMarkStudent(StudentAttendDTO studentAttendDTO);
 
-    List<StudentRegDTO> getAllStuden();
+    List<StudentRegDTO> getAllStudent();
 
 
     String updateStudent(StudentRegDTO studentRegDTO);
 
 
     String deleteStudent(String studentRegNo);
+
+    List<StudentAttendDTO> getAllStudentAttend();
 
 }
