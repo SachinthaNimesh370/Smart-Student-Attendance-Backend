@@ -36,6 +36,24 @@ public class StudentRegController {
         return massage;
 
     }
+
+    //Get All Register Student Data
+    @GetMapping("/getAllStudent")
+    public List<StudentRegDTO> getAllStudent(){
+        List<StudentRegDTO> studentRegDTO = studentService.getAllStudent();
+        return studentRegDTO;
+    }
+    @PutMapping("/updateRegStudent")
+    public String updateStudent(@RequestBody StudentRegDTO studentRegDTO){
+        String massage = studentService.updateStudent(studentRegDTO);
+        return massage;
+    }
+    @DeleteMapping(path = "/deleteRegStudent/{studentRegNo}")
+    public String deleteRegStudent(@PathVariable (value = "studentRegNo") String studentRegNo){
+        String massage = studentService.deleteStudent(studentRegNo);
+        return massage;
+    }
+
     //Student Attendance Mark
     @PostMapping("/attendMark")
     public String AttendMark(@RequestBody StudentAttendDTO studentAttendDTO){
@@ -50,21 +68,10 @@ public class StudentRegController {
         return massage;
     }
 
-    //Get All Register Student Data
-    @GetMapping("/getAllStudent")
-    public List<StudentRegDTO> getAllStudent(){
-        List<StudentRegDTO> studentRegDTO = studentService.getAllStuden();
-        return studentRegDTO;
-    }
-    @PutMapping("/updateRegStudent")
-    public String updateStudent(@RequestBody StudentRegDTO studentRegDTO){
-        String massage = studentService.updateStudent(studentRegDTO);
-        return massage;
-    }
-    @DeleteMapping(path = "/deleteRegStudent/{studentRegNo}")
-    public String deleteRegStudent(@PathVariable (value = "studentRegNo") String studentRegNo){
-        String massage = studentService.deleteStudent(studentRegNo);
-        return massage;
+    @GetMapping("/getAllAttendance")
+    public List<StudentAttendDTO> getAllStudentAttend(){
+        List<StudentAttendDTO> studentAttendDTO = studentService.getAllStudentAttend();
+        return studentAttendDTO;
     }
 
 }

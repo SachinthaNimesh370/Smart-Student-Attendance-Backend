@@ -60,7 +60,7 @@ public class StudentServiceIMPL implements StudentService {
     }
 
     @Override
-    public List<StudentRegDTO> getAllStuden() {
+    public List<StudentRegDTO> getAllStudent() {
         List<StudentReg> getAllStudent=studentRegRepo.findAll();
         if(!getAllStudent.isEmpty()){
             List<StudentRegDTO> allStudent = modelMapper.map(getAllStudent,new TypeToken<List<StudentRegDTO>>(){}.getType());
@@ -88,10 +88,22 @@ public class StudentServiceIMPL implements StudentService {
     public String deleteStudent(String studentRegNo) {
         if(studentRegRepo.existsByStudentRegNoEquals(studentRegNo)){
             studentRegRepo.deleteByStudentRegNoEquals(studentRegNo);
-            return "Sucssesful Delete Customer";
+            return "Sucssesful Delete Student";
         }
         else{
             throw new RuntimeException("No Data Found");
         }
+    }
+
+    @Override
+    public List<StudentAttendDTO> getAllStudentAttend() {
+        List<StudentAttend> getAllAttend=attendMarkStudentRepo.findAll();
+        if(!getAllAttend.isEmpty()){
+            List<StudentAttendDTO> getAllAttendance = modelMapper.map(getAllAttend,new TypeToken<List<StudentAttendDTO>>(){}.getType());
+            return getAllAttendance;
+        }else {
+            throw new RuntimeException("Error");
+        }
+
     }
 }
