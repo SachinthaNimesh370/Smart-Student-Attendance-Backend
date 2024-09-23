@@ -74,4 +74,13 @@ public class StudentRegController {
         return studentAttendDTO;
     }
 
+    @DeleteMapping(path = "/deleteAttendance/{studentRegNo}/{date}")
+    public String deleteAttendance(@PathVariable (value = "studentRegNo") String studentRegNo,
+                                   @PathVariable (value = "date") String date){
+        String massage = studentService.deleteAttendance(studentRegNo,date);
+        System.out.println(studentRegNo+" "+date);
+
+        return massage;
+    }
+
 }

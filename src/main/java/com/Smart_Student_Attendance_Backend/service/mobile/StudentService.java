@@ -24,4 +24,5 @@ public interface StudentService {
 
     List<StudentAttendDTO> getAllStudentAttend();
 
+    String deleteAttendance(String studentRegNo,String date);
 }

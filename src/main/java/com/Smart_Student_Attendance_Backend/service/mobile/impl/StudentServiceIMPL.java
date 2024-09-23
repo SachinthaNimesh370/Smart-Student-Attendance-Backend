@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
@@ -104,6 +106,30 @@ public class StudentServiceIMPL implements StudentService {
         }else {
             throw new RuntimeException("Error");
         }
+    }
+
+
+
+    @Override
+    @Transactional
+
+    public String deleteAttendance(String studentRegNo,String date) {
+        // Define a formatter that matches the format in the database
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+        // Parse the incoming date (from PathVariable) into a LocalDate object
+        LocalDate pathDate = LocalDate.parse(date, DateTimeFormatter.ISO_DATE); // Format from PathVariable (yyyy-MM-dd)
+        String formattedDate = pathDate.format(formatter);
+
+
+        if (attendMarkStudentRepo.existsByStudentRegNoEqualsAndDateEquals(studentRegNo,formattedDate)) {
+            attendMarkStudentRepo.deleteByStudentRegNoEqualsAndDateEquals(studentRegNo,formattedDate);
+            return "Successful Delete Attendance ";
+        } else {
+            System.out.println(attendMarkStudentRepo.findAll());
+            return " on date: " + studentRegNo;
+        }
 
     }
+
 }

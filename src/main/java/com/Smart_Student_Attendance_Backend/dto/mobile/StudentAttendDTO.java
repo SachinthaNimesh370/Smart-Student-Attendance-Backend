@@ -14,6 +14,4 @@ public class StudentAttendDTO {
     private String date;
     private ArrayList<Double> location;;
     private boolean attendance;
-
-
 }
