@@ -6,8 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface AttendMarkStudentRepo extends JpaRepository<StudentAttend,String> {
     boolean existsByStudentRegNoEquals(String studentRegNo);
-
-
-
+    boolean existsByStudentRegNoEqualsAndDateEquals(String studentRegNo, String date);
+    void deleteByStudentRegNoEqualsAndDateEquals(String studentRegNo,String date);
 
 }
