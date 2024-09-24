@@ -5,8 +5,10 @@ import com.Smart_Student_Attendance_Backend.dto.mobile.StudentRegDTO;
 import com.Smart_Student_Attendance_Backend.dto.mobile.StudentSignInDTO;
 import com.Smart_Student_Attendance_Backend.entity.mobile.StudentAttend;
 import com.Smart_Student_Attendance_Backend.entity.mobile.StudentReg;
+import com.Smart_Student_Attendance_Backend.entity.mobile.TotalAttend;
 import com.Smart_Student_Attendance_Backend.repo.mobile.AttendMarkStudentRepo;
 import com.Smart_Student_Attendance_Backend.repo.mobile.StudentRegRepo;
+import com.Smart_Student_Attendance_Backend.repo.mobile.TotalAttendRepo;
 import com.Smart_Student_Attendance_Backend.service.mobile.StudentService;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -17,6 +19,7 @@ import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -27,6 +30,9 @@ public class StudentServiceIMPL implements StudentService {
     private StudentRegRepo studentRegRepo;
     @Autowired
     private AttendMarkStudentRepo attendMarkStudentRepo;
+    @Autowired
+    private TotalAttendRepo totalAttendRepo;
+
 
     @Override
     public String saveStudent(StudentRegDTO studentRegDTO) {
@@ -133,7 +139,19 @@ public class StudentServiceIMPL implements StudentService {
 
     }
 
+    @Override
+    public String saveStudentHistory(String studentRegNo) {
+        // Create a new TotalAttend object with only the studentRegNo
+        TotalAttend totalAttend = new TotalAttend();
+        totalAttend.setStudentRegNo(studentRegNo);
+        totalAttend.setHistory(new ArrayList<>()); // Optionally initialize history as empty
 
+        // Save the entity
+        totalAttendRepo.save(totalAttend);
+
+        return "Student attendance record created with regNo: " + studentRegNo;// Create a new TotalAttend object with only the studentRegNo
+
+    }
 
 
 }

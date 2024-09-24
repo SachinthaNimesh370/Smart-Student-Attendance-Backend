@@ -23,6 +23,7 @@ public class StudentRegController {
         System.out.println("Student password "+ studentRegDTO.getStudentPassword());
         System.out.println("Active Status "+ studentRegDTO.isActivestatus());
         String massage=studentService.saveStudent(studentRegDTO);
+        String massageHistory=studentService.saveStudentHistory(studentRegDTO.getStudentRegNo());
         return massage;
     }
 
