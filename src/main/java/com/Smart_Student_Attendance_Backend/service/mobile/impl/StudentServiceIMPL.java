@@ -3,6 +3,7 @@ package com.Smart_Student_Attendance_Backend.service.mobile.impl;
 import com.Smart_Student_Attendance_Backend.dto.mobile.StudentAttendDTO;
 import com.Smart_Student_Attendance_Backend.dto.mobile.StudentRegDTO;
 import com.Smart_Student_Attendance_Backend.dto.mobile.StudentSignInDTO;
+import com.Smart_Student_Attendance_Backend.dto.mobile.TotalAttendDTO;
 import com.Smart_Student_Attendance_Backend.entity.mobile.StudentAttend;
 import com.Smart_Student_Attendance_Backend.entity.mobile.StudentReg;
 import com.Smart_Student_Attendance_Backend.entity.mobile.TotalAttend;
@@ -176,6 +177,17 @@ public class StudentServiceIMPL implements StudentService {
             System.out.println(studentAttendDTO);
             System.out.println(studentAttend);
             return "Please Try Again";
+        }
+    }
+
+    @Override
+    public List<TotalAttendDTO> getAllAcceptStudentAttend() {
+        List<TotalAttend> getAcceptAllAttend=totalAttendRepo.findAll();
+        if(!getAcceptAllAttend.isEmpty()){
+            List<TotalAttendDTO> totalAttendDTO = modelMapper.map(getAcceptAllAttend,new TypeToken<List<TotalAttendDTO>>(){}.getType());
+            return totalAttendDTO;
+        }else {
+            throw new RuntimeException("Error");
         }
     }
 

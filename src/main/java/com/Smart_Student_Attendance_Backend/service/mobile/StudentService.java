@@ -3,6 +3,7 @@ package com.Smart_Student_Attendance_Backend.service.mobile;
 import com.Smart_Student_Attendance_Backend.dto.mobile.StudentAttendDTO;
 import com.Smart_Student_Attendance_Backend.dto.mobile.StudentRegDTO;
 import com.Smart_Student_Attendance_Backend.dto.mobile.StudentSignInDTO;
+import com.Smart_Student_Attendance_Backend.dto.mobile.TotalAttendDTO;
 
 import java.util.List;
 
@@ -29,5 +30,7 @@ public interface StudentService {
     String saveStudentHistory(String studentRegNo);
 
     String acceptedAttendance(StudentAttendDTO studentAttendDTO);
+
+    List<TotalAttendDTO> getAllAcceptStudentAttend();
 
 }

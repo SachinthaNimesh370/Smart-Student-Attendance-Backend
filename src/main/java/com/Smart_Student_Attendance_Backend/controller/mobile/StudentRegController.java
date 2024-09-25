@@ -2,6 +2,7 @@ package com.Smart_Student_Attendance_Backend.controller.mobile;
 import com.Smart_Student_Attendance_Backend.dto.mobile.StudentAttendDTO;
 import com.Smart_Student_Attendance_Backend.dto.mobile.StudentRegDTO;
 import com.Smart_Student_Attendance_Backend.dto.mobile.StudentSignInDTO;
+import com.Smart_Student_Attendance_Backend.dto.mobile.TotalAttendDTO;
 import com.Smart_Student_Attendance_Backend.service.mobile.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -77,6 +78,12 @@ public class StudentRegController {
         String massage=studentService.acceptedAttendance(studentAttendDTO);
         System.out.println(studentAttendDTO);
         return massage;
+    }
+
+    @GetMapping("/getAllAcceptAttendance")
+    public List<TotalAttendDTO> getAllAcceptStudentAttend(){
+        List<TotalAttendDTO> totalAttendDTO = studentService.getAllAcceptStudentAttend();
+        return totalAttendDTO;
     }
 
 
