@@ -32,8 +32,6 @@ public class TotalAttend {
 
     @Type(type = "json")
     @Column(name = "history", columnDefinition = "json")
-    private ArrayList<Objects> history = new ArrayList<>();
-
-
+    private ArrayList<StudentAttend> history = new ArrayList<>();
 
 }

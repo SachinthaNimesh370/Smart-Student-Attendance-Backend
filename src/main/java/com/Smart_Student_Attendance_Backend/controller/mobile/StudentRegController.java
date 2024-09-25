@@ -63,11 +63,22 @@ public class StudentRegController {
         System.out.println("Date "+ studentAttendDTO.getDate());
         System.out.println("Location "+ studentAttendDTO.getLocation());
         System.out.println("Attendance "+ studentAttendDTO.isAttendance());
-
         String massage=studentService.attendMarkStudent(studentAttendDTO);
         System.out.println(studentAttendDTO);
         return massage;
     }
+    @PostMapping("/acceptedAttendance")
+    public String acceptedAttendance(@RequestBody StudentAttendDTO studentAttendDTO){
+        System.out.println("Reg No "+ studentAttendDTO.getStudentRegNo());
+        System.out.println("Time "+ studentAttendDTO.getTime());
+        System.out.println("Date "+ studentAttendDTO.getDate());
+        System.out.println("Location "+ studentAttendDTO.getLocation());
+        System.out.println("Attendance "+ studentAttendDTO.isAttendance());
+        String massage=studentService.acceptedAttendance(studentAttendDTO);
+        System.out.println(studentAttendDTO);
+        return massage;
+    }
+
 
     @GetMapping("/getAllAttendance")
     public List<StudentAttendDTO> getAllStudentAttend(){

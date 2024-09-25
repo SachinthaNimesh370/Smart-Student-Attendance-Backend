@@ -28,4 +28,6 @@ public interface StudentService {
 
     String saveStudentHistory(String studentRegNo);
 
+    String acceptedAttendance(StudentAttendDTO studentAttendDTO);
+
 }

@@ -153,5 +153,31 @@ public class StudentServiceIMPL implements StudentService {
 
     }
 
+    @Override
+    public String acceptedAttendance(StudentAttendDTO studentAttendDTO) {
+        // Convert DTO to entity object
+        StudentAttend studentAttend = modelMapper.map(studentAttendDTO, StudentAttend.class);
+
+        // Check if the student with the given registration number exists
+        if (totalAttendRepo.existsByStudentRegNoEquals(studentAttend.getStudentRegNo())) {
+
+            // Fetch the existing TotalAttend entity from the database
+            TotalAttend totalAttend = totalAttendRepo.findByStudentRegNo(studentAttend.getStudentRegNo());
+
+            // Add the new StudentAttend data to the history list
+            totalAttend.getHistory().add(studentAttend);
+
+            // Save the updated TotalAttend entity
+            totalAttendRepo.save(totalAttend);
+
+            return "Save Success";
+        } else {
+            // If studentRegNo does not exist, handle it
+            System.out.println(studentAttendDTO);
+            System.out.println(studentAttend);
+            return "Please Try Again";
+        }
+    }
+
 
 }
