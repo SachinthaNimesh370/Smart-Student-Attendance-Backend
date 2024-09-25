@@ -59,7 +59,7 @@ public class StudentServiceIMPL implements StudentService {
     @Override
     public String attendMarkStudent(StudentAttendDTO studentAttendDTO) {
         StudentAttend studentAttend = modelMapper.map(studentAttendDTO,StudentAttend.class);
-        if(!attendMarkStudentRepo.existsByStudentRegNoEquals(studentAttend.getStudentRegNo())){
+        if(!attendMarkStudentRepo.existsByStudentRegNoEqualsAndDateEquals(studentAttend.getStudentRegNo(),studentAttend.getDate())){
             attendMarkStudentRepo.save(studentAttend);
             return "Save Success";
         }else {
