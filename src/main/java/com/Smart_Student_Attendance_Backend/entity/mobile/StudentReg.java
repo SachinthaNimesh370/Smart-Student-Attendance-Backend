@@ -22,7 +22,7 @@ public class StudentReg {
     @Column(name = "student_password",length = 100,nullable = false)
     private String studentPassword;
 
-    @Column(name = "active_status",columnDefinition = "TINYINT default 1")
+    @Column(name = "active_status",columnDefinition = "TINYINT default 0")
     private boolean activestatus;
 
 }
