@@ -24,7 +24,7 @@ import java.util.ArrayList;
         @TypeDef(name = "json",typeClass = JsonType.class)
 })
 
-public class StudentAttend {
+public class StudentCurrentAttend {
     @Id
     @Column(name = "student_reg_no",length = 10,nullable = false)
     private String studentRegNo;

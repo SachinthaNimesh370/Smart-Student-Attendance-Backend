@@ -1,5 +1,5 @@
 package com.Smart_Student_Attendance_Backend.controller.mobile;
-import com.Smart_Student_Attendance_Backend.dto.mobile.StudentAttendDTO;
+import com.Smart_Student_Attendance_Backend.dto.mobile.StudentCurrentAttendDTO;
 import com.Smart_Student_Attendance_Backend.dto.mobile.StudentRegDTO;
 import com.Smart_Student_Attendance_Backend.dto.mobile.StudentSignInDTO;
 import com.Smart_Student_Attendance_Backend.dto.mobile.TotalAttendDTO;
@@ -24,8 +24,8 @@ public class StudentRegController {
         System.out.println("Student password "+ studentRegDTO.getStudentPassword());
         System.out.println("Active Status "+ studentRegDTO.isActivestatus());
         String massage=studentService.saveStudent(studentRegDTO);
-        String massageHistory=studentService.saveStudentHistory(studentRegDTO.getStudentRegNo());
-        return massage;
+//        String massageHistory=studentService.saveStudentHistory(studentRegDTO.getStudentRegNo());
+        return massage ;
     }
 
     //Student Sign IN
@@ -48,7 +48,8 @@ public class StudentRegController {
     @PutMapping("/updateRegStudent")
     public String updateStudent(@RequestBody StudentRegDTO studentRegDTO){
         String massage = studentService.updateStudent(studentRegDTO);
-        return massage;
+        String massageHistory=studentService.saveStudentHistory(studentRegDTO);
+        return massage+massageHistory;
     }
     @DeleteMapping(path = "/deleteRegStudent/{studentRegNo}")
     public String deleteRegStudent(@PathVariable (value = "studentRegNo") String studentRegNo){
@@ -58,7 +59,7 @@ public class StudentRegController {
 
     //Student Attendance Mark
     @PostMapping("/attendMark")
-    public String AttendMark(@RequestBody StudentAttendDTO studentAttendDTO){
+    public String AttendMark(@RequestBody StudentCurrentAttendDTO studentAttendDTO){
         System.out.println("Reg No "+ studentAttendDTO.getStudentRegNo());
         System.out.println("Time "+ studentAttendDTO.getTime());
         System.out.println("Date "+ studentAttendDTO.getDate());
@@ -69,7 +70,7 @@ public class StudentRegController {
         return massage;
     }
     @PostMapping("/acceptedAttendance")
-    public String acceptedAttendance(@RequestBody StudentAttendDTO studentAttendDTO){
+    public String acceptedAttendance(@RequestBody StudentCurrentAttendDTO studentAttendDTO){
         System.out.println("Reg No "+ studentAttendDTO.getStudentRegNo());
         System.out.println("Time "+ studentAttendDTO.getTime());
         System.out.println("Date "+ studentAttendDTO.getDate());
@@ -88,8 +89,8 @@ public class StudentRegController {
 
 
     @GetMapping("/getAllAttendance")
-    public List<StudentAttendDTO> getAllStudentAttend(){
-        List<StudentAttendDTO> studentAttendDTO = studentService.getAllStudentAttend();
+    public List<StudentCurrentAttendDTO> getAllStudentAttend(){
+        List<StudentCurrentAttendDTO> studentAttendDTO = studentService.getAllStudentAttend();
         return studentAttendDTO;
     }
 

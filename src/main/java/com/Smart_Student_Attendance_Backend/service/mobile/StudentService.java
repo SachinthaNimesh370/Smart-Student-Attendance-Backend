@@ -1,6 +1,6 @@
 package com.Smart_Student_Attendance_Backend.service.mobile;
 
-import com.Smart_Student_Attendance_Backend.dto.mobile.StudentAttendDTO;
+import com.Smart_Student_Attendance_Backend.dto.mobile.StudentCurrentAttendDTO;
 import com.Smart_Student_Attendance_Backend.dto.mobile.StudentRegDTO;
 import com.Smart_Student_Attendance_Backend.dto.mobile.StudentSignInDTO;
 import com.Smart_Student_Attendance_Backend.dto.mobile.TotalAttendDTO;
@@ -13,7 +13,7 @@ public interface StudentService {
 
     boolean signInService(StudentSignInDTO studentSignInDTO);
 
-    String attendMarkStudent(StudentAttendDTO studentAttendDTO);
+    String attendMarkStudent(StudentCurrentAttendDTO studentAttendDTO);
 
     List<StudentRegDTO> getAllStudent();
 
@@ -23,13 +23,13 @@ public interface StudentService {
 
     String deleteStudent(String studentRegNo);
 
-    List<StudentAttendDTO> getAllStudentAttend();
+    List<StudentCurrentAttendDTO> getAllStudentAttend();
 
     String deleteAttendance(String studentRegNo,String date);
 
-    String saveStudentHistory(String studentRegNo);
+    String saveStudentHistory(StudentRegDTO studentRegDTO);
 
-    String acceptedAttendance(StudentAttendDTO studentAttendDTO);
+    String acceptedAttendance(StudentCurrentAttendDTO studentAttendDTO);
 
     List<TotalAttendDTO> getAllAcceptStudentAttend();
 
