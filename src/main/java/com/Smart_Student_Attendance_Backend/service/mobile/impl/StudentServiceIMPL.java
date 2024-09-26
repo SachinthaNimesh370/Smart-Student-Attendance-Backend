@@ -1,10 +1,10 @@
 package com.Smart_Student_Attendance_Backend.service.mobile.impl;
 
-import com.Smart_Student_Attendance_Backend.dto.mobile.StudentAttendDTO;
+import com.Smart_Student_Attendance_Backend.dto.mobile.StudentCurrentAttendDTO;
 import com.Smart_Student_Attendance_Backend.dto.mobile.StudentRegDTO;
 import com.Smart_Student_Attendance_Backend.dto.mobile.StudentSignInDTO;
 import com.Smart_Student_Attendance_Backend.dto.mobile.TotalAttendDTO;
-import com.Smart_Student_Attendance_Backend.entity.mobile.StudentAttend;
+import com.Smart_Student_Attendance_Backend.entity.mobile.StudentCurrentAttend;
 import com.Smart_Student_Attendance_Backend.entity.mobile.StudentReg;
 import com.Smart_Student_Attendance_Backend.entity.mobile.TotalAttend;
 import com.Smart_Student_Attendance_Backend.repo.mobile.AttendMarkStudentRepo;
@@ -14,12 +14,12 @@ import com.Smart_Student_Attendance_Backend.service.mobile.StudentService;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,6 +33,8 @@ public class StudentServiceIMPL implements StudentService {
     private AttendMarkStudentRepo attendMarkStudentRepo;
     @Autowired
     private TotalAttendRepo totalAttendRepo;
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
 
     @Override
@@ -57,8 +59,8 @@ public class StudentServiceIMPL implements StudentService {
     }
 
     @Override
-    public String attendMarkStudent(StudentAttendDTO studentAttendDTO) {
-        StudentAttend studentAttend = modelMapper.map(studentAttendDTO,StudentAttend.class);
+    public String attendMarkStudent(StudentCurrentAttendDTO studentAttendDTO) {
+        StudentCurrentAttend studentAttend = modelMapper.map(studentAttendDTO, StudentCurrentAttend.class);
         if(!attendMarkStudentRepo.existsByStudentRegNoEqualsAndDateEquals(studentAttend.getStudentRegNo(),studentAttend.getDate())){
             attendMarkStudentRepo.save(studentAttend);
             return "Save Success";
@@ -106,10 +108,10 @@ public class StudentServiceIMPL implements StudentService {
     }
 
     @Override
-    public List<StudentAttendDTO> getAllStudentAttend() {
-        List<StudentAttend> getAllAttend=attendMarkStudentRepo.findAll();
+    public List<StudentCurrentAttendDTO> getAllStudentAttend() {
+        List<StudentCurrentAttend> getAllAttend=attendMarkStudentRepo.findAll();
         if(!getAllAttend.isEmpty()){
-            List<StudentAttendDTO> getAllAttendance = modelMapper.map(getAllAttend,new TypeToken<List<StudentAttendDTO>>(){}.getType());
+            List<StudentCurrentAttendDTO> getAllAttendance = modelMapper.map(getAllAttend,new TypeToken<List<StudentCurrentAttendDTO>>(){}.getType());
             return getAllAttendance;
         }else {
             throw new RuntimeException("Error");
@@ -141,23 +143,26 @@ public class StudentServiceIMPL implements StudentService {
     }
 
     @Override
-    public String saveStudentHistory(String studentRegNo) {
+    public String saveStudentHistory(StudentRegDTO studentRegDTO) {
         // Create a new TotalAttend object with only the studentRegNo
         TotalAttend totalAttend = new TotalAttend();
-        totalAttend.setStudentRegNo(studentRegNo);
+        totalAttend.setStudentRegNo(studentRegDTO.getStudentRegNo());
         totalAttend.setHistory(new ArrayList<>()); // Optionally initialize history as empty
-
-        // Save the entity
-        totalAttendRepo.save(totalAttend);
-
-        return "Student attendance record created with regNo: " + studentRegNo;// Create a new TotalAttend object with only the studentRegNo
+        if(studentRegDTO.isActivestatus()){
+            // Save the entity
+            totalAttendRepo.save(totalAttend);
+            return "Student attendance record created with regNo: " + studentRegDTO.getStudentRegNo();// Create a new TotalAttend object with only the studentRegNo
+        }else{
+            System.out.println("Not Active Student ");
+            return "Not Active Student " ;
+        }
 
     }
 
     @Override
-    public String acceptedAttendance(StudentAttendDTO studentAttendDTO) {
+    public String acceptedAttendance(StudentCurrentAttendDTO studentAttendDTO) {
         // Convert DTO to entity object
-        StudentAttend studentAttend = modelMapper.map(studentAttendDTO, StudentAttend.class);
+        StudentCurrentAttend studentAttend = modelMapper.map(studentAttendDTO, StudentCurrentAttend.class);
 
         // Check if the student with the given registration number exists
         if (totalAttendRepo.existsByStudentRegNoEquals(studentAttend.getStudentRegNo())) {
@@ -189,6 +194,13 @@ public class StudentServiceIMPL implements StudentService {
         }else {
             throw new RuntimeException("Error");
         }
+    }
+
+    @Override
+    public void addColumnToSummery(String columnName) {
+        String sql = String.format("ALTER TABLE summery ADD COLUMN %s BOOLEAN DEFAULT false", columnName);
+        jdbcTemplate.execute(sql);
+
     }
 
 

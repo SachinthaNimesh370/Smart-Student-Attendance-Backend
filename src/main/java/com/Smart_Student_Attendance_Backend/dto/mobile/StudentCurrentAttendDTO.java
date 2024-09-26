@@ -8,7 +8,7 @@ import java.util.ArrayList;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class StudentAttendDTO {
+public class StudentCurrentAttendDTO {
     private String studentRegNo;
     private String time;
     private String date;

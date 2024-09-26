@@ -14,7 +14,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.util.ArrayList;
-import java.util.Objects;
 
 @Entity
 @Table(name = "total_attendance")
@@ -32,6 +31,6 @@ public class TotalAttend {
 
     @Type(type = "json")
     @Column(name = "history", columnDefinition = "json")
-    private ArrayList<StudentAttend> history = new ArrayList<>();
+    private ArrayList<StudentCurrentAttend> history = new ArrayList<>();
 
 }
