@@ -33,4 +33,7 @@ public interface StudentService {
 
     List<TotalAttendDTO> getAllAcceptStudentAttend();
 
+    void addColumnToSummery(String columnName);
+
+
 }

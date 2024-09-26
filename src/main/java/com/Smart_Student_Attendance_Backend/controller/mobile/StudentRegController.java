@@ -103,4 +103,10 @@ public class StudentRegController {
         return massage;
     }
 
+    @PostMapping("/addColumn")
+    public String addColumn(@RequestParam String columnName) {
+        studentService.addColumnToSummery(columnName);
+        return "Column added successfully!";
+    }
+
 }

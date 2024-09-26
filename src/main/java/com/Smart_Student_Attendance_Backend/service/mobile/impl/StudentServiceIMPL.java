@@ -14,6 +14,7 @@ import com.Smart_Student_Attendance_Backend.service.mobile.StudentService;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -33,6 +34,8 @@ public class StudentServiceIMPL implements StudentService {
     private AttendMarkStudentRepo attendMarkStudentRepo;
     @Autowired
     private TotalAttendRepo totalAttendRepo;
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
 
     @Override
@@ -189,6 +192,13 @@ public class StudentServiceIMPL implements StudentService {
         }else {
             throw new RuntimeException("Error");
         }
+    }
+
+    @Override
+    public void addColumnToSummery(String columnName) {
+        String sql = String.format("ALTER TABLE summery ADD COLUMN %s BOOLEAN DEFAULT false", columnName);
+        jdbcTemplate.execute(sql);
+
     }
 
 
