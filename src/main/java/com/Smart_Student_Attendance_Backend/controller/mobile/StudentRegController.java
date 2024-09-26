@@ -104,10 +104,22 @@ public class StudentRegController {
         return massage;
     }
 
-    @PostMapping("/addColumn")
-    public String addColumn(@RequestParam String columnName) {
-        studentService.addColumnToSummery(columnName);
-        return "Column added successfully!";
-    }
+//    @PostMapping("/addColumn")
+//    public String addColumn(@RequestParam String columnName) {
+//        // Replace slashes with underscores to create a valid column name
+//        String sanitizedColumnName = columnName.replace("/", "_");
+//
+//        // Pass the sanitized column name to the service
+//        studentService.addColumnToSummery(sanitizedColumnName);
+//
+//        return "Column added successfully!";
+//    }
+@PostMapping("/addColumn")
+public String addColumn(@RequestParam String columnName) {
+    // Pass the raw column name with slashes to the service layer
+    studentService.addColumnToSummery(columnName);
+    return "Column added successfully!";
+}
+
 
 }

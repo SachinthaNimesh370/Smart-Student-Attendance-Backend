@@ -196,12 +196,20 @@ public class StudentServiceIMPL implements StudentService {
         }
     }
 
-    @Override
-    public void addColumnToSummery(String columnName) {
-        String sql = String.format("ALTER TABLE summery ADD COLUMN %s BOOLEAN DEFAULT false", columnName);
-        jdbcTemplate.execute(sql);
+//    @Override
+//    public void addColumnToSummery(String columnName) {
+//        String sql = String.format("ALTER TABLE summery ADD COLUMN %s BOOLEAN DEFAULT false", columnName);
+//        jdbcTemplate.execute(sql);
+//
+//    }
+@Override
+public void addColumnToSummery(String columnName) {
+    // Escape the column name by wrapping it with backticks (`) for MySQL
+    String sql = "ALTER TABLE summery ADD COLUMN `" + columnName + "` VARCHAR(255)";
 
-    }
+    // Execute the SQL query using your JdbcTemplate or any other query execution method
+    jdbcTemplate.execute(sql);
+}
 
 
 }
