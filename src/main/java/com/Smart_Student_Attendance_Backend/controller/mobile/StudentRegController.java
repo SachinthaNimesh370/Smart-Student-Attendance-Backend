@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("api/v1/student")
@@ -49,7 +50,8 @@ public class StudentRegController {
     public String updateStudent(@RequestBody StudentRegDTO studentRegDTO){
         String massage = studentService.updateStudent(studentRegDTO);
         String massageHistory=studentService.saveStudentHistory(studentRegDTO);
-        return massage+massageHistory;
+        String massageSummery=studentService.saveStudentSummery(studentRegDTO);
+        return massage+massageHistory+massageSummery;
     }
     @DeleteMapping(path = "/deleteRegStudent/{studentRegNo}")
     public String deleteRegStudent(@PathVariable (value = "studentRegNo") String studentRegNo){
@@ -104,22 +106,17 @@ public class StudentRegController {
         return massage;
     }
 
-//    @PostMapping("/addColumn")
-//    public String addColumn(@RequestParam String columnName) {
-//        // Replace slashes with underscores to create a valid column name
-//        String sanitizedColumnName = columnName.replace("/", "_");
-//
-//        // Pass the sanitized column name to the service
-//        studentService.addColumnToSummery(sanitizedColumnName);
-//
-//        return "Column added successfully!";
-//    }
-@PostMapping("/addColumn")
-public String addColumn(@RequestParam String columnName) {
-    // Pass the raw column name with slashes to the service layer
-    studentService.addColumnToSummery(columnName);
-    return "Column added successfully!";
-}
+    @PostMapping("/addColumn")
+    public String addColumn(@RequestParam String columnName) {
+        // Pass the raw column name with slashes to the service layer
+        studentService.addColumnToSummery(columnName);
+        return "Column added successfully!";
+    }
+
+    @GetMapping("/getAllSummeryData")
+    public List<Map<String, Object>> getAllSummeryData() {
+        return studentService.getAllSummeryData(); // Fetch data from the service
+    }
 
 
 }

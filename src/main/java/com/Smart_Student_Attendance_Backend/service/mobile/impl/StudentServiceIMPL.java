@@ -6,9 +6,11 @@ import com.Smart_Student_Attendance_Backend.dto.mobile.StudentSignInDTO;
 import com.Smart_Student_Attendance_Backend.dto.mobile.TotalAttendDTO;
 import com.Smart_Student_Attendance_Backend.entity.mobile.StudentCurrentAttend;
 import com.Smart_Student_Attendance_Backend.entity.mobile.StudentReg;
+import com.Smart_Student_Attendance_Backend.entity.mobile.Summery;
 import com.Smart_Student_Attendance_Backend.entity.mobile.TotalAttend;
 import com.Smart_Student_Attendance_Backend.repo.mobile.AttendMarkStudentRepo;
 import com.Smart_Student_Attendance_Backend.repo.mobile.StudentRegRepo;
+import com.Smart_Student_Attendance_Backend.repo.mobile.SummeryRepo;
 import com.Smart_Student_Attendance_Backend.repo.mobile.TotalAttendRepo;
 import com.Smart_Student_Attendance_Backend.service.mobile.StudentService;
 import org.modelmapper.ModelMapper;
@@ -23,6 +25,15 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Service;
+import org.springframework.jdbc.core.RowMapper;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Map;
+
 @Service
 public class StudentServiceIMPL implements StudentService {
     @Autowired
@@ -35,6 +46,15 @@ public class StudentServiceIMPL implements StudentService {
     private TotalAttendRepo totalAttendRepo;
     @Autowired
     private JdbcTemplate jdbcTemplate;
+    @Autowired
+    private SummeryRepo summeryRepo;
+
+    public StudentServiceIMPL(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
+
+
+
 
 
     @Override
@@ -196,20 +216,38 @@ public class StudentServiceIMPL implements StudentService {
         }
     }
 
-//    @Override
-//    public void addColumnToSummery(String columnName) {
-//        String sql = String.format("ALTER TABLE summery ADD COLUMN %s BOOLEAN DEFAULT false", columnName);
-//        jdbcTemplate.execute(sql);
-//
-//    }
-@Override
-public void addColumnToSummery(String columnName) {
-    // Escape the column name by wrapping it with backticks (`) for MySQL
-    String sql = "ALTER TABLE summery ADD COLUMN `" + columnName + "` VARCHAR(255)";
 
-    // Execute the SQL query using your JdbcTemplate or any other query execution method
-    jdbcTemplate.execute(sql);
-}
+        @Override
+        public void addColumnToSummery(String columnName) {
+            // Escape the column name by wrapping it with backticks (`) for MySQL
+            String sql = "ALTER TABLE summery ADD COLUMN `" + columnName + "` VARCHAR(255)";
+
+            // Execute the SQL query using your JdbcTemplate or any other query execution method
+            jdbcTemplate.execute(sql);
+        }
+
+        @Override
+        // Method to fetch all data from the summery table dynamically
+        public List<Map<String, Object>> getAllSummeryData() {
+            String sql = "SELECT * FROM summery"; // Query to select all data
+            return jdbcTemplate.queryForList(sql); // Returns a list of maps where each map represents a row
+        }
+
+    @Override
+    public String saveStudentSummery(StudentRegDTO studentRegDTO) {
+        // Create a new TotalAttend object with only the studentRegNo
+        Summery summery = new Summery();
+        summery.setStudentRegNo(studentRegDTO.getStudentRegNo());
+
+        if(studentRegDTO.isActivestatus()){
+            // Save the entity
+            summeryRepo.save(summery);
+            return "Student attendance record created with regNo: " + summery;// Create a new TotalAttend object with only the studentRegNo
+        }else{
+            System.out.println("Not Active Student ");
+            return "Not Active Student " ;
+        }
+    }
 
 
 }

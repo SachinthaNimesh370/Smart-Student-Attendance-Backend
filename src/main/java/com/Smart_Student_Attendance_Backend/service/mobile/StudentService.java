@@ -4,8 +4,10 @@ import com.Smart_Student_Attendance_Backend.dto.mobile.StudentCurrentAttendDTO;
 import com.Smart_Student_Attendance_Backend.dto.mobile.StudentRegDTO;
 import com.Smart_Student_Attendance_Backend.dto.mobile.StudentSignInDTO;
 import com.Smart_Student_Attendance_Backend.dto.mobile.TotalAttendDTO;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.List;
+import java.util.Map;
 
 public interface StudentService {
 
@@ -34,6 +36,7 @@ public interface StudentService {
     List<TotalAttendDTO> getAllAcceptStudentAttend();
 
     void addColumnToSummery(String columnName);
+    public List<Map<String, Object>> getAllSummeryData();
 
-
+    String saveStudentSummery(StudentRegDTO studentRegDTO);
 }
