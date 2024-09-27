@@ -284,6 +284,14 @@ public class StudentServiceIMPL implements StudentService {
         }
     }
 
+    @Override
+    public List<Map<String, Object>> getAttendSummeryData(String regNo) {
+        // SQL query to select all data where student_reg_no matches the provided regNo
+        String sql = "SELECT * FROM summery WHERE student_reg_no = ?";
+
+        // Execute the query and pass the regNo as a parameter
+        return jdbcTemplate.queryForList(sql, regNo);
+    }
 
 
 }

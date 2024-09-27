@@ -3,6 +3,7 @@ import com.Smart_Student_Attendance_Backend.dto.mobile.StudentCurrentAttendDTO;
 import com.Smart_Student_Attendance_Backend.dto.mobile.StudentRegDTO;
 import com.Smart_Student_Attendance_Backend.dto.mobile.StudentSignInDTO;
 import com.Smart_Student_Attendance_Backend.dto.mobile.TotalAttendDTO;
+import com.Smart_Student_Attendance_Backend.entity.mobile.Summery;
 import com.Smart_Student_Attendance_Backend.service.mobile.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -118,6 +119,13 @@ public class StudentRegController {
     @GetMapping("/getAllSummeryData")
     public List<Map<String, Object>> getAllSummeryData() {
         return studentService.getAllSummeryData(); // Fetch data from the service
+    }
+//    mobile app get data
+    @GetMapping("/getAttendanceByRegNo/{regNo}")
+    public List<Map<String, Object>> getAttendanceByRegNo(@PathVariable String regNo) {
+        List<Map<String, Object>> massage=studentService.getAttendSummeryData(regNo);
+        return massage; // Fetch data from the service
+
     }
 
 
