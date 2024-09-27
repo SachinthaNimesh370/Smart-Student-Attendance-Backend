@@ -39,4 +39,7 @@ public interface StudentService {
     public List<Map<String, Object>> getAllSummeryData();
 
     String saveStudentSummery(StudentRegDTO studentRegDTO);
+
+    String markAttendInSummery(StudentCurrentAttendDTO studentcurrentAttendDTO);
+
 }
