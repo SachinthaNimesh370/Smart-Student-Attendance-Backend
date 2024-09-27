@@ -217,21 +217,21 @@ public class StudentServiceIMPL implements StudentService {
     }
 
 
-        @Override
-        public void addColumnToSummery(String columnName) {
-            // Escape the column name by wrapping it with backticks (`) for MySQL
-            String sql = "ALTER TABLE summery ADD COLUMN `" + columnName + "` VARCHAR(255)";
+    @Override
+    public void addColumnToSummery(String columnName) {
+        // Escape the column name by wrapping it with backticks (`) for MySQL
+        String sql = "ALTER TABLE summery ADD COLUMN `" + columnName + "` VARCHAR(255)";
 
-            // Execute the SQL query using your JdbcTemplate or any other query execution method
-            jdbcTemplate.execute(sql);
-        }
+        // Execute the SQL query using your JdbcTemplate or any other query execution method
+        jdbcTemplate.execute(sql);
+    }
 
-        @Override
-        // Method to fetch all data from the summery table dynamically
-        public List<Map<String, Object>> getAllSummeryData() {
-            String sql = "SELECT * FROM summery"; // Query to select all data
-            return jdbcTemplate.queryForList(sql); // Returns a list of maps where each map represents a row
-        }
+    @Override
+    // Method to fetch all data from the summery table dynamically
+    public List<Map<String, Object>> getAllSummeryData() {
+        String sql = "SELECT * FROM summery"; // Query to select all data
+        return jdbcTemplate.queryForList(sql); // Returns a list of maps where each map represents a row
+    }
 
     @Override
     public String saveStudentSummery(StudentRegDTO studentRegDTO) {
@@ -248,6 +248,42 @@ public class StudentServiceIMPL implements StudentService {
             return "Not Active Student " ;
         }
     }
+
+    @Override
+    public String markAttendInSummery(StudentCurrentAttendDTO studentCurrentAttendDTO) {
+        String regNo = studentCurrentAttendDTO.getStudentRegNo();
+        String date = studentCurrentAttendDTO.getDate();
+        boolean attendance = true;
+
+        System.out.println("Processing attendance: RegNo = " + regNo + ", Date = " + date + ", Attendance = " + attendance);
+
+        try {
+            // Check if the column for the given date exists
+            String checkColumnSql = "SELECT column_name FROM information_schema.columns WHERE table_name = 'summery' AND column_name = ?";
+            List<String> columns = jdbcTemplate.queryForList(checkColumnSql, new Object[]{date}, String.class);
+
+            // If the column does not exist, add it
+            if (columns.isEmpty()) {
+                String addColumnSql = "ALTER TABLE summery ADD COLUMN `" + date + "` BOOLEAN";
+                jdbcTemplate.execute(addColumnSql);
+            }
+
+            // Update the attendance for the student on the specified date
+            String updateSql = "UPDATE summery SET `" + date + "` = ? WHERE student_reg_no = ?";
+            int rowsAffected = jdbcTemplate.update(updateSql, attendance, regNo);
+
+            // Return appropriate message based on update result
+            if (rowsAffected > 0) {
+                return "Attendance marked successfully for " + regNo + " on " + date.replace("_", "/");
+            } else {
+                return "Failed to mark attendance. Student with RegNo " + regNo + " not found.";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Error occurred while marking attendance: " + e.getMessage();
+        }
+    }
+
 
 
 }

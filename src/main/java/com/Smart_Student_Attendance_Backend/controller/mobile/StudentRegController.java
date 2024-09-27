@@ -49,6 +49,7 @@ public class StudentRegController {
     @PutMapping("/updateRegStudent")
     public String updateStudent(@RequestBody StudentRegDTO studentRegDTO){
         String massage = studentService.updateStudent(studentRegDTO);
+//      Registation number only add both column in table
         String massageHistory=studentService.saveStudentHistory(studentRegDTO);
         String massageSummery=studentService.saveStudentSummery(studentRegDTO);
         return massage+massageHistory+massageSummery;
@@ -79,8 +80,9 @@ public class StudentRegController {
         System.out.println("Location "+ studentAttendDTO.getLocation());
         System.out.println("Attendance "+ studentAttendDTO.isAttendance());
         String massage=studentService.acceptedAttendance(studentAttendDTO);
+        String massageSummery=studentService.markAttendInSummery(studentAttendDTO);
         System.out.println(studentAttendDTO);
-        return massage;
+        return massage+massageSummery;
     }
 
     @GetMapping("/getAllAcceptAttendance")
