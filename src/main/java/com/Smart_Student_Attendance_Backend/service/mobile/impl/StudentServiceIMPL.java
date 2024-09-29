@@ -227,6 +227,15 @@ public class StudentServiceIMPL implements StudentService {
     }
 
     @Override
+    public void deleteColumnFromSummery(String columnName) {
+        // Escape the column name by wrapping it with backticks (`) for MySQL
+        String sql = "ALTER TABLE summery DROP COLUMN `" + columnName + "`";
+
+        // Execute the SQL query using your JdbcTemplate or any other query execution method
+        jdbcTemplate.execute(sql);
+    }
+
+    @Override
     // Method to fetch all data from the summery table dynamically
     public List<Map<String, Object>> getAllSummeryData() {
         String sql = "SELECT * FROM summery"; // Query to select all data
@@ -292,6 +301,8 @@ public class StudentServiceIMPL implements StudentService {
         // Execute the query and pass the regNo as a parameter
         return jdbcTemplate.queryForList(sql, regNo);
     }
+
+
 
 
 }

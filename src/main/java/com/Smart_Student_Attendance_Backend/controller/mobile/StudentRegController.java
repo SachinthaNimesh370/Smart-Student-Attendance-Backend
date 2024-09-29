@@ -116,6 +116,13 @@ public class StudentRegController {
         return "Column added successfully!";
     }
 
+    @PostMapping("/deleteColumn")
+    public String deleteColumn(@RequestParam String columnName) {
+        // Pass the raw column name with slashes to the service layer
+        studentService.deleteColumnFromSummery(columnName);
+        return "Column deleted successfully!";
+    }
+
     @GetMapping("/getAllSummeryData")
     public List<Map<String, Object>> getAllSummeryData() {
         return studentService.getAllSummeryData(); // Fetch data from the service
