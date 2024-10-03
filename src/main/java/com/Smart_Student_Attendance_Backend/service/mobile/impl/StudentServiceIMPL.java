@@ -305,8 +305,11 @@ public class StudentServiceIMPL implements StudentService {
 
     @Override
     public List<Map<String, Object>> getAttendanceCountsDayByDay() {
-        // Fetch all columns from the summery table dynamically
-        String sqlColumns = "SELECT column_name FROM information_schema.columns WHERE table_name = 'summery' AND column_name != 'student_reg_no'";
+        // Fetch all columns from the summery table dynamically in the order they are defined
+        String sqlColumns = "SELECT column_name FROM information_schema.columns "
+                + "WHERE table_name = 'summery' AND column_name != 'student_reg_no' "
+                + "ORDER BY ordinal_position";  // This ensures the columns are retrieved in their original order
+
         List<String> columns = jdbcTemplate.queryForList(sqlColumns, String.class);
 
         List<Map<String, Object>> attendanceCounts = new ArrayList<>();
@@ -320,18 +323,19 @@ public class StudentServiceIMPL implements StudentService {
 
             Map<String, Object> countResult = jdbcTemplate.queryForMap(countSql);
 
-            // Store results for this column
+            // Store results for this column in a map
             Map<String, Object> resultMap = new HashMap<>();
             resultMap.put("columnName", column);
             resultMap.put("totalCount", countResult.get("totalCount"));
             resultMap.put("presentCount", countResult.get("presentCount"));
             resultMap.put("absentCount", countResult.get("absentCount"));
 
-            attendanceCounts.add(resultMap);
+            attendanceCounts.add(resultMap); // Add the result to the list
         }
 
-        return attendanceCounts; // Return the list of attendance counts
+        return attendanceCounts; // Return the list of attendance counts in the correct order
     }
+
 
 
 
