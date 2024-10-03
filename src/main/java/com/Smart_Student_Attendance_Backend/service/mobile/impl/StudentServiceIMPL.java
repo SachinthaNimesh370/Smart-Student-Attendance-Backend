@@ -218,21 +218,23 @@ public class StudentServiceIMPL implements StudentService {
 
 
     @Override
-    public void addColumnToSummery(String columnName) {
+    public String addColumnToSummery(String columnName) {
         // Escape the column name by wrapping it with backticks (`) for MySQL
         String sql = "ALTER TABLE summery ADD COLUMN `" + columnName + "` VARCHAR(255)";
 
         // Execute the SQL query using your JdbcTemplate or any other query execution method
         jdbcTemplate.execute(sql);
+        return "Created Column";
     }
 
     @Override
-    public void deleteColumnFromSummery(String columnName) {
+    public String deleteColumnFromSummery(String columnName) {
         // Escape the column name by wrapping it with backticks (`) for MySQL
         String sql = "ALTER TABLE summery DROP COLUMN `" + columnName + "`";
 
         // Execute the SQL query using your JdbcTemplate or any other query execution method
         jdbcTemplate.execute(sql);
+        return "Deleted";
     }
 
     @Override

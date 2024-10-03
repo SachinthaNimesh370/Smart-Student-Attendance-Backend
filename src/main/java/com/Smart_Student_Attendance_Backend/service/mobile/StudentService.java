@@ -36,9 +36,9 @@ public interface StudentService {
 
     List<TotalAttendDTO> getAllAcceptStudentAttend();
 
-    void addColumnToSummery(String columnName);
+    String addColumnToSummery(String columnName);
 
-    void deleteColumnFromSummery(String columnName);
+    String deleteColumnFromSummery(String columnName);
     public List<Map<String, Object>> getAllSummeryData();
 
     String saveStudentSummery(StudentRegDTO studentRegDTO);
