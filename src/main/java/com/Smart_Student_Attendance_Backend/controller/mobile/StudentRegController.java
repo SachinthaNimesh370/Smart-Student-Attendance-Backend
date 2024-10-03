@@ -185,5 +185,13 @@ public class StudentRegController {
 
     }
 
+    @GetMapping("/dayByDayCounts")
+    public ResponseEntity<List<Map<String, Object>>> getAttendanceCountsDayByDay() {
+        List<Map<String, Object>> attendanceCounts = studentService.getAttendanceCountsDayByDay();
+        return ResponseEntity.ok(attendanceCounts);
+    }
+
+
+
 
 }
