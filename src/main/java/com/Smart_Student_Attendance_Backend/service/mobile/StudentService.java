@@ -47,6 +47,8 @@ public interface StudentService {
 
     List<Map<String, Object>> getAttendSummeryData(String regNo);
 
+    List<Map<String, Object>> getAttendanceCountsDayByDay();
+
 
 
 

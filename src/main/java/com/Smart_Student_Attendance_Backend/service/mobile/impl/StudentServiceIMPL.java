@@ -22,8 +22,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
@@ -32,7 +31,6 @@ import org.springframework.jdbc.core.RowMapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class StudentServiceIMPL implements StudentService {
@@ -303,6 +301,41 @@ public class StudentServiceIMPL implements StudentService {
         // Execute the query and pass the regNo as a parameter
         return jdbcTemplate.queryForList(sql, regNo);
     }
+
+
+    @Override
+    public List<Map<String, Object>> getAttendanceCountsDayByDay() {
+        // Fetch all columns from the summery table dynamically
+        String sqlColumns = "SELECT column_name FROM information_schema.columns WHERE table_name = 'summery' AND column_name != 'student_reg_no'";
+        List<String> columns = jdbcTemplate.queryForList(sqlColumns, String.class);
+
+        List<Map<String, Object>> attendanceCounts = new ArrayList<>();
+
+        // Iterate through each column to count `1` and `null`
+        for (String column : columns) {
+            String countSql = "SELECT COUNT(*) AS totalCount, "
+                    + "SUM(CASE WHEN `" + column + "` = 1 THEN 1 ELSE 0 END) AS presentCount, "
+                    + "SUM(CASE WHEN `" + column + "` IS NULL THEN 1 ELSE 0 END) AS absentCount "
+                    + "FROM summery";
+
+            Map<String, Object> countResult = jdbcTemplate.queryForMap(countSql);
+
+            // Store results for this column
+            Map<String, Object> resultMap = new HashMap<>();
+            resultMap.put("columnName", column);
+            resultMap.put("totalCount", countResult.get("totalCount"));
+            resultMap.put("presentCount", countResult.get("presentCount"));
+            resultMap.put("absentCount", countResult.get("absentCount"));
+
+            attendanceCounts.add(resultMap);
+        }
+
+        return attendanceCounts; // Return the list of attendance counts
+    }
+
+
+
+
 
 
 
