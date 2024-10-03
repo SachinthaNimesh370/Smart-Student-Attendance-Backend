@@ -5,7 +5,10 @@ import com.Smart_Student_Attendance_Backend.dto.mobile.StudentSignInDTO;
 import com.Smart_Student_Attendance_Backend.dto.mobile.TotalAttendDTO;
 import com.Smart_Student_Attendance_Backend.entity.mobile.Summery;
 import com.Smart_Student_Attendance_Backend.service.mobile.StudentService;
+import com.Smart_Student_Attendance_Backend.utill.StandardResponce;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,118 +23,165 @@ public class StudentRegController {
 
     //Student Registation
     @PostMapping("/signUp")
-    public String SaveStudent(@RequestBody StudentRegDTO studentRegDTO){
+    public ResponseEntity<StandardResponce> SaveStudent(@RequestBody StudentRegDTO studentRegDTO){
         System.out.println("Reg No "+ studentRegDTO.getStudentRegNo());
         System.out.println("Email "+ studentRegDTO.getStudentEmail());
         System.out.println("Student password "+ studentRegDTO.getStudentPassword());
         System.out.println("Active Status "+ studentRegDTO.isActivestatus());
         String massage=studentService.saveStudent(studentRegDTO);
 //        String massageHistory=studentService.saveStudentHistory(studentRegDTO.getStudentRegNo());
-        return massage ;
+        ResponseEntity<StandardResponce> response=
+                new ResponseEntity<StandardResponce>(
+                        new StandardResponce(201,"Save",massage)
+                        , HttpStatus.CREATED);
+        return response;
     }
 
     //Student Sign IN
     @PostMapping("/signIn")
-    public boolean SignIn(@RequestBody StudentSignInDTO studentSignInDTO){
+    public ResponseEntity<StandardResponce> SignIn(@RequestBody StudentSignInDTO studentSignInDTO){
         System.out.println("Reg No "+ studentSignInDTO.getStudentRegNo());
         System.out.println("Student password "+ studentSignInDTO.getStudentPassword());
         boolean massage=studentService.signInService(studentSignInDTO);
 
-        return massage;
+        ResponseEntity<StandardResponce> response=
+                new ResponseEntity<StandardResponce>(
+                        new StandardResponce(200,"Success",massage)
+                        ,HttpStatus.OK);
+        return response;
 
     }
 
     //Get All Register Student Data
     @GetMapping("/getAllStudent")
-    public List<StudentRegDTO> getAllStudent(){
+    public ResponseEntity<StandardResponce> getAllStudent(){
         List<StudentRegDTO> studentRegDTO = studentService.getAllStudent();
-        return studentRegDTO;
+        ResponseEntity<StandardResponce> response=
+                new ResponseEntity<StandardResponce>(
+                        new StandardResponce(200,"OK",studentRegDTO)
+                        ,HttpStatus.OK);
+        return response;
     }
+//    ==========================================================================================================
     @PutMapping("/updateRegStudent")
-    public String updateStudent(@RequestBody StudentRegDTO studentRegDTO){
+    public ResponseEntity<StandardResponce> updateStudent(@RequestBody StudentRegDTO studentRegDTO){
         String massage = studentService.updateStudent(studentRegDTO);
 //      Registation number only add both column in table
         String massageHistory=studentService.saveStudentHistory(studentRegDTO);
         String massageSummery=studentService.saveStudentSummery(studentRegDTO);
-        return massage+massageHistory+massageSummery;
+        ResponseEntity<StandardResponce> response=
+                new ResponseEntity<StandardResponce>(
+                        new StandardResponce(201,"Updated",massageHistory+massageSummery)
+                        ,HttpStatus.CREATED);
+        return response;
     }
+//    ================================================================================================================
     @DeleteMapping(path = "/deleteRegStudent/{studentRegNo}")
-    public String deleteRegStudent(@PathVariable (value = "studentRegNo") String studentRegNo){
+    public ResponseEntity<StandardResponce> deleteRegStudent(@PathVariable (value = "studentRegNo") String studentRegNo){
         String massage = studentService.deleteStudent(studentRegNo);
-        return massage;
+        ResponseEntity<StandardResponce> response=
+                new ResponseEntity<StandardResponce>(
+                        new StandardResponce(200,"Deleted",massage)
+                        ,HttpStatus.OK);
+        return response;
     }
 
     //Student Attendance Mark
     @PostMapping("/attendMark")
-    public String AttendMark(@RequestBody StudentCurrentAttendDTO studentAttendDTO){
-        System.out.println("Reg No "+ studentAttendDTO.getStudentRegNo());
-        System.out.println("Time "+ studentAttendDTO.getTime());
-        System.out.println("Date "+ studentAttendDTO.getDate());
-        System.out.println("Location "+ studentAttendDTO.getLocation());
-        System.out.println("Attendance "+ studentAttendDTO.isAttendance());
+    public ResponseEntity<StandardResponce> AttendMark(@RequestBody StudentCurrentAttendDTO studentAttendDTO){
         String massage=studentService.attendMarkStudent(studentAttendDTO);
-        System.out.println(studentAttendDTO);
-        return massage;
+        ResponseEntity<StandardResponce> response=
+                new ResponseEntity<StandardResponce>(
+                        new StandardResponce(201,"Save",massage)
+                        ,HttpStatus.CREATED);
+        return response;
     }
+//    ===========================================================================================
     @PostMapping("/acceptedAttendance")
-    public String acceptedAttendance(@RequestBody StudentCurrentAttendDTO studentAttendDTO){
-        System.out.println("Reg No "+ studentAttendDTO.getStudentRegNo());
-        System.out.println("Time "+ studentAttendDTO.getTime());
-        System.out.println("Date "+ studentAttendDTO.getDate());
-        System.out.println("Location "+ studentAttendDTO.getLocation());
-        System.out.println("Attendance "+ studentAttendDTO.isAttendance());
+    public ResponseEntity<StandardResponce> acceptedAttendance(@RequestBody StudentCurrentAttendDTO studentAttendDTO){
         String massage=studentService.acceptedAttendance(studentAttendDTO);
         String massageSummery=studentService.markAttendInSummery(studentAttendDTO);
         System.out.println(studentAttendDTO);
-        return massage+massageSummery;
+        ResponseEntity<StandardResponce> response=
+                new ResponseEntity<StandardResponce>(
+                        new StandardResponce(201,"Accepted",massage+massageSummery)
+                        ,HttpStatus.CREATED);
+        return response;
     }
+//    ===========================================================================================
 
     @GetMapping("/getAllAcceptAttendance")
-    public List<TotalAttendDTO> getAllAcceptStudentAttend(){
+    public ResponseEntity<StandardResponce> getAllAcceptStudentAttend(){
         List<TotalAttendDTO> totalAttendDTO = studentService.getAllAcceptStudentAttend();
-        return totalAttendDTO;
+        ResponseEntity<StandardResponce> response=
+                new ResponseEntity<StandardResponce>(
+                        new StandardResponce(200,"Save",totalAttendDTO)
+                        ,HttpStatus.OK);
+        return response;
     }
 
 
     @GetMapping("/getAllAttendance")
-    public List<StudentCurrentAttendDTO> getAllStudentAttend(){
+    public ResponseEntity<StandardResponce> getAllStudentAttend(){
         List<StudentCurrentAttendDTO> studentAttendDTO = studentService.getAllStudentAttend();
-        return studentAttendDTO;
+        ResponseEntity<StandardResponce> response=
+                new ResponseEntity<StandardResponce>(
+                        new StandardResponce(200,"Save",studentAttendDTO)
+                        ,HttpStatus.OK);
+        return response;
     }
 
     @DeleteMapping(path = "/deleteAttendance/{studentRegNo}/{date}")
-    public String deleteAttendance(@PathVariable (value = "studentRegNo") String studentRegNo,
+    public ResponseEntity<StandardResponce> deleteAttendance(@PathVariable (value = "studentRegNo") String studentRegNo,
                                    @PathVariable (value = "date") String date){
-        System.out.println(studentRegNo+" "+date);
         String massage = studentService.deleteAttendance(studentRegNo,date);
-        System.out.println(studentRegNo+" "+date);
-
-        return massage;
+        ResponseEntity<StandardResponce> response=
+                new ResponseEntity<StandardResponce>(
+                        new StandardResponce(200,"Deleted",massage)
+                        ,HttpStatus.OK);
+        return response;
     }
 
     @PostMapping("/addColumn")
-    public String addColumn(@RequestParam String columnName) {
+    public ResponseEntity<StandardResponce> addColumn(@RequestParam String columnName) {
         // Pass the raw column name with slashes to the service layer
-        studentService.addColumnToSummery(columnName);
-        return "Column added successfully!";
+        String massage=studentService.addColumnToSummery(columnName);
+        ResponseEntity<StandardResponce> response=
+                new ResponseEntity<StandardResponce>(
+                        new StandardResponce(201,"Created",massage)
+                        ,HttpStatus.CREATED);
+        return response;
     }
 
     @PostMapping("/deleteColumn")
-    public String deleteColumn(@RequestParam String columnName) {
+    public ResponseEntity<StandardResponce> deleteColumn(@RequestParam String columnName) {
         // Pass the raw column name with slashes to the service layer
-        studentService.deleteColumnFromSummery(columnName);
-        return "Column deleted successfully!";
+        String massage = studentService.deleteColumnFromSummery(columnName);
+        ResponseEntity<StandardResponce> response=
+                new ResponseEntity<StandardResponce>(
+                        new StandardResponce(200,"Deleted",massage)
+                        ,HttpStatus.OK);
+        return response;
     }
 
     @GetMapping("/getAllSummeryData")
-    public List<Map<String, Object>> getAllSummeryData() {
-        return studentService.getAllSummeryData(); // Fetch data from the service
+    public ResponseEntity<StandardResponce> getAllSummeryData() {
+        List<Map<String, Object>> massage = studentService.getAllSummeryData(); // Fetch data from the service
+        ResponseEntity<StandardResponce> response=
+                new ResponseEntity<StandardResponce>(
+                        new StandardResponce(200,"OK",massage)
+                        ,HttpStatus.OK);
+        return response;
     }
 //    mobile app get data
     @GetMapping("/getAttendanceByRegNo/{regNo}")
-    public List<Map<String, Object>> getAttendanceByRegNo(@PathVariable String regNo) {
+    public ResponseEntity<StandardResponce> getAttendanceByRegNo(@PathVariable String regNo) {
         List<Map<String, Object>> massage=studentService.getAttendSummeryData(regNo);
-        return massage; // Fetch data from the service
+        ResponseEntity<StandardResponce> response=
+                new ResponseEntity<StandardResponce>(
+                        new StandardResponce(201,"OK",massage)
+                        ,HttpStatus.OK);
+        return response;
 
     }
 
