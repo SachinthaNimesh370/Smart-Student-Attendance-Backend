@@ -47,4 +47,7 @@ public interface StudentService {
 
     String createNotification(NotificationDTO notificationDTO);
 
+
+    List<NotificationDTO> getAllNotification();
+
 }

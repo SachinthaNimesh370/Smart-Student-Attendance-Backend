@@ -204,8 +204,13 @@ public class StudentRegController {
     @PostMapping("/createNotification")
     public  String createNotification(@RequestBody NotificationDTO notificationDTO){
         String Massage = studentService.createNotification(notificationDTO);
-
        return Massage;
+    }
+
+    @GetMapping("/getAllNotifications")
+    public List<NotificationDTO> getAllNotifications(){
+        List<NotificationDTO> notificationDTO = studentService.getAllNotification();
+        return notificationDTO;
     }
 
 

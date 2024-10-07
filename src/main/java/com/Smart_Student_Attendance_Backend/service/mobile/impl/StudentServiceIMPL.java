@@ -330,5 +330,16 @@ public class StudentServiceIMPL implements StudentService {
         return "Success Full Notification Create";
     }
 
+    @Override
+    public List<NotificationDTO> getAllNotification() {
+        List<Notification> allNotification= notificationRepo.findAll();
+        if(!allNotification.isEmpty()){
+            List<NotificationDTO> getAllNotification = modelMapper.map(allNotification,new TypeToken<List<NotificationDTO>>(){}.getType());
+            return getAllNotification;
+        }else {
+            throw new RuntimeException("Error");
+        }
+    }
+
 
 }
