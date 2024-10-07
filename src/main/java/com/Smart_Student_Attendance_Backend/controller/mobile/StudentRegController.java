@@ -1,8 +1,5 @@
 package com.Smart_Student_Attendance_Backend.controller.mobile;
-import com.Smart_Student_Attendance_Backend.dto.mobile.StudentCurrentAttendDTO;
-import com.Smart_Student_Attendance_Backend.dto.mobile.StudentRegDTO;
-import com.Smart_Student_Attendance_Backend.dto.mobile.StudentSignInDTO;
-import com.Smart_Student_Attendance_Backend.dto.mobile.TotalAttendDTO;
+import com.Smart_Student_Attendance_Backend.dto.mobile.*;
 import com.Smart_Student_Attendance_Backend.entity.mobile.Summery;
 import com.Smart_Student_Attendance_Backend.service.mobile.StudentService;
 import com.Smart_Student_Attendance_Backend.utill.StandardResponce;
@@ -10,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -24,10 +22,6 @@ public class StudentRegController {
     //Student Registation
     @PostMapping("/signUp")
     public ResponseEntity<StandardResponce> SaveStudent(@RequestBody StudentRegDTO studentRegDTO){
-        System.out.println("Reg No "+ studentRegDTO.getStudentRegNo());
-        System.out.println("Email "+ studentRegDTO.getStudentEmail());
-        System.out.println("Student password "+ studentRegDTO.getStudentPassword());
-        System.out.println("Active Status "+ studentRegDTO.isActivestatus());
         String massage=studentService.saveStudent(studentRegDTO);
 //        String massageHistory=studentService.saveStudentHistory(studentRegDTO.getStudentRegNo());
         ResponseEntity<StandardResponce> response=
@@ -98,15 +92,27 @@ public class StudentRegController {
     }
 //    ===========================================================================================
     @PostMapping("/acceptedAttendance")
-    public ResponseEntity<StandardResponce> acceptedAttendance(@RequestBody StudentCurrentAttendDTO studentAttendDTO){
-        String massage=studentService.acceptedAttendance(studentAttendDTO);
-        String massageSummery=studentService.markAttendInSummery(studentAttendDTO);
-        System.out.println(studentAttendDTO);
-        ResponseEntity<StandardResponce> response=
-                new ResponseEntity<StandardResponce>(
-                        new StandardResponce(201,"Accepted",massage+massageSummery)
-                        ,HttpStatus.CREATED);
-        return response;
+    @Transactional(rollbackFor = Exception.class) // Ensures that the transaction will roll back if an exception occurs
+    public ResponseEntity<StandardResponce> acceptedAttendance(@RequestBody StudentCurrentAttendDTO studentAttendDTO) {
+        try {
+            // Perform the first operation
+            String message = studentService.acceptedAttendance(studentAttendDTO);
+
+            // Perform the second operation
+            String messageSummery = studentService.markAttendInSummery(studentAttendDTO);
+
+            // If both operations succeed, return the response
+            return new ResponseEntity<>(
+                    new StandardResponce(201, "Accepted", message + messageSummery),
+                    HttpStatus.CREATED
+            );
+        } catch (Exception e) {
+            // If any exception occurs, the transaction will roll back, canceling both operations
+            return new ResponseEntity<>(
+                    new StandardResponce(500, "Failed", "Attendance operation failed due to: " + e.getMessage()),
+                    HttpStatus.INTERNAL_SERVER_ERROR
+            );
+        }
     }
 //    ===========================================================================================
 
@@ -193,6 +199,13 @@ public class StudentRegController {
                         new StandardResponce(200,"OK",massage)
                         ,HttpStatus.OK);
         return response;
+    }
+
+    @PostMapping("/createNotification")
+    public  String createNotification(@RequestBody NotificationDTO notificationDTO){
+        String Massage = studentService.createNotification(notificationDTO);
+
+       return Massage;
     }
 
 

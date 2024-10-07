@@ -1,11 +1,6 @@
 package com.Smart_Student_Attendance_Backend.service.mobile;
 
-import com.Smart_Student_Attendance_Backend.dto.mobile.StudentCurrentAttendDTO;
-import com.Smart_Student_Attendance_Backend.dto.mobile.StudentRegDTO;
-import com.Smart_Student_Attendance_Backend.dto.mobile.StudentSignInDTO;
-import com.Smart_Student_Attendance_Backend.dto.mobile.TotalAttendDTO;
-import com.Smart_Student_Attendance_Backend.entity.mobile.Summery;
-import org.springframework.jdbc.core.JdbcTemplate;
+import com.Smart_Student_Attendance_Backend.dto.mobile.*;
 
 import java.util.List;
 import java.util.Map;
@@ -50,6 +45,6 @@ public interface StudentService {
     List<Map<String, Object>> getAttendanceCountsDayByDay();
 
 
-
+    String createNotification(NotificationDTO notificationDTO);
 
 }

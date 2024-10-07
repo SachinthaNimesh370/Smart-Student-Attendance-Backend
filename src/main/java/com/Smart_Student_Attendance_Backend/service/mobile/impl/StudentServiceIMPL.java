@@ -1,17 +1,8 @@
 package com.Smart_Student_Attendance_Backend.service.mobile.impl;
 
-import com.Smart_Student_Attendance_Backend.dto.mobile.StudentCurrentAttendDTO;
-import com.Smart_Student_Attendance_Backend.dto.mobile.StudentRegDTO;
-import com.Smart_Student_Attendance_Backend.dto.mobile.StudentSignInDTO;
-import com.Smart_Student_Attendance_Backend.dto.mobile.TotalAttendDTO;
-import com.Smart_Student_Attendance_Backend.entity.mobile.StudentCurrentAttend;
-import com.Smart_Student_Attendance_Backend.entity.mobile.StudentReg;
-import com.Smart_Student_Attendance_Backend.entity.mobile.Summery;
-import com.Smart_Student_Attendance_Backend.entity.mobile.TotalAttend;
-import com.Smart_Student_Attendance_Backend.repo.mobile.AttendMarkStudentRepo;
-import com.Smart_Student_Attendance_Backend.repo.mobile.StudentRegRepo;
-import com.Smart_Student_Attendance_Backend.repo.mobile.SummeryRepo;
-import com.Smart_Student_Attendance_Backend.repo.mobile.TotalAttendRepo;
+import com.Smart_Student_Attendance_Backend.dto.mobile.*;
+import com.Smart_Student_Attendance_Backend.entity.mobile.*;
+import com.Smart_Student_Attendance_Backend.repo.mobile.*;
 import com.Smart_Student_Attendance_Backend.service.mobile.StudentService;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -24,12 +15,6 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Service;
-import org.springframework.jdbc.core.RowMapper;
-
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 
 @Service
@@ -46,6 +31,8 @@ public class StudentServiceIMPL implements StudentService {
     private JdbcTemplate jdbcTemplate;
     @Autowired
     private SummeryRepo summeryRepo;
+    @Autowired
+    private NotificationRepo notificationRepo;
 
     public StudentServiceIMPL(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -336,12 +323,12 @@ public class StudentServiceIMPL implements StudentService {
         return attendanceCounts; // Return the list of attendance counts in the correct order
     }
 
-
-
-
-
-
-
+    @Override
+    public String createNotification(NotificationDTO notificationDTO) {
+        Notification notification = modelMapper.map(notificationDTO, Notification.class);
+        notificationRepo.save(notification);
+        return "Success Full Notification Create";
+    }
 
 
 }
