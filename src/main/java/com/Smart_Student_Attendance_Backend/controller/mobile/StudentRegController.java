@@ -218,6 +218,12 @@ public class StudentRegController {
         return Massage;
     }
 
+   @DeleteMapping("/deleteNotification/{id}")
+    public  String deleteNotification(@PathVariable int id){
+        String Massage = studentService.deleteNotification(id);
+        return Massage;
+    }
+
 
 
 

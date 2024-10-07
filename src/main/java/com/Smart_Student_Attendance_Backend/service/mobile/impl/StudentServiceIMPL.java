@@ -352,5 +352,12 @@ public class StudentServiceIMPL implements StudentService {
         return "Success Full Notification update";
     }
 
+    @Override
+    public String deleteNotification(int id) {
+
+        notificationRepo.deleteById(id);
+        return "Success Full Notification Delete";
+    }
+
 
 }

@@ -52,4 +52,6 @@ public interface StudentService {
 
     String updateNotification(NotificationDTO notificationDTO);
 
+    String deleteNotification(int id);
+
 }
