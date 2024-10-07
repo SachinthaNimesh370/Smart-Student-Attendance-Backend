@@ -212,6 +212,11 @@ public class StudentRegController {
         List<NotificationDTO> notificationDTO = studentService.getAllNotification();
         return notificationDTO;
     }
+    @PutMapping("/updateNotification")
+    public  String updateNotification(@RequestBody NotificationDTO notificationDTO){
+        String Massage = studentService.updateNotification(notificationDTO);
+        return Massage;
+    }
 
 
 

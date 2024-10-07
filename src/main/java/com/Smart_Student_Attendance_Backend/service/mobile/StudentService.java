@@ -50,4 +50,6 @@ public interface StudentService {
 
     List<NotificationDTO> getAllNotification();
 
+    String updateNotification(NotificationDTO notificationDTO);
+
 }
