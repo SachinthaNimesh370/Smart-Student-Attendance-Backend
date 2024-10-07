@@ -332,13 +332,24 @@ public class StudentServiceIMPL implements StudentService {
 
     @Override
     public List<NotificationDTO> getAllNotification() {
-        List<Notification> allNotification= notificationRepo.findAll();
-        if(!allNotification.isEmpty()){
-            List<NotificationDTO> getAllNotification = modelMapper.map(allNotification,new TypeToken<List<NotificationDTO>>(){}.getType());
+        List<Notification> allNotification = notificationRepo.findAll();
+        if (!allNotification.isEmpty()) {
+            // Reverse the list so the last notification is first
+            Collections.reverse(allNotification);
+
+            // Map to DTOs
+            List<NotificationDTO> getAllNotification = modelMapper.map(allNotification, new TypeToken<List<NotificationDTO>>(){}.getType());
             return getAllNotification;
-        }else {
+        } else {
             throw new RuntimeException("Error");
         }
+    }
+
+    @Override
+    public String updateNotification(NotificationDTO notificationDTO) {
+        Notification notification = modelMapper.map(notificationDTO, Notification.class);
+        notificationRepo.save(notification);
+        return "Success Full Notification update";
     }
 
 
