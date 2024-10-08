@@ -54,4 +54,6 @@ public interface StudentService {
 
     String deleteNotification(int id);
 
+    String savelecturehall(LectureHallsDTO lectureHallsDTO);
+
 }

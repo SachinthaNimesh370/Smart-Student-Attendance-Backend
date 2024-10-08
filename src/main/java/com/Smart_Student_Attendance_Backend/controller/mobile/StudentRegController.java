@@ -140,6 +140,7 @@ public class StudentRegController {
     @DeleteMapping(path = "/deleteAttendance/{studentRegNo}/{date}")
     public ResponseEntity<StandardResponce> deleteAttendance(@PathVariable (value = "studentRegNo") String studentRegNo,
                                    @PathVariable (value = "date") String date){
+        System.out.println(studentRegNo+date);
         String massage = studentService.deleteAttendance(studentRegNo,date);
         ResponseEntity<StandardResponce> response=
                 new ResponseEntity<StandardResponce>(
@@ -221,6 +222,12 @@ public class StudentRegController {
    @DeleteMapping("/deleteNotification/{id}")
     public  String deleteNotification(@PathVariable int id){
         String Massage = studentService.deleteNotification(id);
+        return Massage;
+    }
+
+    @PostMapping("/savelecturehall")
+    public  String savelecturehall(@RequestBody LectureHallsDTO lectureHallsDTO){
+        String Massage = studentService.savelecturehall(lectureHallsDTO);
         return Massage;
     }
 
