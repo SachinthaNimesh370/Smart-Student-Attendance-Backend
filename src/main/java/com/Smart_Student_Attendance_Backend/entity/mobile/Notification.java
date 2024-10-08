@@ -21,6 +21,9 @@ public class Notification {
     @Column(name = "date",length = 10,nullable = false)
     private String date;
 
+    @Column(name = "time",length = 10,nullable = false)
+    private String time;
+
     @Column(name = "notification",length = 100,nullable = false)
     private String notification;
 }

@@ -33,6 +33,8 @@ public class StudentServiceIMPL implements StudentService {
     private SummeryRepo summeryRepo;
     @Autowired
     private NotificationRepo notificationRepo;
+    @Autowired
+    private LecturehallRepo lecturehallRepo;
 
     public StudentServiceIMPL(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -70,8 +72,6 @@ public class StudentServiceIMPL implements StudentService {
             attendMarkStudentRepo.save(studentAttend);
             return "Save Success";
         }else {
-            System.out.println(studentAttendDTO);
-            System.out.println(studentAttend);
             return "Alredy Marked Attendance";
         }
     }
@@ -354,9 +354,15 @@ public class StudentServiceIMPL implements StudentService {
 
     @Override
     public String deleteNotification(int id) {
-
         notificationRepo.deleteById(id);
         return "Success Full Notification Delete";
+    }
+
+    @Override
+    public String savelecturehall(LectureHallsDTO lectureHallsDTO) {
+        LectureHalls lectureHalls= modelMapper.map(lectureHallsDTO, LectureHalls.class);
+        lecturehallRepo.save(lectureHalls);
+        return "Saved Lecture Halls";
     }
 
 
