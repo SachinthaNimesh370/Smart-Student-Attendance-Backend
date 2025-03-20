@@ -365,5 +365,32 @@ public class StudentServiceIMPL implements StudentService {
         return "Saved Lecture Halls";
     }
 
+    @Override
+    public String updatelecturehall(LectureHallsDTO lectureHallsDTO) {
+        LectureHalls lectureHalls= modelMapper.map(lectureHallsDTO, LectureHalls.class);
+        lecturehallRepo.save(lectureHalls);
+        return "Saved Lecture Halls";
+    }
+
+    @Override
+    public List<LectureHallsDTO> getAllLecturehall() {
+        List<LectureHalls> alllectureHalls = lecturehallRepo.findAll();
+        if (!alllectureHalls.isEmpty()) {
+
+
+            // Map to DTOs
+            List<LectureHallsDTO> getAlllectureHalls = modelMapper.map(alllectureHalls, new TypeToken<List<LectureHallsDTO>>(){}.getType());
+            return getAlllectureHalls;
+        } else {
+            throw new RuntimeException("Error");
+        }
+    }
+
+    @Override
+    public String deleteLecturehall(int id) {
+        lecturehallRepo.deleteById(id);
+        return "Success Full Notification Delete";
+    }
+
 
 }

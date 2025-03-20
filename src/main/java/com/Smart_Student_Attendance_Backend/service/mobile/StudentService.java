@@ -56,4 +56,10 @@ public interface StudentService {
 
     String savelecturehall(LectureHallsDTO lectureHallsDTO);
 
+    String updatelecturehall(LectureHallsDTO lectureHallsDTO);
+
+    List<LectureHallsDTO> getAllLecturehall();
+
+    String deleteLecturehall(int id);
+
 }

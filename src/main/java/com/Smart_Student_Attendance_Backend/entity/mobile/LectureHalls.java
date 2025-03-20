@@ -27,7 +27,7 @@ public class LectureHalls {
     @Column(name = "id",length = 4,nullable = false)
     private int id;
 
-    @Column(name = "hall_name",length = 10,nullable = false)
+    @Column(name = "hall_name",length = 100,nullable = false)
     private String hall_name;
 
     @Type(type = "json")
