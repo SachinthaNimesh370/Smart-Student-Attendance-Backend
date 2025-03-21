@@ -237,18 +237,18 @@ public class StudentRegController {
 
     @PutMapping("/updatelecturehall")
     public String updatelecturehall(@RequestBody LectureHallsDTO lectureHallsDTO){
-        String Massage = studentService.updatelecturehall(lectureHallsDTO);
-        return Massage;
+
+        return studentService.updatelecturehall(lectureHallsDTO);
     }
     @GetMapping("/getAlllecturehall")
     public List<LectureHallsDTO> getAlllecturehall(){
-        List<LectureHallsDTO> lectureHallsDTO = studentService.getAllLecturehall();
-        return lectureHallsDTO;
+
+        return studentService.getAllLecturehall();
     }
     @DeleteMapping("/deletelecturehall/{id}")
     public String deleteLecturehall(@PathVariable int id){
-        String Massage = studentService.deleteLecturehall(id);
-        return Massage;
+
+        return studentService.deleteLecturehall(id);
     }
 
 
