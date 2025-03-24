@@ -6,7 +6,6 @@ import com.Smart_Student_Attendance_Backend.repo.mobile.*;
 import com.Smart_Student_Attendance_Backend.service.mobile.StudentService;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
@@ -19,25 +18,31 @@ import java.util.List;
 
 @Service
 public class StudentServiceIMPL implements StudentService {
-    @Autowired
-    public ModelMapper modelMapper;
-    @Autowired
-    private StudentRegRepo studentRegRepo;
-    @Autowired
-    private AttendMarkStudentRepo attendMarkStudentRepo;
-    @Autowired
-    private TotalAttendRepo totalAttendRepo;
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
-    @Autowired
-    private SummeryRepo summeryRepo;
-    @Autowired
-    private NotificationRepo notificationRepo;
-    @Autowired
-    private LecturehallRepo lecturehallRepo;
 
-    public StudentServiceIMPL(JdbcTemplate jdbcTemplate) {
+    private final ModelMapper modelMapper;
+    private final StudentRegRepo studentRegRepo;
+    private final AttendMarkStudentRepo attendMarkStudentRepo;
+    private final TotalAttendRepo totalAttendRepo;
+    private final JdbcTemplate jdbcTemplate;
+    private final SummeryRepo summeryRepo;
+    private final NotificationRepo notificationRepo;
+    private final LecturehallRepo lecturehallRepo;
+    public StudentServiceIMPL(ModelMapper modelMapper,
+                              StudentRegRepo studentRegRepo,
+                              AttendMarkStudentRepo attendMarkStudentRepo,
+                              TotalAttendRepo totalAttendRepo,
+                              JdbcTemplate jdbcTemplate,
+                              SummeryRepo summeryRepo,
+                              NotificationRepo notificationRepo,
+                              LecturehallRepo lecturehallRepo) {
+        this.modelMapper = modelMapper;
+        this.studentRegRepo = studentRegRepo;
+        this.attendMarkStudentRepo = attendMarkStudentRepo;
+        this.totalAttendRepo = totalAttendRepo;
         this.jdbcTemplate = jdbcTemplate;
+        this.summeryRepo = summeryRepo;
+        this.notificationRepo = notificationRepo;
+        this.lecturehallRepo = lecturehallRepo;
     }
 
 
