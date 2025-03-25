@@ -19,16 +19,16 @@ public class StudentRegController {
     @Autowired
     private StudentService studentService;
 
-    //Student Registation
     @PostMapping("/signUp")
     public ResponseEntity<StandardResponce> SaveStudent(@RequestBody StudentRegDTO studentRegDTO){
         String massage=studentService.saveStudent(studentRegDTO);
-//        String massageHistory=studentService.saveStudentHistory(studentRegDTO.getStudentRegNo());
-        ResponseEntity<StandardResponce> response=
-                new ResponseEntity<StandardResponce>(
-                        new StandardResponce(201,"Save",massage)
-                        , HttpStatus.CREATED);
-        return response;
+//        ResponseEntity<StandardResponce> response=
+//                new ResponseEntity<StandardResponce>(
+//                        new StandardResponce(201,"Save",massage)
+//                        , HttpStatus.CREATED);
+        return new ResponseEntity<StandardResponce>(
+                new StandardResponce(201,"Save",massage)
+                , HttpStatus.CREATED);
     }
 
     //Student Sign IN
@@ -38,11 +38,13 @@ public class StudentRegController {
         System.out.println("Student password "+ studentSignInDTO.getStudentPassword());
         boolean massage=studentService.signInService(studentSignInDTO);
 
-        ResponseEntity<StandardResponce> response=
-                new ResponseEntity<StandardResponce>(
-                        new StandardResponce(200,"Success",massage)
-                        ,HttpStatus.OK);
-        return response;
+//        ResponseEntity<StandardResponce> response=
+//                new ResponseEntity<StandardResponce>(
+//                        new StandardResponce(200,"Success",massage)
+//                        ,HttpStatus.OK);
+        return new ResponseEntity<StandardResponce>(
+                new StandardResponce(200,"Success",massage)
+                ,HttpStatus.OK);
 
     }
 
@@ -50,11 +52,13 @@ public class StudentRegController {
     @GetMapping("/getAllStudent")
     public ResponseEntity<StandardResponce> getAllStudent(){
         List<StudentRegDTO> studentRegDTO = studentService.getAllStudent();
-        ResponseEntity<StandardResponce> response=
-                new ResponseEntity<StandardResponce>(
-                        new StandardResponce(200,"OK",studentRegDTO)
-                        ,HttpStatus.OK);
-        return response;
+//        ResponseEntity<StandardResponce> response=
+//                new ResponseEntity<StandardResponce>(
+//                        new StandardResponce(200,"OK",studentRegDTO)
+//                        ,HttpStatus.OK);
+        return new ResponseEntity<StandardResponce>(
+                new StandardResponce(200,"OK",studentRegDTO)
+                ,HttpStatus.OK);
     }
 //    ==========================================================================================================
     @PutMapping("/updateRegStudent")
@@ -220,15 +224,31 @@ public class StudentRegController {
     }
 
    @DeleteMapping("/deleteNotification/{id}")
-    public  String deleteNotification(@PathVariable int id){
+    public String deleteNotification(@PathVariable int id){
         String Massage = studentService.deleteNotification(id);
         return Massage;
     }
 
     @PostMapping("/savelecturehall")
-    public  String savelecturehall(@RequestBody LectureHallsDTO lectureHallsDTO){
+    public String savelecturehall(@RequestBody LectureHallsDTO lectureHallsDTO){
         String Massage = studentService.savelecturehall(lectureHallsDTO);
         return Massage;
+    }
+
+    @PutMapping("/updatelecturehall")
+    public String updatelecturehall(@RequestBody LectureHallsDTO lectureHallsDTO){
+
+        return studentService.updatelecturehall(lectureHallsDTO);
+    }
+    @GetMapping("/getAlllecturehall")
+    public List<LectureHallsDTO> getAlllecturehall(){
+
+        return studentService.getAllLecturehall();
+    }
+    @DeleteMapping("/deletelecturehall/{id}")
+    public String deleteLecturehall(@PathVariable int id){
+
+        return studentService.deleteLecturehall(id);
     }
 
 
