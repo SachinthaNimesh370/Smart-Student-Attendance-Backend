@@ -218,30 +218,39 @@ public class StudentServiceIMPL implements StudentService {
 
 
     @Override
-    public String addColumnToSummery(String columnName) {
+    public ServiceResponceDTO addColumnToSummery(String columnName) {
         // Escape the column name by wrapping it with backticks (`) for MySQL
         String sql = "ALTER TABLE summery ADD COLUMN `" + columnName + "` VARCHAR(255)";
-
-        // Execute the SQL query using your JdbcTemplate or any other query execution method
-        jdbcTemplate.execute(sql);
-        return "Created Column";
+        try {
+            jdbcTemplate.execute(sql);
+            return new ServiceResponceDTO(true,"Create Column"+columnName);
+        }catch (Exception e){
+            return new ServiceResponceDTO(false,"Please Try Again"+e);
+        }
     }
 
     @Override
-    public String deleteColumnFromSummery(String columnName) {
+    public ServiceResponceDTO deleteColumnFromSummery(String columnName) {
         // Escape the column name by wrapping it with backticks (`) for MySQL
         String sql = "ALTER TABLE summery DROP COLUMN `" + columnName + "`";
-
-        // Execute the SQL query using your JdbcTemplate or any other query execution method
-        jdbcTemplate.execute(sql);
-        return "Deleted";
+        try {
+            jdbcTemplate.execute(sql);
+            return new ServiceResponceDTO(true,"Deleted");
+        }catch (Exception e){
+            return new ServiceResponceDTO(false,"Please Try Again "+e);
+        }
     }
 
     @Override
     // Method to fetch all data from the summery table dynamically
-    public List<Map<String, Object>> getAllSummeryData() {
-        String sql = "SELECT * FROM summery"; // Query to select all data
-        return jdbcTemplate.queryForList(sql); // Returns a list of maps where each map represents a row
+    public ServiceResponceDTO getAllSummeryData() {
+        String sql = "SELECT * FROM summery";
+        try {
+            List<Map<String, Object>> result = jdbcTemplate.queryForList(sql);
+            return new ServiceResponceDTO(true,result);
+        }catch (Exception e){
+            return new ServiceResponceDTO(false,"Try Again "+e);
+        }
     }
 
     @Override

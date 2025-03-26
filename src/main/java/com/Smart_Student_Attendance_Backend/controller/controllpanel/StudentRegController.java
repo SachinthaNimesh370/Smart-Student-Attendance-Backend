@@ -131,20 +131,30 @@ public class StudentRegController {
 
     @PostMapping("/addColumn")
     public ResponseEntity<StandardResponce> addColumn(@RequestParam String columnName) {
-        // Pass the raw column name with slashes to the service layer
-        String massage=studentService.addColumnToSummery(columnName);
-        return new ResponseEntity<StandardResponce>(
-                new StandardResponce(201,"Created",massage)
-                ,HttpStatus.CREATED);
+        ServiceResponceDTO massage=studentService.addColumnToSummery(columnName);
+        if(massage.isSuccess()){
+            return new ResponseEntity<StandardResponce>(
+                    new StandardResponce(201,"Success",massage.getObject())
+                    ,HttpStatus.CREATED);
+        }else{
+            return new ResponseEntity<StandardResponce>(
+                    new StandardResponce(400,"Error",massage.getObject())
+                    ,HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PostMapping("/deleteColumn")
     public ResponseEntity<StandardResponce> deleteColumn(@RequestParam String columnName) {
-        // Pass the raw column name with slashes to the service layer
-        String massage = studentService.deleteColumnFromSummery(columnName);
-        return new ResponseEntity<StandardResponce>(
-                new StandardResponce(200,"Deleted",massage)
-                ,HttpStatus.OK);
+        ServiceResponceDTO massage = studentService.deleteColumnFromSummery(columnName);
+        if(massage.isSuccess()){
+            return new ResponseEntity<StandardResponce>(
+                    new StandardResponce(200,"Success",massage.getObject())
+                    ,HttpStatus.OK);
+        }else{
+            return new ResponseEntity<StandardResponce>(
+                    new StandardResponce(400,"Error",massage.getObject())
+                    ,HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping("/getAllSummeryData")

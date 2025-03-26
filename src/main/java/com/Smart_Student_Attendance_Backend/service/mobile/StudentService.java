@@ -33,10 +33,10 @@ public interface StudentService {
 
     ServiceResponceDTO getAllAcceptStudentAttend();
 
-    String addColumnToSummery(String columnName);
+    ServiceResponceDTO addColumnToSummery(String columnName);
 
-    String deleteColumnFromSummery(String columnName);
-    public List<Map<String, Object>> getAllSummeryData();
+    ServiceResponceDTO deleteColumnFromSummery(String columnName);
+    ServiceResponceDTO getAllSummeryData();
 
     String saveStudentSummery(StudentRegDTO studentRegDTO);
 
