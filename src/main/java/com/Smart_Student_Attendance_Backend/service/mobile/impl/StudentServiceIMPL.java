@@ -324,9 +324,21 @@ public class StudentServiceIMPL implements StudentService {
 
     @Override
     public String createNotification(NotificationDTO notificationDTO) {
-        Notification notification = modelMapper.map(notificationDTO, Notification.class);
-        notificationRepo.save(notification);
-        return "Success Full Notification Create";
+        try {
+            Notification notification = modelMapper.map(notificationDTO, Notification.class);
+            notificationRepo.save(notification);
+            return "Notification created successfully";
+        } catch (Exception e) {
+            return "Error while creating notification: " + e.getMessage();
+        }
+    }
+    public void method1(){
+        System.out.println("abc");
+    }
+    public int method2(){
+        System.out.println("asd");
+        return 0;
+
     }
 
     @Override

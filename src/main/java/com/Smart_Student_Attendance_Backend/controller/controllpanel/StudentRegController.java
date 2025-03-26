@@ -6,7 +6,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 import java.util.Map;
 
@@ -146,8 +145,12 @@ public class StudentRegController {
     }
 
     @PostMapping("/createNotification")
-    public  String createNotification(@RequestBody NotificationDTO notificationDTO){
-       return studentService.createNotification(notificationDTO);
+    public  ResponseEntity<StandardResponce> createNotification(@RequestBody NotificationDTO notificationDTO){
+        String massage =studentService.createNotification(notificationDTO);
+        ResponseEntity<StandardResponce> abc = new ResponseEntity<StandardResponce>(
+                new StandardResponce(200,"Ok",massage)
+                ,HttpStatus.OK);
+       return abc;
     }
 
     @GetMapping("/getAllNotifications")
