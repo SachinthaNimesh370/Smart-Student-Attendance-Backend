@@ -8,7 +8,6 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
-
 import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -44,11 +43,6 @@ public class StudentServiceIMPL implements StudentService {
         this.notificationRepo = notificationRepo;
         this.lecturehallRepo = lecturehallRepo;
     }
-
-
-
-
-
     @Override
     public String saveStudent(StudentRegDTO studentRegDTO) {
         StudentReg studentReg = modelMapper.map(studentRegDTO, StudentReg.class);
