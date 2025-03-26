@@ -1,42 +1,23 @@
-package com.Smart_Student_Attendance_Backend.controller.mobile;
+package com.Smart_Student_Attendance_Backend.controller.controllpanel;
 import com.Smart_Student_Attendance_Backend.dto.mobile.*;
-import com.Smart_Student_Attendance_Backend.entity.mobile.Summery;
 import com.Smart_Student_Attendance_Backend.service.mobile.StudentService;
 import com.Smart_Student_Attendance_Backend.utill.StandardResponce;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("api/v1/student")
+@RequestMapping("api/v1/controller")
 @CrossOrigin
 public class StudentRegController {
-    @Autowired
-    private StudentService studentService;
 
-    @PostMapping("/signUp")
-    public ResponseEntity<StandardResponce> SaveStudent(@RequestBody StudentRegDTO studentRegDTO){
-        String massage=studentService.saveStudent(studentRegDTO);
-        return new ResponseEntity<StandardResponce>(
-                new StandardResponce(201,"Save",massage)
-                , HttpStatus.CREATED);
-    }
+    private final StudentService studentService;
 
-    //Student Sign IN
-    @PostMapping("/signIn")
-    public ResponseEntity<StandardResponce> SignIn(@RequestBody StudentSignInDTO studentSignInDTO){
-        System.out.println("Reg No "+ studentSignInDTO.getStudentRegNo());
-        System.out.println("Student password "+ studentSignInDTO.getStudentPassword());
-        boolean massage=studentService.signInService(studentSignInDTO);
-        return new ResponseEntity<StandardResponce>(
-                new StandardResponce(200,"Success",massage)
-                ,HttpStatus.OK);
-
+    public StudentRegController(StudentService studentService) {
+        this.studentService = studentService;
     }
 
     //Get All Register Student Data
@@ -47,18 +28,19 @@ public class StudentRegController {
                 new StandardResponce(200,"OK",studentRegDTO)
                 ,HttpStatus.OK);
     }
-//    ==========================================================================================================
+
     @PutMapping("/updateRegStudent")
     public ResponseEntity<StandardResponce> updateStudent(@RequestBody StudentRegDTO studentRegDTO){
         String massage = studentService.updateStudent(studentRegDTO);
 //      Registation number only add both column in table
         String massageHistory=studentService.saveStudentHistory(studentRegDTO);
         String massageSummery=studentService.saveStudentSummery(studentRegDTO);
+
         return new ResponseEntity<StandardResponce>(
                 new StandardResponce(201,"Updated",massageHistory+massageSummery)
                 ,HttpStatus.CREATED);
     }
-//    ================================================================================================================
+
     @DeleteMapping(path = "/deleteRegStudent/{studentRegNo}")
     public ResponseEntity<StandardResponce> deleteRegStudent(@PathVariable (value = "studentRegNo") String studentRegNo){
         String massage = studentService.deleteStudent(studentRegNo);
@@ -67,15 +49,7 @@ public class StudentRegController {
                 ,HttpStatus.OK);
     }
 
-    //Student Attendance Mark
-    @PostMapping("/attendMark")
-    public ResponseEntity<StandardResponce> AttendMark(@RequestBody StudentCurrentAttendDTO studentAttendDTO){
-        String massage=studentService.attendMarkStudent(studentAttendDTO);
-        return new ResponseEntity<StandardResponce>(
-                new StandardResponce(201,"Save",massage)
-                ,HttpStatus.CREATED);
-    }
-//    ===========================================================================================
+
     @PostMapping("/acceptedAttendance")
     @Transactional(rollbackFor = Exception.class) // Ensures that the transaction will roll back if an exception occurs
     public ResponseEntity<StandardResponce> acceptedAttendance(@RequestBody StudentCurrentAttendDTO studentAttendDTO) {
@@ -99,7 +73,7 @@ public class StudentRegController {
             );
         }
     }
-//    ===========================================================================================
+
 
     @GetMapping("/getAllAcceptAttendance")
     public ResponseEntity<StandardResponce> getAllAcceptStudentAttend(){
@@ -172,8 +146,12 @@ public class StudentRegController {
     }
 
     @PostMapping("/createNotification")
-    public  String createNotification(@RequestBody NotificationDTO notificationDTO){
-       return studentService.createNotification(notificationDTO);
+    public  ResponseEntity<StandardResponce> createNotification(@RequestBody NotificationDTO notificationDTO){
+        String massage =studentService.createNotification(notificationDTO);
+        ResponseEntity<StandardResponce> abc = new ResponseEntity<StandardResponce>(
+                new StandardResponce(200,"Ok",massage)
+                ,HttpStatus.OK);
+       return abc;
     }
 
     @GetMapping("/getAllNotifications")

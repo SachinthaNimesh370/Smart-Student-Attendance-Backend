@@ -8,7 +8,6 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
-
 import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -44,40 +43,35 @@ public class StudentServiceIMPL implements StudentService {
         this.notificationRepo = notificationRepo;
         this.lecturehallRepo = lecturehallRepo;
     }
-
-
-
-
-
     @Override
-    public String saveStudent(StudentRegDTO studentRegDTO) {
+    public ServiceResponceDTO saveStudent(StudentRegDTO studentRegDTO) {
         StudentReg studentReg = modelMapper.map(studentRegDTO, StudentReg.class);
         if(!studentRegRepo.existsByStudentRegNoEquals(studentReg.getStudentRegNo())){
             studentRegRepo.save(studentReg);
-            return studentRegDTO.getStudentRegNo()+" Saved";
+            return new ServiceResponceDTO(true,studentRegDTO.getStudentRegNo()+" Saved");
         }else {
-            return"Alredy Added";
+            return new ServiceResponceDTO(false,studentRegDTO.getStudentRegNo()+"Alredy Added");
         }
     }
 
     @Override
-    public boolean signInService(StudentSignInDTO studentSignInDTO) {
+    public ServiceResponceDTO signInService(StudentSignInDTO studentSignInDTO) {
         StudentReg studentReg = modelMapper.map(studentSignInDTO, StudentReg.class);
         if(studentRegRepo.existsByStudentRegNoEqualsAndStudentPasswordEqualsAndActivestatusEquals(studentReg.getStudentRegNo(),studentReg.getStudentPassword(),true)){
-            return true;
+            return new ServiceResponceDTO(true,"Login Success");
         }else {
-           return false;
+           return new ServiceResponceDTO(false,"Please Try Again");
         }
     }
 
     @Override
-    public String attendMarkStudent(StudentCurrentAttendDTO studentAttendDTO) {
+    public ServiceResponceDTO attendMarkStudent(StudentCurrentAttendDTO studentAttendDTO) {
         StudentCurrentAttend studentAttend = modelMapper.map(studentAttendDTO, StudentCurrentAttend.class);
         if(!attendMarkStudentRepo.existsByStudentRegNoEqualsAndDateEquals(studentAttend.getStudentRegNo(),studentAttend.getDate())){
             attendMarkStudentRepo.save(studentAttend);
-            return "Save Success";
+            return new ServiceResponceDTO(true,"Successfully Mark Attendance");
         }else {
-            return "Alredy Marked Attendance";
+            return new ServiceResponceDTO(false,"Alredy Marked Attendance");
         }
     }
 
@@ -330,9 +324,21 @@ public class StudentServiceIMPL implements StudentService {
 
     @Override
     public String createNotification(NotificationDTO notificationDTO) {
-        Notification notification = modelMapper.map(notificationDTO, Notification.class);
-        notificationRepo.save(notification);
-        return "Success Full Notification Create";
+        try {
+            Notification notification = modelMapper.map(notificationDTO, Notification.class);
+            notificationRepo.save(notification);
+            return "Notification created successfully";
+        } catch (Exception e) {
+            return "Error while creating notification: " + e.getMessage();
+        }
+    }
+    public void method1(){
+        System.out.println("abc");
+    }
+    public int method2(){
+        System.out.println("asd");
+        return 0;
+
     }
 
     @Override

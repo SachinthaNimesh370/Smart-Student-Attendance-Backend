@@ -7,11 +7,11 @@ import java.util.Map;
 
 public interface StudentService {
 
-    String saveStudent(StudentRegDTO studentRegDTO);
+    ServiceResponceDTO saveStudent(StudentRegDTO studentRegDTO);
 
-    boolean signInService(StudentSignInDTO studentSignInDTO);
+    ServiceResponceDTO signInService(StudentSignInDTO studentSignInDTO);
 
-    String attendMarkStudent(StudentCurrentAttendDTO studentAttendDTO);
+    ServiceResponceDTO attendMarkStudent(StudentCurrentAttendDTO studentAttendDTO);
 
     List<StudentRegDTO> getAllStudent();
 
