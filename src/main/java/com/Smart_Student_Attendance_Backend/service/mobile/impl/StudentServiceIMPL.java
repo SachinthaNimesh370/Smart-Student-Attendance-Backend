@@ -139,13 +139,8 @@ public class StudentServiceIMPL implements StudentService {
 
 
     @Override
-    @Transactional
-
     public ServiceResponceDTO deleteAttendance(String studentRegNo,String date) {
-        // Define a formatter that matches the format in the database
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-
-        // Parse the incoming date (from PathVariable) into a LocalDate object
         LocalDate pathDate = LocalDate.parse(date, DateTimeFormatter.ISO_DATE); // Format from PathVariable (yyyy-MM-dd)
         String formattedDate = pathDate.format(formatter);
 
@@ -154,7 +149,7 @@ public class StudentServiceIMPL implements StudentService {
                 attendMarkStudentRepo.deleteByStudentRegNoEqualsAndDateEquals(studentRegNo,formattedDate);
                 return new ServiceResponceDTO(true, "Delete Attendance");
             }catch (Exception e){
-                return new ServiceResponceDTO(false, "Please Try Again "+e);
+                return new ServiceResponceDTO(false, "Please Try Again "+e.getMessage());
             }
         } else {
             return new ServiceResponceDTO(false,"No Data Found");
@@ -163,18 +158,17 @@ public class StudentServiceIMPL implements StudentService {
     }
 
     @Override
-    public String saveStudentHistory(StudentRegDTO studentRegDTO) {
-        // Create a new TotalAttend object with only the studentRegNo
+    public ServiceResponceDTO saveStudentHistory(StudentRegDTO studentRegDTO) {
+
         TotalAttend totalAttend = new TotalAttend();
         totalAttend.setStudentRegNo(studentRegDTO.getStudentRegNo());
-        totalAttend.setHistory(new ArrayList<>()); // Optionally initialize history as empty
+        totalAttend.setHistory(new ArrayList<>());
         if(studentRegDTO.isActivestatus()){
             // Save the entity
             totalAttendRepo.save(totalAttend);
-            return "Student attendance record created with regNo: " + studentRegDTO.getStudentRegNo();// Create a new TotalAttend object with only the studentRegNo
+            return new ServiceResponceDTO(true,"Saved History");
         }else{
-            System.out.println("Not Active Student ");
-            return "Not Active Student " ;
+            return new ServiceResponceDTO(false,"Pleace Try Again");
         }
 
     }
@@ -225,7 +219,7 @@ public class StudentServiceIMPL implements StudentService {
             jdbcTemplate.execute(sql);
             return new ServiceResponceDTO(true,"Create Column"+columnName);
         }catch (Exception e){
-            return new ServiceResponceDTO(false,"Please Try Again"+e);
+            return new ServiceResponceDTO(false,"Please Try Again"+e.getMessage());
         }
     }
 
@@ -237,7 +231,7 @@ public class StudentServiceIMPL implements StudentService {
             jdbcTemplate.execute(sql);
             return new ServiceResponceDTO(true,"Deleted");
         }catch (Exception e){
-            return new ServiceResponceDTO(false,"Please Try Again "+e);
+            return new ServiceResponceDTO(false,"Please Try Again "+e.getMessage());
         }
     }
 
@@ -249,7 +243,7 @@ public class StudentServiceIMPL implements StudentService {
             List<Map<String, Object>> result = jdbcTemplate.queryForList(sql);
             return new ServiceResponceDTO(true,result);
         }catch (Exception e){
-            return new ServiceResponceDTO(false,"Try Again "+e);
+            return new ServiceResponceDTO(false,"Try Again "+e.getMessage());
         }
     }
 
@@ -305,79 +299,72 @@ public class StudentServiceIMPL implements StudentService {
     }
 
     @Override
-    public List<Map<String, Object>> getAttendSummeryData(String regNo) {
-        // SQL query to select all data where student_reg_no matches the provided regNo
-        String sql = "SELECT * FROM summery WHERE student_reg_no = ?";
-
-        // Execute the query and pass the regNo as a parameter
-        return jdbcTemplate.queryForList(sql, regNo);
+    public ServiceResponceDTO getAttendSummeryData(String regNo) {
+        if(summeryRepo.existsByStudentRegNo(regNo)){
+            String sql = "SELECT * FROM summery WHERE student_reg_no = ?";
+            return new ServiceResponceDTO(true,jdbcTemplate.queryForList(sql, regNo));
+        }else{
+            return new ServiceResponceDTO(false,"Please Try Again");
+        }
     }
 
 
     @Override
-    public List<Map<String, Object>> getAttendanceCountsDayByDay() {
+    public ServiceResponceDTO getAttendanceCountsDayByDay() {
         // Fetch all columns from the summery table dynamically in the order they are defined
         String sqlColumns = "SELECT column_name FROM information_schema.columns "
                 + "WHERE table_name = 'summery' AND column_name != 'student_reg_no' "
                 + "ORDER BY ordinal_position";  // This ensures the columns are retrieved in their original order
+        try {
+            List<String> columns = jdbcTemplate.queryForList(sqlColumns, String.class);
 
-        List<String> columns = jdbcTemplate.queryForList(sqlColumns, String.class);
+            List<Map<String, Object>> attendanceCounts = new ArrayList<>();
 
-        List<Map<String, Object>> attendanceCounts = new ArrayList<>();
+            // Iterate through each column to count `1` and `null`
+            for (String column : columns) {
+                String countSql = "SELECT COUNT(*) AS totalCount, "
+                        + "SUM(CASE WHEN `" + column + "` = 1 THEN 1 ELSE 0 END) AS presentCount, "
+                        + "SUM(CASE WHEN `" + column + "` IS NULL THEN 1 ELSE 0 END) AS absentCount "
+                        + "FROM summery";
 
-        // Iterate through each column to count `1` and `null`
-        for (String column : columns) {
-            String countSql = "SELECT COUNT(*) AS totalCount, "
-                    + "SUM(CASE WHEN `" + column + "` = 1 THEN 1 ELSE 0 END) AS presentCount, "
-                    + "SUM(CASE WHEN `" + column + "` IS NULL THEN 1 ELSE 0 END) AS absentCount "
-                    + "FROM summery";
+                Map<String, Object> countResult = jdbcTemplate.queryForMap(countSql);
 
-            Map<String, Object> countResult = jdbcTemplate.queryForMap(countSql);
-
-            // Store results for this column in a map
-            Map<String, Object> resultMap = new HashMap<>();
-            resultMap.put("columnName", column);
-            resultMap.put("totalCount", countResult.get("totalCount"));
-            resultMap.put("presentCount", countResult.get("presentCount"));
-            resultMap.put("absentCount", countResult.get("absentCount"));
-
-            attendanceCounts.add(resultMap); // Add the result to the list
+                // Store results for this column in a map
+                Map<String, Object> resultMap = new HashMap<>();
+                resultMap.put("columnName", column);
+                resultMap.put("totalCount", countResult.get("totalCount"));
+                resultMap.put("presentCount", countResult.get("presentCount"));
+                resultMap.put("absentCount", countResult.get("absentCount"));
+                attendanceCounts.add(resultMap);
+            }
+            return new ServiceResponceDTO(true,attendanceCounts);
+        }catch (Exception e){
+            return new ServiceResponceDTO(false,"Please Try Again. "+e.getMessage());
         }
 
-        return attendanceCounts; // Return the list of attendance counts in the correct order
+
     }
 
     @Override
-    public String createNotification(NotificationDTO notificationDTO) {
+    public ServiceResponceDTO createNotification(NotificationDTO notificationDTO) {
         try {
             Notification notification = modelMapper.map(notificationDTO, Notification.class);
             notificationRepo.save(notification);
-            return "Notification created successfully";
+            return new ServiceResponceDTO(true,"Notification Created Successfully");
         } catch (Exception e) {
-            return "Error while creating notification: " + e.getMessage();
+            return new ServiceResponceDTO(false,"Error While Creating Notification: " + e.getMessage());
         }
-    }
-    public void method1(){
-        System.out.println("abc");
-    }
-    public int method2(){
-        System.out.println("asd");
-        return 0;
-
     }
 
     @Override
-    public List<NotificationDTO> getAllNotification() {
+    public ServiceResponceDTO getAllNotification() {
         List<Notification> allNotification = notificationRepo.findAll();
         if (!allNotification.isEmpty()) {
-            // Reverse the list so the last notification is first
             Collections.reverse(allNotification);
-
-            // Map to DTOs
             List<NotificationDTO> getAllNotification = modelMapper.map(allNotification, new TypeToken<List<NotificationDTO>>(){}.getType());
-            return getAllNotification;
+            return new ServiceResponceDTO(true,getAllNotification);
         } else {
-            throw new RuntimeException("Error");
+            return new ServiceResponceDTO(false,"Please Try Again");
         }
     }
 

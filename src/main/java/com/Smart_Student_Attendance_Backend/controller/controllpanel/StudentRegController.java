@@ -159,69 +159,109 @@ public class StudentRegController {
 
     @GetMapping("/getAllSummeryData")
     public ResponseEntity<StandardResponce> getAllSummeryData() {
-        List<Map<String, Object>> massage = studentService.getAllSummeryData(); // Fetch data from the service
-        return new ResponseEntity<StandardResponce>(
-                new StandardResponce(200,"OK",massage)
-                ,HttpStatus.OK);
+        ServiceResponceDTO massage = studentService.getAllSummeryData();
+        if(massage.isSuccess()){
+            return new ResponseEntity<StandardResponce>(
+                    new StandardResponce(200,"Success",massage.getObject())
+                    ,HttpStatus.OK);
+        }else{
+            return new ResponseEntity<StandardResponce>(
+                    new StandardResponce(400,"Error",massage.getObject())
+                    ,HttpStatus.BAD_REQUEST);
+        }
     }
-//    mobile app get data
     @GetMapping("/getAttendanceByRegNo/{regNo}")
     public ResponseEntity<StandardResponce> getAttendanceByRegNo(@PathVariable String regNo) {
-        List<Map<String, Object>> massage=studentService.getAttendSummeryData(regNo);
-        return new ResponseEntity<StandardResponce>(
-                new StandardResponce(201,"OK",massage)
-                ,HttpStatus.OK);
-
+        ServiceResponceDTO massage=studentService.getAttendSummeryData(regNo);
+        if(massage.isSuccess()){
+            return new ResponseEntity<StandardResponce>(
+                    new StandardResponce(201,"Success",massage.getObject())
+                    ,HttpStatus.OK);
+        }else{
+            return new ResponseEntity<StandardResponce>(
+                    new StandardResponce(400,"Error",massage.getObject())
+                    ,HttpStatus.BAD_REQUEST);
+        }
     }
-
     @GetMapping("/dayByDayCounts")
     public ResponseEntity<StandardResponce> getAttendanceCountsDayByDay() {
-        List<Map<String, Object>> massage = studentService.getAttendanceCountsDayByDay();
-        return new ResponseEntity<StandardResponce>(
-                new StandardResponce(200,"OK",massage)
-                ,HttpStatus.OK);
+        ServiceResponceDTO massage = studentService.getAttendanceCountsDayByDay();
+        if(massage.isSuccess()){
+            return new ResponseEntity<StandardResponce>(
+                    new StandardResponce(200,"Success",massage.getObject())
+                    ,HttpStatus.OK);
+        }else {
+            return new ResponseEntity<StandardResponce>(
+                    new StandardResponce(400,"Error",massage.getObject())
+                    ,HttpStatus.BAD_REQUEST);
+        }
     }
-
     @PostMapping("/createNotification")
     public  ResponseEntity<StandardResponce> createNotification(@RequestBody NotificationDTO notificationDTO){
-        String massage =studentService.createNotification(notificationDTO);
-        ResponseEntity<StandardResponce> abc = new ResponseEntity<StandardResponce>(
-                new StandardResponce(200,"Ok",massage)
+        ServiceResponceDTO massage =studentService.createNotification(notificationDTO);
+        if(massage.isSuccess()){
+            return new ResponseEntity<StandardResponce>(
+                new StandardResponce(200,"Success",massage.getObject())
                 ,HttpStatus.OK);
-       return abc;
+        }else {
+            return new ResponseEntity<StandardResponce>(
+                    new StandardResponce(400,"Error",massage.getObject())
+                    ,HttpStatus.BAD_REQUEST);
+        }
     }
-
     @GetMapping("/getAllNotifications")
-    public List<NotificationDTO> getAllNotifications(){
-        return studentService.getAllNotification();
+    public ResponseEntity<StandardResponce> getAllNotifications(){
+        ServiceResponceDTO massage= studentService.getAllNotification();
+        if(massage.isSuccess()){
+            return new ResponseEntity<StandardResponce>(
+                    new StandardResponce(200,"Success",massage.getObject())
+                    ,HttpStatus.OK);
+        }else{
+            return new ResponseEntity<StandardResponce>(
+                    new StandardResponce(400,"Error",massage.getObject())
+                    ,HttpStatus.BAD_REQUEST);
+        }
     }
     @PutMapping("/updateNotification")
-    public  String updateNotification(@RequestBody NotificationDTO notificationDTO){
-        return studentService.updateNotification(notificationDTO);
+    public  ResponseEntity<StandardResponce> updateNotification(@RequestBody NotificationDTO notificationDTO){
+        return new ResponseEntity<StandardResponce>(
+                new StandardResponce(200,"Success",studentService.updateNotification(notificationDTO))
+                ,HttpStatus.OK);
+
     }
 
    @DeleteMapping("/deleteNotification/{id}")
-    public String deleteNotification(@PathVariable int id){
-        return studentService.deleteNotification(id);
+    public ResponseEntity<StandardResponce> deleteNotification(@PathVariable int id){
+        return new ResponseEntity<StandardResponce>(
+                new StandardResponce(200,"Success",studentService.deleteNotification(id))
+                ,HttpStatus.OK) ;
     }
 
     @PostMapping("/savelecturehall")
-    public String savelecturehall(@RequestBody LectureHallsDTO lectureHallsDTO){
-        return studentService.savelecturehall(lectureHallsDTO);
+    public ResponseEntity<StandardResponce> savelecturehall(@RequestBody LectureHallsDTO lectureHallsDTO){
+        return new ResponseEntity<StandardResponce>(
+                new StandardResponce(200,"Success",studentService.savelecturehall(lectureHallsDTO))
+                ,HttpStatus.OK) ;
     }
 
     @PutMapping("/updatelecturehall")
-    public String updatelecturehall(@RequestBody LectureHallsDTO lectureHallsDTO){
-        return studentService.updatelecturehall(lectureHallsDTO);
+    public ResponseEntity<StandardResponce> updatelecturehall(@RequestBody LectureHallsDTO lectureHallsDTO){
+        return new ResponseEntity<StandardResponce>(
+                new StandardResponce(200,"Success",studentService.updatelecturehall(lectureHallsDTO)),
+                HttpStatus.OK);
     }
+
     @GetMapping("/getAlllecturehall")
-    public List<LectureHallsDTO> getAlllecturehall(){
-        return studentService.getAllLecturehall();
+    public ResponseEntity<StandardResponce> getAlllecturehall(){
+        return new ResponseEntity<StandardResponce>(
+                new StandardResponce(200,"Success",studentService.getAllLecturehall())
+                ,HttpStatus.OK);
     }
     @DeleteMapping("/deletelecturehall/{id}")
-    public String deleteLecturehall(@PathVariable int id){
-
-        return studentService.deleteLecturehall(id);
+    public ResponseEntity<StandardResponce> deleteLecturehall(@PathVariable int id){
+        return new ResponseEntity<StandardResponce>(
+                new StandardResponce(200,"Success",studentService.deleteLecturehall(id))
+                ,HttpStatus.OK);
     }
 
 
