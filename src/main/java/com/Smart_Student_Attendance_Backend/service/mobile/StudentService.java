@@ -21,17 +21,17 @@ public interface StudentService {
 
 
 
-    String deleteStudent(String studentRegNo);
+    ServiceResponceDTO deleteStudent(String studentRegNo);
 
-    List<StudentCurrentAttendDTO> getAllStudentAttend();
+    ServiceResponceDTO getAllStudentAttend();
 
-    String deleteAttendance(String studentRegNo,String date);
+    ServiceResponceDTO deleteAttendance(String studentRegNo,String date);
 
     String saveStudentHistory(StudentRegDTO studentRegDTO);
 
     String acceptedAttendance(StudentCurrentAttendDTO studentAttendDTO);
 
-    List<TotalAttendDTO> getAllAcceptStudentAttend();
+    ServiceResponceDTO getAllAcceptStudentAttend();
 
     String addColumnToSummery(String columnName);
 

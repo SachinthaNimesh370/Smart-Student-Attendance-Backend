@@ -47,21 +47,24 @@ public class StudentRegController {
                     new StandardResponce(500,"Error",message.getObject())
                     ,HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
-
     }
 
     @DeleteMapping(path = "/deleteRegStudent/{studentRegNo}")
     public ResponseEntity<StandardResponce> deleteRegStudent(@PathVariable (value = "studentRegNo") String studentRegNo){
-        String massage = studentService.deleteStudent(studentRegNo);
-        return new ResponseEntity<StandardResponce>(
-                new StandardResponce(200,"Deleted",massage)
-                ,HttpStatus.OK);
+        ServiceResponceDTO massage = studentService.deleteStudent(studentRegNo);
+        if(massage.isSuccess()){
+            return new ResponseEntity<StandardResponce>(
+                    new StandardResponce(200,"Success",massage.getObject())
+                    ,HttpStatus.OK);
+        }else{
+            return new ResponseEntity<StandardResponce>(
+                    new StandardResponce(404,"Error",massage.getObject())
+                    ,HttpStatus.NOT_FOUND);
+        }
     }
 
-
+//==========================================================================================================
     @PostMapping("/acceptedAttendance")
-    @Transactional(rollbackFor = Exception.class) // Ensures that the transaction will roll back if an exception occurs
     public ResponseEntity<StandardResponce> acceptedAttendance(@RequestBody StudentCurrentAttendDTO studentAttendDTO) {
         try {
             // Perform the first operation
@@ -83,33 +86,47 @@ public class StudentRegController {
             );
         }
     }
-
-
     @GetMapping("/getAllAcceptAttendance")
     public ResponseEntity<StandardResponce> getAllAcceptStudentAttend(){
-        List<TotalAttendDTO> totalAttendDTO = studentService.getAllAcceptStudentAttend();
-        return new ResponseEntity<StandardResponce>(
-                new StandardResponce(200,"Save",totalAttendDTO)
+        ServiceResponceDTO massage = studentService.getAllAcceptStudentAttend();
+        if(massage.isSuccess()){
+            return new ResponseEntity<StandardResponce>(
+                new StandardResponce(200,"Success",massage.getObject())
                 ,HttpStatus.OK);
+        }else {
+            return new ResponseEntity<StandardResponce>(
+                    new StandardResponce(404,"Error",massage.getObject())
+                    ,HttpStatus.NOT_FOUND);
+        }
     }
-
-
     @GetMapping("/getAllAttendance")
     public ResponseEntity<StandardResponce> getAllStudentAttend(){
-        List<StudentCurrentAttendDTO> studentAttendDTO = studentService.getAllStudentAttend();
-        return new ResponseEntity<StandardResponce>(
-                new StandardResponce(200,"Save",studentAttendDTO)
-                ,HttpStatus.OK);
+        ServiceResponceDTO massage = studentService.getAllStudentAttend();
+        if(massage.isSuccess()){
+            return new ResponseEntity<StandardResponce>(
+                    new StandardResponce(200,"Success",massage.getObject())
+                    ,HttpStatus.OK);
+        }else{
+            return new ResponseEntity<StandardResponce>(
+                    new StandardResponce(404,"Error",massage.getObject())
+                    ,HttpStatus.NOT_FOUND);
+        }
     }
 
     @DeleteMapping(path = "/deleteAttendance/{studentRegNo}/{date}")
-    public ResponseEntity<StandardResponce> deleteAttendance(@PathVariable (value = "studentRegNo") String studentRegNo,
+    public ResponseEntity<StandardResponce> deleteAttendance(
+            @PathVariable (value = "studentRegNo") String studentRegNo,
                                    @PathVariable (value = "date") String date){
-        System.out.println(studentRegNo+date);
-        String massage = studentService.deleteAttendance(studentRegNo,date);
-        return new ResponseEntity<StandardResponce>(
-                new StandardResponce(200,"Deleted",massage)
-                ,HttpStatus.OK);
+        ServiceResponceDTO massage = studentService.deleteAttendance(studentRegNo,date);
+        if(massage.isSuccess()){
+            return new ResponseEntity<StandardResponce>(
+                    new StandardResponce(200,"Success",massage)
+                    ,HttpStatus.OK);
+        }else{
+            return new ResponseEntity<StandardResponce>(
+                    new StandardResponce(400,"Error",massage)
+                    ,HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PostMapping("/addColumn")

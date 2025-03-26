@@ -115,25 +115,24 @@ public class StudentServiceIMPL implements StudentService {
     }
 
     @Override
-    @Transactional
-    public String deleteStudent(String studentRegNo) {
+    public ServiceResponceDTO deleteStudent(String studentRegNo) {
         if(studentRegRepo.existsByStudentRegNoEquals(studentRegNo)){
             studentRegRepo.deleteByStudentRegNoEquals(studentRegNo);
-            return "Sucssesful Delete Student";
+            return new ServiceResponceDTO(true,"Delete Student");
         }
         else{
-            throw new RuntimeException("No Data Found");
+            return new ServiceResponceDTO(false,"No Data Found");
         }
     }
 
     @Override
-    public List<StudentCurrentAttendDTO> getAllStudentAttend() {
+    public ServiceResponceDTO getAllStudentAttend() {
         List<StudentCurrentAttend> getAllAttend=attendMarkStudentRepo.findAll();
         if(!getAllAttend.isEmpty()){
             List<StudentCurrentAttendDTO> getAllAttendance = modelMapper.map(getAllAttend,new TypeToken<List<StudentCurrentAttendDTO>>(){}.getType());
-            return getAllAttendance;
+            return new ServiceResponceDTO(true,getAllAttendance);
         }else {
-            throw new RuntimeException("Error");
+            return new ServiceResponceDTO(false,"No Data Found");
         }
     }
 
@@ -142,7 +141,7 @@ public class StudentServiceIMPL implements StudentService {
     @Override
     @Transactional
 
-    public String deleteAttendance(String studentRegNo,String date) {
+    public ServiceResponceDTO deleteAttendance(String studentRegNo,String date) {
         // Define a formatter that matches the format in the database
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
@@ -150,13 +149,15 @@ public class StudentServiceIMPL implements StudentService {
         LocalDate pathDate = LocalDate.parse(date, DateTimeFormatter.ISO_DATE); // Format from PathVariable (yyyy-MM-dd)
         String formattedDate = pathDate.format(formatter);
 
-
         if (attendMarkStudentRepo.existsByStudentRegNoEqualsAndDateEquals(studentRegNo,formattedDate)) {
-            attendMarkStudentRepo.deleteByStudentRegNoEqualsAndDateEquals(studentRegNo,formattedDate);
-            return "Successful Delete Attendance ";
+            try {
+                attendMarkStudentRepo.deleteByStudentRegNoEqualsAndDateEquals(studentRegNo,formattedDate);
+                return new ServiceResponceDTO(true, "Delete Attendance");
+            }catch (Exception e){
+                return new ServiceResponceDTO(false, "Please Try Again "+e);
+            }
         } else {
-            System.out.println(attendMarkStudentRepo.findAll());
-            return " on date: " + studentRegNo;
+            return new ServiceResponceDTO(false,"No Data Found");
         }
 
     }
@@ -205,13 +206,13 @@ public class StudentServiceIMPL implements StudentService {
     }
 
     @Override
-    public List<TotalAttendDTO> getAllAcceptStudentAttend() {
+    public ServiceResponceDTO getAllAcceptStudentAttend() {
         List<TotalAttend> getAcceptAllAttend=totalAttendRepo.findAll();
         if(!getAcceptAllAttend.isEmpty()){
             List<TotalAttendDTO> totalAttendDTO = modelMapper.map(getAcceptAllAttend,new TypeToken<List<TotalAttendDTO>>(){}.getType());
-            return totalAttendDTO;
+            return new ServiceResponceDTO(true,totalAttendDTO);
         }else {
-            throw new RuntimeException("Error");
+            return new ServiceResponceDTO(false,"No Registered Student");
         }
     }
 
