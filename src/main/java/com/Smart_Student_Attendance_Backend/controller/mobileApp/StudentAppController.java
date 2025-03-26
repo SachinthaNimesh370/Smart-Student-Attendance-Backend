@@ -31,7 +31,7 @@ public class StudentAppController {
                     , HttpStatus.CREATED);
         }else {
             return new ResponseEntity<StandardResponce>(
-                    new StandardResponce(500,"Error",massage.getObject())
+                    new StandardResponce(400,"Error",massage.getObject())
                     , HttpStatus.BAD_REQUEST);
         }
 
@@ -47,7 +47,7 @@ public class StudentAppController {
                     ,HttpStatus.OK);
         }else{
             return new ResponseEntity<StandardResponce>(
-                    new StandardResponce(500,"Error",massage.getObject())
+                    new StandardResponce(404,"Error",massage.getObject())
                     ,HttpStatus.NOT_FOUND);
         }
     }
@@ -57,11 +57,11 @@ public class StudentAppController {
         ServiceResponceDTO massage=studentService.attendMarkStudent(studentAttendDTO);
         if(massage.isSuccess()){
             return new ResponseEntity<StandardResponce>(
-                    new StandardResponce(201,"Save",massage.getObject())
+                    new StandardResponce(201,"Success",massage.getObject())
                     ,HttpStatus.CREATED);
         }else{
             return new ResponseEntity<StandardResponce>(
-                    new StandardResponce(500,"Error",massage.getObject())
+                    new StandardResponce(400,"Error",massage.getObject())
                     ,HttpStatus.BAD_REQUEST);
         }
 

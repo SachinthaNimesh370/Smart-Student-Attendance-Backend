@@ -16,6 +16,7 @@ import java.util.*;
 import java.util.List;
 
 @Service
+@Transactional
 public class StudentServiceIMPL implements StudentService {
 
     private final ModelMapper modelMapper;
@@ -76,16 +77,30 @@ public class StudentServiceIMPL implements StudentService {
     }
 
     @Override
-    public List<StudentRegDTO> getAllStudent() {
+    public ServiceResponceDTO getAllStudent() {
         List<StudentReg> getAllStudent=studentRegRepo.findAll();
         if(!getAllStudent.isEmpty()){
             List<StudentRegDTO> allStudent = modelMapper.map(getAllStudent,new TypeToken<List<StudentRegDTO>>(){}.getType());
-            return allStudent;
+            return new ServiceResponceDTO(true,allStudent);
         }else {
-            throw new RuntimeException("Error");
+            return new ServiceResponceDTO(false,"Error");
         }
     }
 
+
+
+    @Override
+    public ServiceResponceDTO updateStudentWithHistoryAndSummary(StudentRegDTO studentRegDTO) {
+        try {
+            updateStudent(studentRegDTO);
+            saveStudentHistory(studentRegDTO);
+            saveStudentSummery(studentRegDTO);
+            return new ServiceResponceDTO(true,"Update Success");
+        } catch (Exception e) {
+            return  new ServiceResponceDTO(false,"Transaction failed: " + e.getMessage());
+
+        }
+    }
     @Override
     public String updateStudent(StudentRegDTO studentRegDTO) {
         StudentReg studentReg = modelMapper.map(studentRegDTO,StudentReg.class);
