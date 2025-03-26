@@ -13,10 +13,12 @@ public interface StudentService {
 
     ServiceResponceDTO attendMarkStudent(StudentCurrentAttendDTO studentAttendDTO);
 
-    List<StudentRegDTO> getAllStudent();
+    ServiceResponceDTO getAllStudent();
 
 
+    ServiceResponceDTO updateStudentWithHistoryAndSummary(StudentRegDTO studentRegDTO);
     String updateStudent(StudentRegDTO studentRegDTO);
+
 
 
     String deleteStudent(String studentRegNo);

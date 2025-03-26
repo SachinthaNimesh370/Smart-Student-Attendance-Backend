@@ -23,22 +23,32 @@ public class StudentRegController {
     //Get All Register Student Data
     @GetMapping("/getAllStudent")
     public ResponseEntity<StandardResponce> getAllStudent(){
-        List<StudentRegDTO> studentRegDTO = studentService.getAllStudent();
-        return new ResponseEntity<StandardResponce>(
-                new StandardResponce(200,"OK",studentRegDTO)
-                ,HttpStatus.OK);
+        ServiceResponceDTO massage = studentService.getAllStudent();
+        if(massage.isSuccess()){
+            return new ResponseEntity<StandardResponce>(
+                    new StandardResponce(200,"Success",massage.getObject())
+                    ,HttpStatus.OK);
+        }else {
+            return new ResponseEntity<StandardResponce>(
+                    new StandardResponce(500,"Error",massage.getObject())
+                    ,HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @PutMapping("/updateRegStudent")
     public ResponseEntity<StandardResponce> updateStudent(@RequestBody StudentRegDTO studentRegDTO){
-        String massage = studentService.updateStudent(studentRegDTO);
-//      Registation number only add both column in table
-        String massageHistory=studentService.saveStudentHistory(studentRegDTO);
-        String massageSummery=studentService.saveStudentSummery(studentRegDTO);
+        ServiceResponceDTO message = studentService.updateStudentWithHistoryAndSummary(studentRegDTO);
+        if(message.isSuccess()){
+            return new ResponseEntity<StandardResponce>(
+                    new StandardResponce(200,"Success",message.getObject())
+                    ,HttpStatus.OK);
+        }else{
+            return new ResponseEntity<StandardResponce>(
+                    new StandardResponce(500,"Error",message.getObject())
+                    ,HttpStatus.INTERNAL_SERVER_ERROR);
+        }
 
-        return new ResponseEntity<StandardResponce>(
-                new StandardResponce(201,"Updated",massageHistory+massageSummery)
-                ,HttpStatus.CREATED);
+
     }
 
     @DeleteMapping(path = "/deleteRegStudent/{studentRegNo}")
