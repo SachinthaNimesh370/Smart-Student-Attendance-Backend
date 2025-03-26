@@ -1,5 +1,6 @@
 package com.Smart_Student_Attendance_Backend.controller.mobileApp;
 
+import com.Smart_Student_Attendance_Backend.dto.mobile.ServiceResponceDTO;
 import com.Smart_Student_Attendance_Backend.dto.mobile.StudentCurrentAttendDTO;
 import com.Smart_Student_Attendance_Backend.dto.mobile.StudentRegDTO;
 import com.Smart_Student_Attendance_Backend.dto.mobile.StudentSignInDTO;
@@ -23,27 +24,46 @@ public class StudentAppController {
 
     @PostMapping("/signUp")
     public ResponseEntity<StandardResponce> SaveStudent(@RequestBody StudentRegDTO studentRegDTO){
-        String massage=studentService.saveStudent(studentRegDTO);
-        return new ResponseEntity<StandardResponce>(
-                new StandardResponce(201,"Save",massage)
-                , HttpStatus.CREATED);
+        ServiceResponceDTO massage=studentService.saveStudent(studentRegDTO);
+        if(massage.isSuccess()){
+            return new ResponseEntity<StandardResponce>(
+                    new StandardResponce(201,"Success",massage.getObject())
+                    , HttpStatus.CREATED);
+        }else {
+            return new ResponseEntity<StandardResponce>(
+                    new StandardResponce(500,"Error",massage.getObject())
+                    , HttpStatus.BAD_REQUEST);
+        }
+
     }
 
     //Student Sign IN
     @PostMapping("/signIn")
     public ResponseEntity<StandardResponce> SignIn(@RequestBody StudentSignInDTO studentSignInDTO){
-        boolean massage=studentService.signInService(studentSignInDTO);
-        return new ResponseEntity<StandardResponce>(
-                new StandardResponce(200,"Success",massage)
-                ,HttpStatus.OK);
-
+        ServiceResponceDTO massage=studentService.signInService(studentSignInDTO);
+        if(massage.isSuccess()){
+            return new ResponseEntity<StandardResponce>(
+                    new StandardResponce(200,"Success",massage.getObject())
+                    ,HttpStatus.OK);
+        }else{
+            return new ResponseEntity<StandardResponce>(
+                    new StandardResponce(500,"Error",massage.getObject())
+                    ,HttpStatus.NOT_FOUND);
+        }
     }
 
     @PostMapping("/attendMark")
     public ResponseEntity<StandardResponce> AttendMark(@RequestBody StudentCurrentAttendDTO studentAttendDTO){
-        String massage=studentService.attendMarkStudent(studentAttendDTO);
-        return new ResponseEntity<StandardResponce>(
-                new StandardResponce(201,"Save",massage)
-                ,HttpStatus.CREATED);
+        ServiceResponceDTO massage=studentService.attendMarkStudent(studentAttendDTO);
+        if(massage.isSuccess()){
+            return new ResponseEntity<StandardResponce>(
+                    new StandardResponce(201,"Save",massage.getObject())
+                    ,HttpStatus.CREATED);
+        }else{
+            return new ResponseEntity<StandardResponce>(
+                    new StandardResponce(500,"Error",massage.getObject())
+                    ,HttpStatus.BAD_REQUEST);
+        }
+
     }
 }

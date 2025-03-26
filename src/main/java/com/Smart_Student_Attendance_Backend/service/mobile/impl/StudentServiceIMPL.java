@@ -44,34 +44,34 @@ public class StudentServiceIMPL implements StudentService {
         this.lecturehallRepo = lecturehallRepo;
     }
     @Override
-    public String saveStudent(StudentRegDTO studentRegDTO) {
+    public ServiceResponceDTO saveStudent(StudentRegDTO studentRegDTO) {
         StudentReg studentReg = modelMapper.map(studentRegDTO, StudentReg.class);
         if(!studentRegRepo.existsByStudentRegNoEquals(studentReg.getStudentRegNo())){
             studentRegRepo.save(studentReg);
-            return studentRegDTO.getStudentRegNo()+" Saved";
+            return new ServiceResponceDTO(true,studentRegDTO.getStudentRegNo()+" Saved");
         }else {
-            return"Alredy Added";
+            return new ServiceResponceDTO(false,studentRegDTO.getStudentRegNo()+"Alredy Added");
         }
     }
 
     @Override
-    public boolean signInService(StudentSignInDTO studentSignInDTO) {
+    public ServiceResponceDTO signInService(StudentSignInDTO studentSignInDTO) {
         StudentReg studentReg = modelMapper.map(studentSignInDTO, StudentReg.class);
         if(studentRegRepo.existsByStudentRegNoEqualsAndStudentPasswordEqualsAndActivestatusEquals(studentReg.getStudentRegNo(),studentReg.getStudentPassword(),true)){
-            return true;
+            return new ServiceResponceDTO(true,"Login Success");
         }else {
-           return false;
+           return new ServiceResponceDTO(false,"Please Try Again");
         }
     }
 
     @Override
-    public String attendMarkStudent(StudentCurrentAttendDTO studentAttendDTO) {
+    public ServiceResponceDTO attendMarkStudent(StudentCurrentAttendDTO studentAttendDTO) {
         StudentCurrentAttend studentAttend = modelMapper.map(studentAttendDTO, StudentCurrentAttend.class);
         if(!attendMarkStudentRepo.existsByStudentRegNoEqualsAndDateEquals(studentAttend.getStudentRegNo(),studentAttend.getDate())){
             attendMarkStudentRepo.save(studentAttend);
-            return "Save Success";
+            return new ServiceResponceDTO(true,"Successfully Mark Attendance");
         }else {
-            return "Alredy Marked Attendance";
+            return new ServiceResponceDTO(false,"Alredy Marked Attendance");
         }
     }
 

@@ -6,10 +6,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
-public class ServiceResponce {
+public class ServiceResponceDTO {
     private boolean success;
-    private String message;
+    private Object object;
 }

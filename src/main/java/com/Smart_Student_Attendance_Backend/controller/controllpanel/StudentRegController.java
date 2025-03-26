@@ -35,6 +35,7 @@ public class StudentRegController {
 //      Registation number only add both column in table
         String massageHistory=studentService.saveStudentHistory(studentRegDTO);
         String massageSummery=studentService.saveStudentSummery(studentRegDTO);
+
         return new ResponseEntity<StandardResponce>(
                 new StandardResponce(201,"Updated",massageHistory+massageSummery)
                 ,HttpStatus.CREATED);
