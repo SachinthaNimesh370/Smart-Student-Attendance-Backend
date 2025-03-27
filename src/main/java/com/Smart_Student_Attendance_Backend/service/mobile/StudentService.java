@@ -52,16 +52,16 @@ public interface StudentService {
 
     ServiceResponceDTO getAllNotification();
 
-    String updateNotification(NotificationDTO notificationDTO);
+    ServiceResponceDTO updateNotification(NotificationDTO notificationDTO);
 
-    String deleteNotification(int id);
+    ServiceResponceDTO deleteNotification(int id);
 
-    String savelecturehall(LectureHallsDTO lectureHallsDTO);
+    ServiceResponceDTO savelecturehall(LectureHallsDTO lectureHallsDTO);
 
-    String updatelecturehall(LectureHallsDTO lectureHallsDTO);
+    ServiceResponceDTO updatelecturehall(LectureHallsDTO lectureHallsDTO);
 
-    List<LectureHallsDTO> getAllLecturehall();
+    ServiceResponceDTO getAllLecturehall();
 
-    String deleteLecturehall(int id);
+    ServiceResponceDTO deleteLecturehall(int id);
 
 }

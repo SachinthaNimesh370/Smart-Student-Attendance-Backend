@@ -51,7 +51,7 @@ public class StudentServiceIMPL implements StudentService {
             studentRegRepo.save(studentReg);
             return new ServiceResponceDTO(true,studentRegDTO.getStudentRegNo()+" Saved");
         }else {
-            return new ServiceResponceDTO(false,studentRegDTO.getStudentRegNo()+"Alredy Added");
+            return new ServiceResponceDTO(false,studentRegDTO.getStudentRegNo()+"Already Added");
         }
     }
 
@@ -72,7 +72,7 @@ public class StudentServiceIMPL implements StudentService {
             attendMarkStudentRepo.save(studentAttend);
             return new ServiceResponceDTO(true,"Successfully Mark Attendance");
         }else {
-            return new ServiceResponceDTO(false,"Alredy Marked Attendance");
+            return new ServiceResponceDTO(false,"Already Marked Attendance");
         }
     }
 
@@ -369,50 +369,68 @@ public class StudentServiceIMPL implements StudentService {
     }
 
     @Override
-    public String updateNotification(NotificationDTO notificationDTO) {
+    public ServiceResponceDTO updateNotification(NotificationDTO notificationDTO) {
         Notification notification = modelMapper.map(notificationDTO, Notification.class);
-        notificationRepo.save(notification);
-        return "Success Full Notification update";
-    }
-
-    @Override
-    public String deleteNotification(int id) {
-        notificationRepo.deleteById(id);
-        return "Success Full Notification Delete";
-    }
-
-    @Override
-    public String savelecturehall(LectureHallsDTO lectureHallsDTO) {
-        LectureHalls lectureHalls= modelMapper.map(lectureHallsDTO, LectureHalls.class);
-        lecturehallRepo.save(lectureHalls);
-        return "Saved Lecture Halls";
-    }
-
-    @Override
-    public String updatelecturehall(LectureHallsDTO lectureHallsDTO) {
-        LectureHalls lectureHalls= modelMapper.map(lectureHallsDTO, LectureHalls.class);
-        lecturehallRepo.save(lectureHalls);
-        return "Saved Lecture Halls";
-    }
-
-    @Override
-    public List<LectureHallsDTO> getAllLecturehall() {
-        List<LectureHalls> alllectureHalls = lecturehallRepo.findAll();
-        if (!alllectureHalls.isEmpty()) {
-
-
-            // Map to DTOs
-            List<LectureHallsDTO> getAlllectureHalls = modelMapper.map(alllectureHalls, new TypeToken<List<LectureHallsDTO>>(){}.getType());
-            return getAlllectureHalls;
-        } else {
-            throw new RuntimeException("Error");
+        try {
+            notificationRepo.save(notification);
+            return new ServiceResponceDTO(true,"Success Full Notification update");
+        }catch (Exception e){
+            return  new ServiceResponceDTO(false,e.getMessage());
         }
     }
 
     @Override
-    public String deleteLecturehall(int id) {
-        lecturehallRepo.deleteById(id);
-        return "Success Full Notification Delete";
+    public ServiceResponceDTO deleteNotification(int id) {
+        try {
+            notificationRepo.deleteById(id);
+            return new ServiceResponceDTO(true,"Success Full Notification Delete");
+        }catch (Exception e){
+            return new ServiceResponceDTO(false,"Please Try Again "+e.getMessage());
+        }
+    }
+
+    @Override
+    public ServiceResponceDTO savelecturehall(LectureHallsDTO lectureHallsDTO) {
+        try {
+            LectureHalls lectureHalls= modelMapper.map(lectureHallsDTO, LectureHalls.class);
+            lecturehallRepo.save(lectureHalls);
+            return new ServiceResponceDTO(true,"Saved Lecture Hall");
+        }catch (Exception e){
+            return new ServiceResponceDTO(false,"Please Try Again"+e.getMessage());
+        }
+    }
+
+    @Override
+    public ServiceResponceDTO updatelecturehall(LectureHallsDTO lectureHallsDTO) {
+        try {
+            LectureHalls lectureHalls= modelMapper.map(lectureHallsDTO, LectureHalls.class);
+            lecturehallRepo.save(lectureHalls);
+            return new ServiceResponceDTO(true,"Updated Lecture Hall");
+        }catch (Exception e){
+            return new ServiceResponceDTO(false,"Please Try Again"+e.getMessage());
+        }
+    }
+
+    @Override
+    public ServiceResponceDTO getAllLecturehall() {
+        List<LectureHalls> alllectureHalls = lecturehallRepo.findAll();
+        if (!alllectureHalls.isEmpty()) {
+            List<LectureHallsDTO> getAlllectureHalls = modelMapper.map(alllectureHalls, new TypeToken<List<LectureHallsDTO>>(){}.getType());
+            return new ServiceResponceDTO(true,getAlllectureHalls);
+        } else {
+            return new ServiceResponceDTO(false,"Please Try Again");
+        }
+    }
+
+    @Override
+    public ServiceResponceDTO deleteLecturehall(int id) {
+        try {
+            lecturehallRepo.deleteById(id);
+            return new ServiceResponceDTO(true,"Success Full Notification Delete");
+        }catch (Exception e){
+            return new ServiceResponceDTO(false,"Please Try Again"+e.getMessage());
+        }
+
     }
 
 
