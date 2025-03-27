@@ -27,7 +27,7 @@ public interface StudentService {
 
     ServiceResponceDTO deleteAttendance(String studentRegNo,String date);
 
-    String saveStudentHistory(StudentRegDTO studentRegDTO);
+    ServiceResponceDTO saveStudentHistory(StudentRegDTO studentRegDTO);
 
     String acceptedAttendance(StudentCurrentAttendDTO studentAttendDTO);
 
@@ -42,26 +42,26 @@ public interface StudentService {
 
     String markAttendInSummery(StudentCurrentAttendDTO studentcurrentAttendDTO);
 
-    List<Map<String, Object>> getAttendSummeryData(String regNo);
+    ServiceResponceDTO getAttendSummeryData(String regNo);
 
-    List<Map<String, Object>> getAttendanceCountsDayByDay();
-
-
-    String createNotification(NotificationDTO notificationDTO);
+    ServiceResponceDTO getAttendanceCountsDayByDay();
 
 
-    List<NotificationDTO> getAllNotification();
+    ServiceResponceDTO createNotification(NotificationDTO notificationDTO);
 
-    String updateNotification(NotificationDTO notificationDTO);
 
-    String deleteNotification(int id);
+    ServiceResponceDTO getAllNotification();
 
-    String savelecturehall(LectureHallsDTO lectureHallsDTO);
+    ServiceResponceDTO updateNotification(NotificationDTO notificationDTO);
 
-    String updatelecturehall(LectureHallsDTO lectureHallsDTO);
+    ServiceResponceDTO deleteNotification(int id);
 
-    List<LectureHallsDTO> getAllLecturehall();
+    ServiceResponceDTO savelecturehall(LectureHallsDTO lectureHallsDTO);
 
-    String deleteLecturehall(int id);
+    ServiceResponceDTO updatelecturehall(LectureHallsDTO lectureHallsDTO);
+
+    ServiceResponceDTO getAllLecturehall();
+
+    ServiceResponceDTO deleteLecturehall(int id);
 
 }
