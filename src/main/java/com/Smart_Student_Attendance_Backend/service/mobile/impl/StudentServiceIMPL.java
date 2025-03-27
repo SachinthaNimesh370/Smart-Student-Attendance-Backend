@@ -25,23 +25,19 @@ public class StudentServiceIMPL implements StudentService {
     private final TotalAttendRepo totalAttendRepo;
     private final JdbcTemplate jdbcTemplate;
     private final SummeryRepo summeryRepo;
-    private final NotificationRepo notificationRepo;
     public StudentServiceIMPL(ModelMapper modelMapper,
                               StudentRegRepo studentRegRepo,
                               AttendMarkStudentRepo attendMarkStudentRepo,
                               TotalAttendRepo totalAttendRepo,
                               JdbcTemplate jdbcTemplate,
-                              SummeryRepo summeryRepo,
-                              NotificationRepo notificationRepo,
-                              LecturehallRepo lecturehallRepo) {
+                              SummeryRepo summeryRepo) {
         this.modelMapper = modelMapper;
         this.studentRegRepo = studentRegRepo;
         this.attendMarkStudentRepo = attendMarkStudentRepo;
         this.totalAttendRepo = totalAttendRepo;
         this.jdbcTemplate = jdbcTemplate;
         this.summeryRepo = summeryRepo;
-        this.notificationRepo = notificationRepo;
-        
+
     }
     @Override
     public ServiceResponceDTO saveStudent(StudentRegDTO studentRegDTO) {
@@ -184,10 +180,7 @@ public class StudentServiceIMPL implements StudentService {
         } else {
             return new ServiceResponceDTO(false,"No Data Found");
         }
-
     }
-
-
 
     @Override
     public ServiceResponceDTO acceptedAttendance(StudentCurrentAttendDTO studentAttendDTO) {
@@ -344,49 +337,7 @@ public class StudentServiceIMPL implements StudentService {
         }
     }
 
-    @Override
-    public ServiceResponceDTO createNotification(NotificationDTO notificationDTO) {
-        try {
-            Notification notification = modelMapper.map(notificationDTO, Notification.class);
-            notificationRepo.save(notification);
-            return new ServiceResponceDTO(true,"Notification Created Successfully");
-        } catch (Exception e) {
-            return new ServiceResponceDTO(false,"Error While Creating Notification: " + e.getMessage());
-        }
-    }
 
-    @Override
-    public ServiceResponceDTO getAllNotification() {
-        List<Notification> allNotification = notificationRepo.findAll();
-        if (!allNotification.isEmpty()) {
-            Collections.reverse(allNotification);
-            List<NotificationDTO> getAllNotification = modelMapper.map(allNotification, new TypeToken<List<NotificationDTO>>(){}.getType());
-            return new ServiceResponceDTO(true,getAllNotification);
-        } else {
-            return new ServiceResponceDTO(false,"Please Try Again");
-        }
-    }
-
-    @Override
-    public ServiceResponceDTO updateNotification(NotificationDTO notificationDTO) {
-        Notification notification = modelMapper.map(notificationDTO, Notification.class);
-        try {
-            notificationRepo.save(notification);
-            return new ServiceResponceDTO(true,"Success Full Notification update");
-        }catch (Exception e){
-            return  new ServiceResponceDTO(false,e.getMessage());
-        }
-    }
-
-    @Override
-    public ServiceResponceDTO deleteNotification(int id) {
-        try {
-            notificationRepo.deleteById(id);
-            return new ServiceResponceDTO(true,"Success Full Notification Delete");
-        }catch (Exception e){
-            return new ServiceResponceDTO(false,"Please Try Again "+e.getMessage());
-        }
-    }
 
 
 

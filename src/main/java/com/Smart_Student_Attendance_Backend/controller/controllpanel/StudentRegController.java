@@ -1,6 +1,7 @@
 package com.Smart_Student_Attendance_Backend.controller.controllpanel;
 import com.Smart_Student_Attendance_Backend.dto.mobile.*;
 import com.Smart_Student_Attendance_Backend.service.mobile.LectureHallService;
+import com.Smart_Student_Attendance_Backend.service.mobile.NotificationService;
 import com.Smart_Student_Attendance_Backend.service.mobile.StudentService;
 import com.Smart_Student_Attendance_Backend.utill.StandardResponce;
 import org.springframework.http.HttpStatus;
@@ -14,10 +15,12 @@ public class StudentRegController {
 
     private final StudentService studentService;
     private  final LectureHallService lectureHallService;
+    private  final NotificationService notificationService;
 
-    public StudentRegController(StudentService studentService, LectureHallService lectureHallService) {
+    public StudentRegController(StudentService studentService, LectureHallService lectureHallService, NotificationService notificationService) {
         this.studentService = studentService;
         this.lectureHallService = lectureHallService;
+        this.notificationService = notificationService;
     }
 
     //Get All Register Student Data
@@ -189,7 +192,7 @@ public class StudentRegController {
     }
     @PostMapping("/createNotification")
     public  ResponseEntity<StandardResponce> createNotification(@RequestBody NotificationDTO notificationDTO){
-        ServiceResponceDTO massage =studentService.createNotification(notificationDTO);
+        ServiceResponceDTO massage =notificationService.createNotification(notificationDTO);
         if(massage.isSuccess()){
             return new ResponseEntity<StandardResponce>(
                 new StandardResponce(200,"Success",massage.getObject())
@@ -202,7 +205,7 @@ public class StudentRegController {
     }
     @GetMapping("/getAllNotifications")
     public ResponseEntity<StandardResponce> getAllNotifications(){
-        ServiceResponceDTO massage= studentService.getAllNotification();
+        ServiceResponceDTO massage= notificationService.getAllNotification();
         if(massage.isSuccess()){
             return new ResponseEntity<StandardResponce>(
                     new StandardResponce(200,"Success",massage.getObject())
@@ -215,7 +218,7 @@ public class StudentRegController {
     }
     @PutMapping("/updateNotification")
     public  ResponseEntity<StandardResponce> updateNotification(@RequestBody NotificationDTO notificationDTO){
-        ServiceResponceDTO massage = studentService.updateNotification(notificationDTO);
+        ServiceResponceDTO massage = notificationService.updateNotification(notificationDTO);
         if(massage.isSuccess()){
             return new ResponseEntity<StandardResponce>(
                     new StandardResponce(200,"Success",massage.getObject())
@@ -229,7 +232,7 @@ public class StudentRegController {
 
    @DeleteMapping("/deleteNotification/{id}")
     public ResponseEntity<StandardResponce> deleteNotification(@PathVariable int id){
-       ServiceResponceDTO massage =studentService.deleteNotification(id);
+       ServiceResponceDTO massage =notificationService.deleteNotification(id);
        if(massage.isSuccess()){
            return new ResponseEntity<StandardResponce>(
                    new StandardResponce(200,"Success",massage.getObject())

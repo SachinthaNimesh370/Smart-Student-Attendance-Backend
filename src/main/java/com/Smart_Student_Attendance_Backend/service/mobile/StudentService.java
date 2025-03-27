@@ -45,14 +45,7 @@ public interface StudentService {
     ServiceResponceDTO getAttendanceCountsDayByDay();
 
 
-    ServiceResponceDTO createNotification(NotificationDTO notificationDTO);
 
-
-    ServiceResponceDTO getAllNotification();
-
-    ServiceResponceDTO updateNotification(NotificationDTO notificationDTO);
-
-    ServiceResponceDTO deleteNotification(int id);
 
 
 
