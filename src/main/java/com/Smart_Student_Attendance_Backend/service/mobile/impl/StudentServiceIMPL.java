@@ -26,7 +26,6 @@ public class StudentServiceIMPL implements StudentService {
     private final JdbcTemplate jdbcTemplate;
     private final SummeryRepo summeryRepo;
     private final NotificationRepo notificationRepo;
-    private final LecturehallRepo lecturehallRepo;
     public StudentServiceIMPL(ModelMapper modelMapper,
                               StudentRegRepo studentRegRepo,
                               AttendMarkStudentRepo attendMarkStudentRepo,
@@ -42,7 +41,7 @@ public class StudentServiceIMPL implements StudentService {
         this.jdbcTemplate = jdbcTemplate;
         this.summeryRepo = summeryRepo;
         this.notificationRepo = notificationRepo;
-        this.lecturehallRepo = lecturehallRepo;
+        
     }
     @Override
     public ServiceResponceDTO saveStudent(StudentRegDTO studentRegDTO) {
@@ -389,48 +388,7 @@ public class StudentServiceIMPL implements StudentService {
         }
     }
 
-    @Override
-    public ServiceResponceDTO savelecturehall(LectureHallsDTO lectureHallsDTO) {
-        try {
-            LectureHalls lectureHalls= modelMapper.map(lectureHallsDTO, LectureHalls.class);
-            lecturehallRepo.save(lectureHalls);
-            return new ServiceResponceDTO(true,"Saved Lecture Hall");
-        }catch (Exception e){
-            return new ServiceResponceDTO(false,"Please Try Again"+e.getMessage());
-        }
-    }
 
-    @Override
-    public ServiceResponceDTO updatelecturehall(LectureHallsDTO lectureHallsDTO) {
-        try {
-            LectureHalls lectureHalls= modelMapper.map(lectureHallsDTO, LectureHalls.class);
-            lecturehallRepo.save(lectureHalls);
-            return new ServiceResponceDTO(true,"Updated Lecture Hall");
-        }catch (Exception e){
-            return new ServiceResponceDTO(false,"Please Try Again"+e.getMessage());
-        }
-    }
-
-    @Override
-    public ServiceResponceDTO getAllLecturehall() {
-        List<LectureHalls> alllectureHalls = lecturehallRepo.findAll();
-        if (!alllectureHalls.isEmpty()) {
-            List<LectureHallsDTO> getAlllectureHalls = modelMapper.map(alllectureHalls, new TypeToken<List<LectureHallsDTO>>(){}.getType());
-            return new ServiceResponceDTO(true,getAlllectureHalls);
-        } else {
-            return new ServiceResponceDTO(false,"Please Try Again");
-        }
-    }
-
-    @Override
-    public ServiceResponceDTO deleteLecturehall(int id) {
-        try {
-            lecturehallRepo.deleteById(id);
-            return new ServiceResponceDTO(true,"Success Full Notification Delete");
-        }catch (Exception e){
-            return new ServiceResponceDTO(false,"Please Try Again"+e.getMessage());
-        }
-    }
 
 
 }

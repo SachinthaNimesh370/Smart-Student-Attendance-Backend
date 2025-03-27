@@ -1,23 +1,23 @@
 package com.Smart_Student_Attendance_Backend.controller.controllpanel;
 import com.Smart_Student_Attendance_Backend.dto.mobile.*;
+import com.Smart_Student_Attendance_Backend.service.mobile.LectureHallService;
 import com.Smart_Student_Attendance_Backend.service.mobile.StudentService;
 import com.Smart_Student_Attendance_Backend.utill.StandardResponce;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.transaction.annotation.Transactional;
-import java.util.List;
-import java.util.Map;
 
 @RestController
-@RequestMapping("api/v1/controller")
+@RequestMapping("/controller")
 @CrossOrigin
 public class StudentRegController {
 
     private final StudentService studentService;
+    private  final LectureHallService lectureHallService;
 
-    public StudentRegController(StudentService studentService) {
+    public StudentRegController(StudentService studentService, LectureHallService lectureHallService) {
         this.studentService = studentService;
+        this.lectureHallService = lectureHallService;
     }
 
     //Get All Register Student Data
@@ -243,7 +243,7 @@ public class StudentRegController {
 
     @PostMapping("/savelecturehall")
     public ResponseEntity<StandardResponce> savelecturehall(@RequestBody LectureHallsDTO lectureHallsDTO){
-        ServiceResponceDTO massage = studentService.savelecturehall(lectureHallsDTO);
+        ServiceResponceDTO massage = lectureHallService.savelecturehall(lectureHallsDTO);
         if(massage.isSuccess()){
             return new ResponseEntity<StandardResponce>(
                     new StandardResponce(200,"Success",massage.getObject())
@@ -257,7 +257,7 @@ public class StudentRegController {
 
     @PutMapping("/updatelecturehall")
     public ResponseEntity<StandardResponce> updatelecturehall(@RequestBody LectureHallsDTO lectureHallsDTO){
-        ServiceResponceDTO massage=studentService.updatelecturehall(lectureHallsDTO);
+        ServiceResponceDTO massage=lectureHallService.updatelecturehall(lectureHallsDTO);
         if(massage.isSuccess()){
             return new ResponseEntity<StandardResponce>(
                     new StandardResponce(200,"Success",massage.getObject()),
@@ -271,7 +271,7 @@ public class StudentRegController {
 
     @GetMapping("/getAlllecturehall")
     public ResponseEntity<StandardResponce> getAlllecturehall(){
-        ServiceResponceDTO massage = studentService.getAllLecturehall();
+        ServiceResponceDTO massage = lectureHallService.getAllLecturehall();
         if(massage.isSuccess()){
             System.out.println(massage.getObject());
             return new ResponseEntity<StandardResponce>(
@@ -285,7 +285,7 @@ public class StudentRegController {
     }
     @DeleteMapping("/deletelecturehall/{id}")
     public ResponseEntity<StandardResponce> deleteLecturehall(@PathVariable int id){
-        ServiceResponceDTO massage =studentService.deleteLecturehall(id);
+        ServiceResponceDTO massage =lectureHallService.deleteLecturehall(id);
         if(massage.isSuccess()){
             return new ResponseEntity<StandardResponce>(
                     new StandardResponce(200,"Success",massage.getObject())

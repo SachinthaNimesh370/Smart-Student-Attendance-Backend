@@ -2,9 +2,6 @@ package com.Smart_Student_Attendance_Backend.service.mobile;
 
 import com.Smart_Student_Attendance_Backend.dto.mobile.*;
 
-import java.util.List;
-import java.util.Map;
-
 public interface StudentService {
 
     ServiceResponceDTO saveStudent(StudentRegDTO studentRegDTO);
@@ -57,12 +54,6 @@ public interface StudentService {
 
     ServiceResponceDTO deleteNotification(int id);
 
-    ServiceResponceDTO savelecturehall(LectureHallsDTO lectureHallsDTO);
 
-    ServiceResponceDTO updatelecturehall(LectureHallsDTO lectureHallsDTO);
-
-    ServiceResponceDTO getAllLecturehall();
-
-    ServiceResponceDTO deleteLecturehall(int id);
 
 }
