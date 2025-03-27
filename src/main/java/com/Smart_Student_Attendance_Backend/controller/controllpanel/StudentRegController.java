@@ -66,24 +66,15 @@ public class StudentRegController {
 //==========================================================================================================
     @PostMapping("/acceptedAttendance")
     public ResponseEntity<StandardResponce> acceptedAttendance(@RequestBody StudentCurrentAttendDTO studentAttendDTO) {
-        try {
-            // Perform the first operation
-            String message = studentService.acceptedAttendance(studentAttendDTO);
-
-            // Perform the second operation
-            String messageSummery = studentService.markAttendInSummery(studentAttendDTO);
-
-            // If both operations succeed, return the response
-            return new ResponseEntity<>(
-                    new StandardResponce(201, "Accepted", message + messageSummery),
-                    HttpStatus.CREATED
-            );
-        } catch (Exception e) {
-            // If any exception occurs, the transaction will roll back, canceling both operations
-            return new ResponseEntity<>(
-                    new StandardResponce(500, "Failed", "Attendance operation failed due to: " + e.getMessage()),
-                    HttpStatus.INTERNAL_SERVER_ERROR
-            );
+        ServiceResponceDTO massage = studentService.processAttendance(studentAttendDTO);
+        if(massage.isSuccess()){
+            return new ResponseEntity<StandardResponce>(
+                    new StandardResponce(200,"Success",massage.getObject())
+                    ,HttpStatus.OK);
+        }else{
+            return new ResponseEntity<StandardResponce>(
+                    new StandardResponce(500,"Error",massage.getObject())
+                    ,HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
     @GetMapping("/getAllAcceptAttendance")

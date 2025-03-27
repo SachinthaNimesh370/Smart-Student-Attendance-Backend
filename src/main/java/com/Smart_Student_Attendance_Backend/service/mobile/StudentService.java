@@ -17,7 +17,7 @@ public interface StudentService {
 
 
     ServiceResponceDTO updateStudentWithHistoryAndSummary(StudentRegDTO studentRegDTO);
-    String updateStudent(StudentRegDTO studentRegDTO);
+    ServiceResponceDTO updateStudent(StudentRegDTO studentRegDTO);
 
 
 
@@ -29,7 +29,7 @@ public interface StudentService {
 
     ServiceResponceDTO saveStudentHistory(StudentRegDTO studentRegDTO);
 
-    String acceptedAttendance(StudentCurrentAttendDTO studentAttendDTO);
+    ServiceResponceDTO acceptedAttendance(StudentCurrentAttendDTO studentAttendDTO);
 
     ServiceResponceDTO getAllAcceptStudentAttend();
 
@@ -38,9 +38,10 @@ public interface StudentService {
     ServiceResponceDTO deleteColumnFromSummery(String columnName);
     ServiceResponceDTO getAllSummeryData();
 
-    String saveStudentSummery(StudentRegDTO studentRegDTO);
+    ServiceResponceDTO saveStudentSummery(StudentRegDTO studentRegDTO);
 
-    String markAttendInSummery(StudentCurrentAttendDTO studentcurrentAttendDTO);
+    ServiceResponceDTO markAttendInSummery(StudentCurrentAttendDTO studentcurrentAttendDTO);
+    ServiceResponceDTO processAttendance(StudentCurrentAttendDTO studentAttendDTO);
 
     ServiceResponceDTO getAttendSummeryData(String regNo);
 
