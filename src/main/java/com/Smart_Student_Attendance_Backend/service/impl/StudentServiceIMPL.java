@@ -1,9 +1,15 @@
-package com.Smart_Student_Attendance_Backend.service.mobile.impl;
+package com.Smart_Student_Attendance_Backend.service.impl;
 
-import com.Smart_Student_Attendance_Backend.dto.mobile.*;
-import com.Smart_Student_Attendance_Backend.entity.mobile.*;
-import com.Smart_Student_Attendance_Backend.repo.mobile.*;
-import com.Smart_Student_Attendance_Backend.service.mobile.StudentService;
+import com.Smart_Student_Attendance_Backend.dto.*;
+import com.Smart_Student_Attendance_Backend.entity.StudentCurrentAttend;
+import com.Smart_Student_Attendance_Backend.entity.StudentReg;
+import com.Smart_Student_Attendance_Backend.entity.Summery;
+import com.Smart_Student_Attendance_Backend.entity.TotalAttend;
+import com.Smart_Student_Attendance_Backend.repo.AttendMarkStudentRepo;
+import com.Smart_Student_Attendance_Backend.repo.StudentRegRepo;
+import com.Smart_Student_Attendance_Backend.repo.SummeryRepo;
+import com.Smart_Student_Attendance_Backend.repo.TotalAttendRepo;
+import com.Smart_Student_Attendance_Backend.service.StudentService;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.jdbc.core.JdbcTemplate;

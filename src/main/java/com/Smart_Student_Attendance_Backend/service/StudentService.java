@@ -1,6 +1,9 @@
-package com.Smart_Student_Attendance_Backend.service.mobile;
+package com.Smart_Student_Attendance_Backend.service;
 
-import com.Smart_Student_Attendance_Backend.dto.mobile.*;
+import com.Smart_Student_Attendance_Backend.dto.ServiceResponceDTO;
+import com.Smart_Student_Attendance_Backend.dto.StudentCurrentAttendDTO;
+import com.Smart_Student_Attendance_Backend.dto.StudentRegDTO;
+import com.Smart_Student_Attendance_Backend.dto.StudentSignInDTO;
 
 public interface StudentService {
 

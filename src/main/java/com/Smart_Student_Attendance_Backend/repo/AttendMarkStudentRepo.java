@@ -1,6 +1,6 @@
-package com.Smart_Student_Attendance_Backend.repo.mobile;
+package com.Smart_Student_Attendance_Backend.repo;
 
-import com.Smart_Student_Attendance_Backend.entity.mobile.StudentCurrentAttend;
+import com.Smart_Student_Attendance_Backend.entity.StudentCurrentAttend;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface AttendMarkStudentRepo extends JpaRepository<StudentCurrentAttend,String> {

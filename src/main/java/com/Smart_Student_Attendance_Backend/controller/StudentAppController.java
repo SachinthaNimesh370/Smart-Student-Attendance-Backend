@@ -1,10 +1,10 @@
-package com.Smart_Student_Attendance_Backend.controller.mobileApp;
+package com.Smart_Student_Attendance_Backend.controller;
 
-import com.Smart_Student_Attendance_Backend.dto.mobile.ServiceResponceDTO;
-import com.Smart_Student_Attendance_Backend.dto.mobile.StudentCurrentAttendDTO;
-import com.Smart_Student_Attendance_Backend.dto.mobile.StudentRegDTO;
-import com.Smart_Student_Attendance_Backend.dto.mobile.StudentSignInDTO;
-import com.Smart_Student_Attendance_Backend.service.mobile.StudentService;
+import com.Smart_Student_Attendance_Backend.dto.ServiceResponceDTO;
+import com.Smart_Student_Attendance_Backend.dto.StudentCurrentAttendDTO;
+import com.Smart_Student_Attendance_Backend.dto.StudentRegDTO;
+import com.Smart_Student_Attendance_Backend.dto.StudentSignInDTO;
+import com.Smart_Student_Attendance_Backend.service.StudentService;
 import com.Smart_Student_Attendance_Backend.utill.StandardResponce;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

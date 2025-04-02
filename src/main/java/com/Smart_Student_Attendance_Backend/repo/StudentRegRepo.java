@@ -1,6 +1,6 @@
-package com.Smart_Student_Attendance_Backend.repo.mobile;
+package com.Smart_Student_Attendance_Backend.repo;
 
-import com.Smart_Student_Attendance_Backend.entity.mobile.StudentReg;
+import com.Smart_Student_Attendance_Backend.entity.StudentReg;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.stereotype.Repository;

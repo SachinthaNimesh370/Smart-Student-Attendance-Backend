@@ -1,8 +1,8 @@
-package com.Smart_Student_Attendance_Backend.controller.controllpanel;
-import com.Smart_Student_Attendance_Backend.dto.mobile.*;
-import com.Smart_Student_Attendance_Backend.service.mobile.LectureHallService;
-import com.Smart_Student_Attendance_Backend.service.mobile.NotificationService;
-import com.Smart_Student_Attendance_Backend.service.mobile.StudentService;
+package com.Smart_Student_Attendance_Backend.controller;
+import com.Smart_Student_Attendance_Backend.dto.*;
+import com.Smart_Student_Attendance_Backend.service.LectureHallService;
+import com.Smart_Student_Attendance_Backend.service.NotificationService;
+import com.Smart_Student_Attendance_Backend.service.StudentService;
 import com.Smart_Student_Attendance_Backend.utill.StandardResponce;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

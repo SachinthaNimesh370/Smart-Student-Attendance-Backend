@@ -1,10 +1,10 @@
-package com.Smart_Student_Attendance_Backend.service.mobile.impl;
+package com.Smart_Student_Attendance_Backend.service.impl;
 
-import com.Smart_Student_Attendance_Backend.dto.mobile.LectureHallsDTO;
-import com.Smart_Student_Attendance_Backend.dto.mobile.ServiceResponceDTO;
-import com.Smart_Student_Attendance_Backend.entity.mobile.LectureHalls;
-import com.Smart_Student_Attendance_Backend.repo.mobile.LecturehallRepo;
-import com.Smart_Student_Attendance_Backend.service.mobile.LectureHallService;
+import com.Smart_Student_Attendance_Backend.dto.LectureHallsDTO;
+import com.Smart_Student_Attendance_Backend.dto.ServiceResponceDTO;
+import com.Smart_Student_Attendance_Backend.entity.LectureHalls;
+import com.Smart_Student_Attendance_Backend.repo.LecturehallRepo;
+import com.Smart_Student_Attendance_Backend.service.LectureHallService;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.stereotype.Service;
