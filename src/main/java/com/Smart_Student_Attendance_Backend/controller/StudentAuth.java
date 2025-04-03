@@ -14,11 +14,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v1/student")
-public class StudentAppController {
+@RequestMapping("/Auth")
+public class StudentAuth {
     private  final StudentService studentService;
 
-    public StudentAppController(StudentService studentService) {
+    public StudentAuth(StudentService studentService) {
         this.studentService = studentService;
     }
 

@@ -190,59 +190,7 @@ public class StudentRegController {
                     ,HttpStatus.BAD_REQUEST);
         }
     }
-    @PostMapping("/createNotification")
-    public  ResponseEntity<StandardResponce> createNotification(@RequestBody NotificationDTO notificationDTO){
-        ServiceResponceDTO massage =notificationService.createNotification(notificationDTO);
-        if(massage.isSuccess()){
-            return new ResponseEntity<StandardResponce>(
-                new StandardResponce(200,"Success",massage.getObject())
-                ,HttpStatus.OK);
-        }else {
-            return new ResponseEntity<StandardResponce>(
-                    new StandardResponce(400,"Error",massage.getObject())
-                    ,HttpStatus.BAD_REQUEST);
-        }
-    }
-    @GetMapping("/getAllNotifications")
-    public ResponseEntity<StandardResponce> getAllNotifications(){
-        ServiceResponceDTO massage= notificationService.getAllNotification();
-        if(massage.isSuccess()){
-            return new ResponseEntity<StandardResponce>(
-                    new StandardResponce(200,"Success",massage.getObject())
-                    ,HttpStatus.OK);
-        }else{
-            return new ResponseEntity<StandardResponce>(
-                    new StandardResponce(400,"Error",massage.getObject())
-                    ,HttpStatus.BAD_REQUEST);
-        }
-    }
-    @PutMapping("/updateNotification")
-    public  ResponseEntity<StandardResponce> updateNotification(@RequestBody NotificationDTO notificationDTO){
-        ServiceResponceDTO massage = notificationService.updateNotification(notificationDTO);
-        if(massage.isSuccess()){
-            return new ResponseEntity<StandardResponce>(
-                    new StandardResponce(200,"Success",massage.getObject())
-                    ,HttpStatus.OK);
-        }else {
-            return new ResponseEntity<StandardResponce>(
-                    new StandardResponce(400,"Error",massage.getObject())
-                    ,HttpStatus.BAD_REQUEST);
-        }
-    }
 
-   @DeleteMapping("/deleteNotification/{id}")
-    public ResponseEntity<StandardResponce> deleteNotification(@PathVariable int id){
-       ServiceResponceDTO massage =notificationService.deleteNotification(id);
-       if(massage.isSuccess()){
-           return new ResponseEntity<StandardResponce>(
-                   new StandardResponce(200,"Success",massage.getObject())
-                   ,HttpStatus.OK) ;
-       }else {
-           return new ResponseEntity<StandardResponce>(
-                   new StandardResponce(400,"Error",massage.getObject())
-                   ,HttpStatus.BAD_REQUEST) ;
-       }
-    }
 
     @PostMapping("/savelecturehall")
     public ResponseEntity<StandardResponce> savelecturehall(@RequestBody LectureHallsDTO lectureHallsDTO){
