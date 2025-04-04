@@ -1,7 +1,5 @@
 package com.Smart_Student_Attendance_Backend.controller;
 import com.Smart_Student_Attendance_Backend.dto.*;
-import com.Smart_Student_Attendance_Backend.service.LectureHallService;
-import com.Smart_Student_Attendance_Backend.service.NotificationService;
 import com.Smart_Student_Attendance_Backend.service.StudentService;
 import com.Smart_Student_Attendance_Backend.utill.StandardResponce;
 import org.springframework.http.HttpStatus;
@@ -14,13 +12,10 @@ import org.springframework.web.bind.annotation.*;
 public class StudentRegController {
 
     private final StudentService studentService;
-    private  final LectureHallService lectureHallService;
-    private  final NotificationService notificationService;
 
-    public StudentRegController(StudentService studentService, LectureHallService lectureHallService, NotificationService notificationService) {
+
+    public StudentRegController(StudentService studentService) {
         this.studentService = studentService;
-        this.lectureHallService = lectureHallService;
-        this.notificationService = notificationService;
     }
 
     //Get All Register Student Data
@@ -192,61 +187,7 @@ public class StudentRegController {
     }
 
 
-    @PostMapping("/savelecturehall")
-    public ResponseEntity<StandardResponce> savelecturehall(@RequestBody LectureHallsDTO lectureHallsDTO){
-        ServiceResponceDTO massage = lectureHallService.savelecturehall(lectureHallsDTO);
-        if(massage.isSuccess()){
-            return new ResponseEntity<StandardResponce>(
-                    new StandardResponce(200,"Success",massage.getObject())
-                    ,HttpStatus.OK);
-        }else {
-            return new ResponseEntity<StandardResponce>(
-                new StandardResponce(400,"Error",massage.getObject())
-                ,HttpStatus.BAD_REQUEST);
-        }
-    }
 
-    @PutMapping("/updatelecturehall")
-    public ResponseEntity<StandardResponce> updatelecturehall(@RequestBody LectureHallsDTO lectureHallsDTO){
-        ServiceResponceDTO massage=lectureHallService.updatelecturehall(lectureHallsDTO);
-        if(massage.isSuccess()){
-            return new ResponseEntity<StandardResponce>(
-                    new StandardResponce(200,"Success",massage.getObject()),
-                    HttpStatus.OK);
-        }else{
-            return new ResponseEntity<StandardResponce>(
-                    new StandardResponce(400,"Error",massage.getObject()),
-                    HttpStatus.BAD_REQUEST);
-        }
-    }
-
-    @GetMapping("/getAlllecturehall")
-    public ResponseEntity<StandardResponce> getAlllecturehall(){
-        ServiceResponceDTO massage = lectureHallService.getAllLecturehall();
-        if(massage.isSuccess()){
-            System.out.println(massage.getObject());
-            return new ResponseEntity<StandardResponce>(
-                    new StandardResponce(200,"Success",massage.getObject())
-                    ,HttpStatus.OK);
-        }else{
-            return new ResponseEntity<StandardResponce>(
-                    new StandardResponce(400,"Error",massage.getObject()),
-                    HttpStatus.BAD_REQUEST);
-        }
-    }
-    @DeleteMapping("/deletelecturehall/{id}")
-    public ResponseEntity<StandardResponce> deleteLecturehall(@PathVariable int id){
-        ServiceResponceDTO massage =lectureHallService.deleteLecturehall(id);
-        if(massage.isSuccess()){
-            return new ResponseEntity<StandardResponce>(
-                    new StandardResponce(200,"Success",massage.getObject())
-                    ,HttpStatus.OK);
-        }else{
-            return new ResponseEntity<StandardResponce>(
-                    new StandardResponce(400,"Error",massage.getObject()),
-                    HttpStatus.BAD_REQUEST);
-        }
-    }
 
 
 
