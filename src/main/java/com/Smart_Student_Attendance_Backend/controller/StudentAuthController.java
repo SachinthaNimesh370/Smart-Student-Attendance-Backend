@@ -15,10 +15,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/Auth")
-public class StudentAuth {
+public class StudentAuthController {
     private  final StudentService studentService;
 
-    public StudentAuth(StudentService studentService) {
+    public StudentAuthController(StudentService studentService) {
         this.studentService = studentService;
     }
 
