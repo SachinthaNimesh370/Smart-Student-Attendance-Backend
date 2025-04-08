@@ -1,9 +1,15 @@
-package com.Smart_Student_Attendance_Backend.service.mobile.impl;
+package com.Smart_Student_Attendance_Backend.service.impl;
 
-import com.Smart_Student_Attendance_Backend.dto.mobile.*;
-import com.Smart_Student_Attendance_Backend.entity.mobile.*;
-import com.Smart_Student_Attendance_Backend.repo.mobile.*;
-import com.Smart_Student_Attendance_Backend.service.mobile.StudentService;
+import com.Smart_Student_Attendance_Backend.dto.*;
+import com.Smart_Student_Attendance_Backend.entity.StudentCurrentAttend;
+import com.Smart_Student_Attendance_Backend.entity.StudentReg;
+import com.Smart_Student_Attendance_Backend.entity.Summery;
+import com.Smart_Student_Attendance_Backend.entity.TotalAttend;
+import com.Smart_Student_Attendance_Backend.repo.AttendMarkStudentRepo;
+import com.Smart_Student_Attendance_Backend.repo.StudentRegRepo;
+import com.Smart_Student_Attendance_Backend.repo.SummeryRepo;
+import com.Smart_Student_Attendance_Backend.repo.TotalAttendRepo;
+import com.Smart_Student_Attendance_Backend.service.StudentService;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -25,24 +31,19 @@ public class StudentServiceIMPL implements StudentService {
     private final TotalAttendRepo totalAttendRepo;
     private final JdbcTemplate jdbcTemplate;
     private final SummeryRepo summeryRepo;
-    private final NotificationRepo notificationRepo;
-    private final LecturehallRepo lecturehallRepo;
     public StudentServiceIMPL(ModelMapper modelMapper,
                               StudentRegRepo studentRegRepo,
                               AttendMarkStudentRepo attendMarkStudentRepo,
                               TotalAttendRepo totalAttendRepo,
                               JdbcTemplate jdbcTemplate,
-                              SummeryRepo summeryRepo,
-                              NotificationRepo notificationRepo,
-                              LecturehallRepo lecturehallRepo) {
+                              SummeryRepo summeryRepo) {
         this.modelMapper = modelMapper;
         this.studentRegRepo = studentRegRepo;
         this.attendMarkStudentRepo = attendMarkStudentRepo;
         this.totalAttendRepo = totalAttendRepo;
         this.jdbcTemplate = jdbcTemplate;
         this.summeryRepo = summeryRepo;
-        this.notificationRepo = notificationRepo;
-        this.lecturehallRepo = lecturehallRepo;
+
     }
     @Override
     public ServiceResponceDTO saveStudent(StudentRegDTO studentRegDTO) {
@@ -102,17 +103,48 @@ public class StudentServiceIMPL implements StudentService {
         }
     }
     @Override
-    public String updateStudent(StudentRegDTO studentRegDTO) {
+    public ServiceResponceDTO updateStudent(StudentRegDTO studentRegDTO) {
         StudentReg studentReg = modelMapper.map(studentRegDTO,StudentReg.class);
         if(studentRegRepo.existsByStudentRegNoEquals(studentReg.getStudentRegNo())){
             studentRegRepo.save(studentReg);
-            return "Update Success";
+            return new ServiceResponceDTO(true,"Update Success");
         }else {
-            System.out.println(studentRegDTO);
-            System.out.println(studentReg);
-            return "Pleace Try Again";
+            return new ServiceResponceDTO(false,"Please Try Again");
         }
     }
+
+    @Override
+    public ServiceResponceDTO saveStudentHistory(StudentRegDTO studentRegDTO) {
+
+        TotalAttend totalAttend = new TotalAttend();
+        totalAttend.setStudentRegNo(studentRegDTO.getStudentRegNo());
+        totalAttend.setHistory(new ArrayList<>());
+        if(studentRegDTO.isActivestatus()){
+            // Save the entity
+            totalAttendRepo.save(totalAttend);
+            return new ServiceResponceDTO(true,"Saved History");
+        }else{
+            return new ServiceResponceDTO(false,"Pleace Try Again");
+        }
+
+    }
+
+    @Override
+    public ServiceResponceDTO saveStudentSummery(StudentRegDTO studentRegDTO) {
+        // Create a new TotalAttend object with only the studentRegNo
+        Summery summery = new Summery();
+        summery.setStudentRegNo(studentRegDTO.getStudentRegNo());
+
+        if(studentRegDTO.isActivestatus()){
+            // Save the entity
+            summeryRepo.save(summery);
+            return new ServiceResponceDTO(true,"Student attendance record created with regNo: " + summery.getStudentRegNo());// Create a new TotalAttend object with only the studentRegNo
+        }else{
+            return new ServiceResponceDTO(false,"Not Active Student ") ;
+        }
+    }
+
+
 
     @Override
     public ServiceResponceDTO deleteStudent(String studentRegNo) {
@@ -154,48 +186,21 @@ public class StudentServiceIMPL implements StudentService {
         } else {
             return new ServiceResponceDTO(false,"No Data Found");
         }
-
     }
 
     @Override
-    public ServiceResponceDTO saveStudentHistory(StudentRegDTO studentRegDTO) {
-
-        TotalAttend totalAttend = new TotalAttend();
-        totalAttend.setStudentRegNo(studentRegDTO.getStudentRegNo());
-        totalAttend.setHistory(new ArrayList<>());
-        if(studentRegDTO.isActivestatus()){
-            // Save the entity
-            totalAttendRepo.save(totalAttend);
-            return new ServiceResponceDTO(true,"Saved History");
-        }else{
-            return new ServiceResponceDTO(false,"Pleace Try Again");
-        }
-
-    }
-
-    @Override
-    public String acceptedAttendance(StudentCurrentAttendDTO studentAttendDTO) {
-        // Convert DTO to entity object
+    public ServiceResponceDTO acceptedAttendance(StudentCurrentAttendDTO studentAttendDTO) {
         StudentCurrentAttend studentAttend = modelMapper.map(studentAttendDTO, StudentCurrentAttend.class);
-
-        // Check if the student with the given registration number exists
         if (totalAttendRepo.existsByStudentRegNoEquals(studentAttend.getStudentRegNo())) {
-
-            // Fetch the existing TotalAttend entity from the database
             TotalAttend totalAttend = totalAttendRepo.findByStudentRegNo(studentAttend.getStudentRegNo());
-
-            // Add the new StudentAttend data to the history list
             totalAttend.getHistory().add(studentAttend);
 
             // Save the updated TotalAttend entity
             totalAttendRepo.save(totalAttend);
 
-            return "Save Success";
+            return new ServiceResponceDTO(true,"Save Success");
         } else {
-            // If studentRegNo does not exist, handle it
-            System.out.println(studentAttendDTO);
-            System.out.println(studentAttend);
-            return "Please Try Again";
+            return new ServiceResponceDTO(false, "Please Try Again");
         }
     }
 
@@ -247,54 +252,49 @@ public class StudentServiceIMPL implements StudentService {
         }
     }
 
-    @Override
-    public String saveStudentSummery(StudentRegDTO studentRegDTO) {
-        // Create a new TotalAttend object with only the studentRegNo
-        Summery summery = new Summery();
-        summery.setStudentRegNo(studentRegDTO.getStudentRegNo());
 
-        if(studentRegDTO.isActivestatus()){
-            // Save the entity
-            summeryRepo.save(summery);
-            return "Student attendance record created with regNo: " + summery;// Create a new TotalAttend object with only the studentRegNo
-        }else{
-            System.out.println("Not Active Student ");
-            return "Not Active Student " ;
+    public ServiceResponceDTO processAttendance(StudentCurrentAttendDTO studentAttendDTO) {
+        try {
+            ServiceResponceDTO message = acceptedAttendance(studentAttendDTO);
+            if (!message.isSuccess()) {
+                throw new RuntimeException("Failed to save attendance record.");
+            }
+
+            ServiceResponceDTO messageSummery = markAttendInSummery(studentAttendDTO);
+            if (!messageSummery.isSuccess()) {
+                throw new RuntimeException("Failed to update attendance summary.");
+            }
+            return new ServiceResponceDTO(true, "Attendance process completed successfully.");
+
+        } catch (Exception e) {
+            throw new RuntimeException("Transaction failed: " + e.getMessage());
         }
     }
 
+
+
     @Override
-    public String markAttendInSummery(StudentCurrentAttendDTO studentCurrentAttendDTO) {
+    public ServiceResponceDTO markAttendInSummery(StudentCurrentAttendDTO studentCurrentAttendDTO) {
         String regNo = studentCurrentAttendDTO.getStudentRegNo();
         String date = studentCurrentAttendDTO.getDate();
         boolean attendance = true;
-
-        System.out.println("Processing attendance: RegNo = " + regNo + ", Date = " + date + ", Attendance = " + attendance);
-
         try {
-            // Check if the column for the given date exists
             String checkColumnSql = "SELECT column_name FROM information_schema.columns WHERE table_name = 'summery' AND column_name = ?";
             List<String> columns = jdbcTemplate.queryForList(checkColumnSql, new Object[]{date}, String.class);
-
-            // If the column does not exist, add it
             if (columns.isEmpty()) {
                 String addColumnSql = "ALTER TABLE summery ADD COLUMN `" + date + "` BOOLEAN";
                 jdbcTemplate.execute(addColumnSql);
             }
-
-            // Update the attendance for the student on the specified date
             String updateSql = "UPDATE summery SET `" + date + "` = ? WHERE student_reg_no = ?";
             int rowsAffected = jdbcTemplate.update(updateSql, attendance, regNo);
-
-            // Return appropriate message based on update result
             if (rowsAffected > 0) {
-                return "Attendance marked successfully for " + regNo + " on " + date.replace("_", "/");
+                return new ServiceResponceDTO(true,"Attendance marked successfully for " + regNo + " on " + date.replace("_", "/")) ;
             } else {
-                return "Failed to mark attendance. Student with RegNo " + regNo + " not found.";
+                return new ServiceResponceDTO(false,"Failed to mark attendance. Student with RegNo " + regNo + " not found.");
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return "Error occurred while marking attendance: " + e.getMessage();
+            return new ServiceResponceDTO(false,"Error occurred while marking attendance: " + e.getMessage());
         }
     }
 
@@ -341,97 +341,11 @@ public class StudentServiceIMPL implements StudentService {
         }catch (Exception e){
             return new ServiceResponceDTO(false,"Please Try Again. "+e.getMessage());
         }
-
-
     }
 
-    @Override
-    public ServiceResponceDTO createNotification(NotificationDTO notificationDTO) {
-        try {
-            Notification notification = modelMapper.map(notificationDTO, Notification.class);
-            notificationRepo.save(notification);
-            return new ServiceResponceDTO(true,"Notification Created Successfully");
-        } catch (Exception e) {
-            return new ServiceResponceDTO(false,"Error While Creating Notification: " + e.getMessage());
-        }
-    }
 
-    @Override
-    public ServiceResponceDTO getAllNotification() {
-        List<Notification> allNotification = notificationRepo.findAll();
-        if (!allNotification.isEmpty()) {
-            Collections.reverse(allNotification);
-            List<NotificationDTO> getAllNotification = modelMapper.map(allNotification, new TypeToken<List<NotificationDTO>>(){}.getType());
-            return new ServiceResponceDTO(true,getAllNotification);
-        } else {
-            return new ServiceResponceDTO(false,"Please Try Again");
-        }
-    }
 
-    @Override
-    public ServiceResponceDTO updateNotification(NotificationDTO notificationDTO) {
-        Notification notification = modelMapper.map(notificationDTO, Notification.class);
-        try {
-            notificationRepo.save(notification);
-            return new ServiceResponceDTO(true,"Success Full Notification update");
-        }catch (Exception e){
-            return  new ServiceResponceDTO(false,e.getMessage());
-        }
-    }
 
-    @Override
-    public ServiceResponceDTO deleteNotification(int id) {
-        try {
-            notificationRepo.deleteById(id);
-            return new ServiceResponceDTO(true,"Success Full Notification Delete");
-        }catch (Exception e){
-            return new ServiceResponceDTO(false,"Please Try Again "+e.getMessage());
-        }
-    }
-
-    @Override
-    public ServiceResponceDTO savelecturehall(LectureHallsDTO lectureHallsDTO) {
-        try {
-            LectureHalls lectureHalls= modelMapper.map(lectureHallsDTO, LectureHalls.class);
-            lecturehallRepo.save(lectureHalls);
-            return new ServiceResponceDTO(true,"Saved Lecture Hall");
-        }catch (Exception e){
-            return new ServiceResponceDTO(false,"Please Try Again"+e.getMessage());
-        }
-    }
-
-    @Override
-    public ServiceResponceDTO updatelecturehall(LectureHallsDTO lectureHallsDTO) {
-        try {
-            LectureHalls lectureHalls= modelMapper.map(lectureHallsDTO, LectureHalls.class);
-            lecturehallRepo.save(lectureHalls);
-            return new ServiceResponceDTO(true,"Updated Lecture Hall");
-        }catch (Exception e){
-            return new ServiceResponceDTO(false,"Please Try Again"+e.getMessage());
-        }
-    }
-
-    @Override
-    public ServiceResponceDTO getAllLecturehall() {
-        List<LectureHalls> alllectureHalls = lecturehallRepo.findAll();
-        if (!alllectureHalls.isEmpty()) {
-            List<LectureHallsDTO> getAlllectureHalls = modelMapper.map(alllectureHalls, new TypeToken<List<LectureHallsDTO>>(){}.getType());
-            return new ServiceResponceDTO(true,getAlllectureHalls);
-        } else {
-            return new ServiceResponceDTO(false,"Please Try Again");
-        }
-    }
-
-    @Override
-    public ServiceResponceDTO deleteLecturehall(int id) {
-        try {
-            lecturehallRepo.deleteById(id);
-            return new ServiceResponceDTO(true,"Success Full Notification Delete");
-        }catch (Exception e){
-            return new ServiceResponceDTO(false,"Please Try Again"+e.getMessage());
-        }
-
-    }
 
 
 }

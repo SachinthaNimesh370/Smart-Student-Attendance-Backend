@@ -1,4 +1,4 @@
-package com.Smart_Student_Attendance_Backend.entity.mobile;
+package com.Smart_Student_Attendance_Backend.entity;
 
 import com.vladmihalcea.hibernate.type.json.JsonType;
 import lombok.AllArgsConstructor;

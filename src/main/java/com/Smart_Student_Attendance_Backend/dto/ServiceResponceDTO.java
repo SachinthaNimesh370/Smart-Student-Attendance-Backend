@@ -1,4 +1,4 @@
-package com.Smart_Student_Attendance_Backend.dto.mobile;
+package com.Smart_Student_Attendance_Backend.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,9 +1,9 @@
-package com.Smart_Student_Attendance_Backend.service.mobile;
+package com.Smart_Student_Attendance_Backend.service;
 
-import com.Smart_Student_Attendance_Backend.dto.mobile.*;
-
-import java.util.List;
-import java.util.Map;
+import com.Smart_Student_Attendance_Backend.dto.ServiceResponceDTO;
+import com.Smart_Student_Attendance_Backend.dto.StudentCurrentAttendDTO;
+import com.Smart_Student_Attendance_Backend.dto.StudentRegDTO;
+import com.Smart_Student_Attendance_Backend.dto.StudentSignInDTO;
 
 public interface StudentService {
 
@@ -17,7 +17,7 @@ public interface StudentService {
 
 
     ServiceResponceDTO updateStudentWithHistoryAndSummary(StudentRegDTO studentRegDTO);
-    String updateStudent(StudentRegDTO studentRegDTO);
+    ServiceResponceDTO updateStudent(StudentRegDTO studentRegDTO);
 
 
 
@@ -29,7 +29,7 @@ public interface StudentService {
 
     ServiceResponceDTO saveStudentHistory(StudentRegDTO studentRegDTO);
 
-    String acceptedAttendance(StudentCurrentAttendDTO studentAttendDTO);
+    ServiceResponceDTO acceptedAttendance(StudentCurrentAttendDTO studentAttendDTO);
 
     ServiceResponceDTO getAllAcceptStudentAttend();
 
@@ -38,30 +38,18 @@ public interface StudentService {
     ServiceResponceDTO deleteColumnFromSummery(String columnName);
     ServiceResponceDTO getAllSummeryData();
 
-    String saveStudentSummery(StudentRegDTO studentRegDTO);
+    ServiceResponceDTO saveStudentSummery(StudentRegDTO studentRegDTO);
 
-    String markAttendInSummery(StudentCurrentAttendDTO studentcurrentAttendDTO);
+    ServiceResponceDTO markAttendInSummery(StudentCurrentAttendDTO studentcurrentAttendDTO);
+    ServiceResponceDTO processAttendance(StudentCurrentAttendDTO studentAttendDTO);
 
     ServiceResponceDTO getAttendSummeryData(String regNo);
 
     ServiceResponceDTO getAttendanceCountsDayByDay();
 
 
-    ServiceResponceDTO createNotification(NotificationDTO notificationDTO);
 
 
-    ServiceResponceDTO getAllNotification();
 
-    ServiceResponceDTO updateNotification(NotificationDTO notificationDTO);
-
-    ServiceResponceDTO deleteNotification(int id);
-
-    ServiceResponceDTO savelecturehall(LectureHallsDTO lectureHallsDTO);
-
-    ServiceResponceDTO updatelecturehall(LectureHallsDTO lectureHallsDTO);
-
-    ServiceResponceDTO getAllLecturehall();
-
-    ServiceResponceDTO deleteLecturehall(int id);
 
 }

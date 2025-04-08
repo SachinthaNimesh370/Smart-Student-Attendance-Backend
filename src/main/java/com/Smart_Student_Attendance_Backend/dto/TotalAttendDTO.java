@@ -1,6 +1,6 @@
-package com.Smart_Student_Attendance_Backend.dto.mobile;
+package com.Smart_Student_Attendance_Backend.dto;
 
-import com.Smart_Student_Attendance_Backend.entity.mobile.StudentCurrentAttend;
+import com.Smart_Student_Attendance_Backend.entity.StudentCurrentAttend;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

@@ -1,4 +1,4 @@
-package com.Smart_Student_Attendance_Backend.entity.mobile;
+package com.Smart_Student_Attendance_Backend.entity;
 
 
 import com.vladmihalcea.hibernate.type.json.JsonType;
@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;

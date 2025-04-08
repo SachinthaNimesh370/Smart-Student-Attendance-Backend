@@ -1,6 +1,6 @@
-package com.Smart_Student_Attendance_Backend.repo.mobile;
+package com.Smart_Student_Attendance_Backend.repo;
 
-import com.Smart_Student_Attendance_Backend.entity.mobile.TotalAttend;
+import com.Smart_Student_Attendance_Backend.entity.TotalAttend;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface TotalAttendRepo extends JpaRepository<TotalAttend,String> {

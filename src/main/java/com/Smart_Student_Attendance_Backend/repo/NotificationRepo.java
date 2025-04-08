@@ -1,6 +1,6 @@
-package com.Smart_Student_Attendance_Backend.repo.mobile;
+package com.Smart_Student_Attendance_Backend.repo;
 
-import com.Smart_Student_Attendance_Backend.entity.mobile.Notification;
+import com.Smart_Student_Attendance_Backend.entity.Notification;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface NotificationRepo extends JpaRepository<Notification,Integer> {
